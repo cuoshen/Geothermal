@@ -21,6 +21,7 @@ void Update(MSG msg)
 
 	deviceResources->SetTargets();
 	deviceResources->ClearView();
+	deviceResources->Present();
 }
 
 int CALLBACK WinMain
@@ -53,18 +54,19 @@ int CALLBACK WinMain
 	const UINT height = 900;
 
 	HWND windowHandle = CreateWindowEx(
-		0, className, L"Aerial", WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		0, className, L"Geothermal", WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		200, 200, width, height,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	deviceResources = 
-		std::make_shared<Geothermal::Graphics::DeviceResources>();
-	deviceResources->SetWindow(windowHandle, width, height);
+	ShowWindow(windowHandle, SW_SHOW);
+
+	deviceResources =
+		std::make_shared<Geothermal::Graphics::DeviceResources>(windowHandle);
+	//deviceResources->SetWindow(windowHandle, width, height);
 	deviceResources->SetTargets();
 	deviceResources->ClearView();
-	//gfx = new Graphics(windowHandle);
-	ShowWindow(windowHandle, SW_SHOW);
+	deviceResources->Present();
 
 	// message pump
 	MSG msg;
