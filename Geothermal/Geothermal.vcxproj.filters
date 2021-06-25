@@ -36,6 +36,16 @@
     <ClCompile Include="ShaderCache.cpp">
       <Filter>Graphics\Materials</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -91,6 +101,19 @@
     <ClInclude Include="ShaderCache.h">
       <Filter>Graphics\Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Vertices.h">
+      <Filter>Graphics\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

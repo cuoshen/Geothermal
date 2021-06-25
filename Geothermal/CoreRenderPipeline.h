@@ -1,6 +1,6 @@
 #pragma once
 #include "DeviceResources.h"
-//#include "Camera.h"
+#include "Camera.h"
 
 //#define DEBUG_SHAPES	// TODO: put this entire test region into a debug scene
 
@@ -46,6 +46,6 @@ namespace Geothermal::Graphics
 		void DrawDebugMesh();
 #endif
 		std::shared_ptr<DeviceResources> deviceResources;
-		//std::unique_ptr<Camera> camera;
+		std::unique_ptr<Camera> camera;
 	};
 }

@@ -148,13 +148,17 @@
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="ObjectRenderer.cpp" />
     <ClCompile Include="QuadMesh.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderCache.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,18 +169,23 @@
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModelLoader.h" />
+    <ClInclude Include="ObjectRenderer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="QuadMesh.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCache.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="tiny_obj_loader.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="Vertices.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

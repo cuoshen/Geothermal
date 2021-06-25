@@ -1,7 +1,7 @@
 #include "pch.h"
 #include <d3dcompiler.h>
 #include "CoreRenderPipeline.h"
-//#include "Vertices.h"
+#include "Vertices.h"
 #include "Shaders.h"
 #include "GameMain.h"
 //#include "Scene.h"
@@ -37,18 +37,18 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 // TODO: refactor into (Shader Cache + Material) system in support of custom shader
 void CoreRenderPipeline::LoadAllShaders()
 {
-	//PixelShader unlitPixelShader(deviceResources, L"ForwardLit.cso");
-	//VertexShader defaultVertexShader(deviceResources, L"VertexShader.cso", VertexPNTLayout, (UINT)size(VertexPNTLayout));
-	//unlitPixelShader.Bind();
-	//defaultVertexShader.Bind();
+	PixelShader unlitPixelShader(deviceResources, L"ForwardLit.cso");
+	VertexShader defaultVertexShader(deviceResources, L"VertexShader.cso", VertexPNTLayout, (UINT)size(VertexPNTLayout));
+	unlitPixelShader.Bind();
+	defaultVertexShader.Bind();
 }
 
 void CoreRenderPipeline::Render()
 {
 	deviceResources->SetTargets();	// Always set target to current back buffer before drawing
 	deviceResources->ClearView();		// Clear the view before we start drawing
-	/*camera->Update();
-	camera->BindCamera2Pipeline();*/
+	camera->Update();
+	camera->BindCamera2Pipeline();
 
 	// Simple forward rendering
 	// For each object we render it in a single pass
