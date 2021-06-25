@@ -12,7 +12,7 @@ GameMain::GameMain(shared_ptr<DeviceResources> device) :
 	if (device)
 	{
 		this->device = device;
-		//coreRenderer = make_unique<CoreRenderPipeline>(device);
+		coreRenderer = make_unique<CoreRenderPipeline>(device);
 		OutputDebugString(L"GameMain created \n");
 	}
 	/*timer = make_unique<GameTimer>();
@@ -32,20 +32,6 @@ void GameMain::Initialize(shared_ptr<DeviceResources> device)
 }
 
 /// <summary>
-/// Run function is called once, and run forever until the window is closed
-/// </summary>
-void GameMain::Run()
-{
-	OutputDebugString(L"Start game \n");
-	while (!windowClosed)
-	{
-		Update();
-		//coreRenderer->Render();
-		LateUpdate();
-	}
-}
-
-/// <summary>
 /// Update function is called once per frame, before the frame is rendered
 /// </summary>
 void GameMain::Update()
@@ -58,6 +44,8 @@ void GameMain::Update()
 	{
 		gameObject->Update();
 	}*/
+
+	coreRenderer->Render();
 }
 
 /// <summary>

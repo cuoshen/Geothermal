@@ -1,6 +1,6 @@
 #pragma once
 #include "DeviceResources.h"
-//#include "CoreRenderPipeline.h"
+#include "CoreRenderPipeline.h"
 //#include "GameTimer.h"
 //#include "Input.h"
 //#include "Scene.h"
@@ -18,7 +18,6 @@ public:
 	static GameMain* Instance();
 	static void Initialize(std::shared_ptr<DeviceResources> device);
 
-	void Run();
 	void Update();
 	void LateUpdate();
 	void Close() { windowClosed = true; }
@@ -36,5 +35,5 @@ private:
 	float deltaTime;
 	//std::unique_ptr<Geothermal::Input> input;
 	std::shared_ptr<DeviceResources> device;
-	//std::unique_ptr<CoreRenderPipeline> coreRenderer;
+	std::unique_ptr<CoreRenderPipeline> coreRenderer;
 };
