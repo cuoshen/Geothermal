@@ -109,6 +109,8 @@ namespace Geothermal::Graphics::Bindables
 			);
 		}
 
+		using VertexBuffer<V>::deviceResources;
+
 		void Bind() override
 		{
 			VertexBuffer<V>::Bind();

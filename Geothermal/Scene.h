@@ -11,7 +11,7 @@ namespace Geothermal
 	{
 		// TODO: Support multiple scenes
 	public:
-		static Scene* GetInstance()
+		static Scene* Instance()
 		{
 			if (instance == nullptr)
 			{

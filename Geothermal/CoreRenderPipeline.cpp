@@ -17,16 +17,15 @@ using namespace Geothermal;
 
 using namespace Geothermal::Graphics;
 using namespace Bindables;
-//using namespace Structures;
+using namespace Structures;
 using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
-	deviceResources(deviceResources)
-	//, camera(nullptr)
+	deviceResources(deviceResources), camera(nullptr)
 {
 	LoadAllShaders();
-	//camera = make_unique<Camera>(deviceResources->GetAspectRatio(), 0.1f, 100.0f, deviceResources);
+	camera = make_unique<Camera>(deviceResources->GetAspectRatio(), 0.1f, 100.0f, deviceResources);
 #ifdef DEBUG_SHAPES
 	LoadDebugMesh();
 #endif
@@ -52,7 +51,7 @@ void CoreRenderPipeline::Render()
 
 	// Simple forward rendering
 	// For each object we render it in a single pass
-	/*for (GameObject*& gameObject : Scene::GetInstance()->ObjectsInScene)
+	/*for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Render();
 	} */
@@ -86,7 +85,7 @@ void CoreRenderPipeline::DrawDebugQuad()
 {
 	QuadMesh quadMesh(deviceResources);
 	quadMesh.vertices->Bind();
-	float angle = GameMain::GetInstance()->GetTime();
+	float angle = GameMain::Instance()->GetTime();
 	VertexConstantBuffer<XMMATRIX> transform(
 		deviceResources, 
 		XMMatrixTranspose(XMMatrixRotationY(angle) * XMMatrixTranslation(0.0f, 0.0f, 2.0f)),

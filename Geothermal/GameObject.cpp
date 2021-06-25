@@ -13,13 +13,13 @@ GameObject::GameObject():
 {
 	transform = make_unique<Transform>();
 	// Add game object to registry
-	Scene::GetInstance()->ObjectsInScene.push_back(this);
+	Scene::Instance()->ObjectsInScene.push_back(this);
 }
 
 GameObject::~GameObject()
 {
 	// Release reference from registry
-	Scene::GetInstance()->ObjectsInScene.remove(this);
+	Scene::Instance()->ObjectsInScene.remove(this);
 }
 
 void GameObject::Render() const

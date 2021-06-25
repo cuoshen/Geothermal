@@ -78,6 +78,10 @@ namespace Geothermal::Graphics::Bindables
 	{
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
+		using ConstantBuffer<C>::constantBuffer;
+		using ConstantBuffer<C>::slot;
+		using ConstantBuffer<C>::deviceResources;
+
 		void Bind() override
 		{
 			ID3D11Buffer* cbuffer = constantBuffer.get();
@@ -90,6 +94,10 @@ namespace Geothermal::Graphics::Bindables
 	{
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
+		using ConstantBuffer<C>::constantBuffer;
+		using ConstantBuffer<C>::slot;
+		using ConstantBuffer<C>::deviceResources;
+
 		void Bind() override
 		{
 			ID3D11Buffer* cbuffer = constantBuffer.get();
