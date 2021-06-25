@@ -1,4 +1,7 @@
 #include "pch.h"
+#include "DeviceResources.h"
+
+std::shared_ptr<Geothermal::Graphics::DeviceResources> deviceResources;
 
 LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -15,6 +18,9 @@ void Update(MSG msg)
 {
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
+
+	deviceResources->SetTargets();
+	deviceResources->ClearView();
 }
 
 int CALLBACK WinMain
@@ -43,12 +49,20 @@ int CALLBACK WinMain
 	RegisterClassEx(&wc);
 
 	// Create instance of the window
+	const UINT width = 1600;
+	const UINT height = 900;
+
 	HWND windowHandle = CreateWindowEx(
 		0, className, L"Aerial", WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-		200, 200, 1600, 900,
+		200, 200, width, height,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
+	deviceResources = 
+		std::make_shared<Geothermal::Graphics::DeviceResources>();
+	deviceResources->SetWindow(windowHandle, width, height);
+	deviceResources->SetTargets();
+	deviceResources->ClearView();
 	//gfx = new Graphics(windowHandle);
 	ShowWindow(windowHandle, SW_SHOW);
 

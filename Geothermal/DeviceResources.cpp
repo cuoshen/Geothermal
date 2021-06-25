@@ -4,7 +4,7 @@
 #include <math.h>
 #include <unknwn.h>
 
-using namespace Aeriel::Graphics;
+using namespace Geothermal::Graphics;
 using namespace D2D1;
 using namespace DirectX;
 using namespace winrt;
@@ -50,29 +50,30 @@ void DeviceResources::CreateDeviceResources()
 }
 
 // Parse out window dimensions and create swap chain accordingly
-void DeviceResources::SetWindow()
+void DeviceResources::SetWindow(HWND windowHandle, UINT width, UINT height)
 {
-    CreateWindowSizeDependentResources();
+    outputSize = XMUINT2{ width, height };
+    CreateWindowSizeDependentResources(windowHandle);
 }
 
-void DeviceResources::CreateWindowSizeDependentResources()
+void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
 {
     ClearPreviousSizeDependentResources();
-    // Compute output size from logical size
-    outputSize.Width = max(1, outputSize.Width);
-    outputSize.Height = max(1, outputSize.Height);
+
+    outputSize.x = max(1, outputSize.x);
+    outputSize.y = max(1, outputSize.y);
 
     if (swapChain != nullptr)
     {
         // The swap chain already exists, resize it
         HRESULT hr = swapChain->ResizeBuffers(
             2,  // Double buffered
-            static_cast<UINT>(outputSize.Width),
-            static_cast<UINT>(outputSize.Height),
+            outputSize.x,
+            outputSize.y,
             DXGI_FORMAT_B8G8R8A8_UNORM,
             0   // No flags
         );
-        // TODO: handle device lost
+
         check_hresult(hr);
     }
     else
@@ -80,8 +81,8 @@ void DeviceResources::CreateWindowSizeDependentResources()
         // Create new swap chain
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
 
-        swapChainDesc.Width = static_cast<UINT>(outputSize.Width);
-        swapChainDesc.Height = static_cast<UINT>(outputSize.Height);
+        swapChainDesc.Width = outputSize.x;
+        swapChainDesc.Height = outputSize.y;
         swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // This is the most common swap chain format.
         swapChainDesc.SampleDesc.Count = 1; // Don't use multi-sampling.
         swapChainDesc.SampleDesc.Quality = 0;
@@ -104,15 +105,16 @@ void DeviceResources::CreateWindowSizeDependentResources()
             dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory))
         );
 
-        /*winrt::check_hresult(
-            dxgiFactory->CreateSwapChainForCoreWindow(
+        winrt::check_hresult(
+            dxgiFactory->CreateSwapChainForHwnd(
                 d3dDevice.get(),
-                winrt::get_unknown(window.get()),
+                windowHandle,
                 &swapChainDesc,
+                nullptr,
                 nullptr,
                 swapChain.put()
             )
-        );*/
+        );
 
         winrt::check_hresult(
             dxgiDevice->SetMaximumFrameLatency(1)
@@ -138,8 +140,8 @@ void DeviceResources::CreateWindowSizeDependentResources()
     screenViewPort = CD3D11_VIEWPORT(
         0.0f,
         0.0f,
-        outputSize.Width,
-        outputSize.Height
+        outputSize.x,
+        outputSize.y
     );
     d3dContext->RSSetViewports(1, &screenViewPort);
 

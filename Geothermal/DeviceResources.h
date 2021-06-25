@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Aeriel::Graphics
+namespace Geothermal::Graphics
 {
 	/// <summary>
 	/// Core wrapper for Direct3D graphic API device resources
@@ -10,19 +10,19 @@ namespace Aeriel::Graphics
 	{
 	public:
 		DeviceResources();
-		void SetWindow();
+		void SetWindow(HWND windowHandle, UINT width, UINT height);
 		void Present();
 
 		ID3D11Device* GetD3DDevice() const { return d3dDevice.get(); }
 		ID3D11DeviceContext3* GetD3DDeviceContext() const { return d3dContext.get(); }
 		IDXGISwapChain1* GetSwapChain() const { return swapChain.get(); }
-		float GetAspectRatio() const { return (float)outputSize.Width / (float)outputSize.Height; }
+		float GetAspectRatio() const { return (float)outputSize.x / (float)outputSize.y; }
 
 		void ClearView();
 		void SetTargets();
 	private:
 		void CreateDeviceResources();
-		void CreateWindowSizeDependentResources();
+		void CreateWindowSizeDependentResources(HWND windowHandle);
 		void ClearPreviousSizeDependentResources();
 
 		// Direct3D basic components
@@ -34,11 +34,9 @@ namespace Aeriel::Graphics
 		D3D_FEATURE_LEVEL d3dFeatureLevel;
 		D3D11_VIEWPORT screenViewPort;
 
-		const FLOAT ClearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
+		const FLOAT ClearColor[4] = { 0.0f,0.5f,0.0f,1.0f };
 
 		// Window-related resources
-		winrt::Windows::Foundation::Size logicalSize;
-		winrt::Windows::Foundation::Size outputSize;
-		float dpi;
+		DirectX::XMUINT2 outputSize;
 	};
 }

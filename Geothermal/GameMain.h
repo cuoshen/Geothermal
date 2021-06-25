@@ -5,8 +5,8 @@
 //#include "Input.h"
 //#include "Scene.h"
 
-using namespace Aeriel;
-using namespace Aeriel::Graphics;
+using namespace Geothermal;
+using namespace Geothermal::Graphics;
 
 /// <summary>
 /// Main gameplay loop
@@ -25,7 +25,7 @@ public:
 
 	float GetDeltaTime() const { return deltaTime; }
 	float GetTime() const { return time; }
-	//Aeriel::Input* GetInput() const { return input.get(); }
+	//Geothermal::Input* GetInput() const { return input.get(); }
 private:
 	GameMain(std::shared_ptr<DeviceResources> device);
 	static GameMain* instance;
@@ -34,7 +34,7 @@ private:
 	//std::unique_ptr<GameTimer> timer;
 	float time;
 	float deltaTime;
-	//std::unique_ptr<Aeriel::Input> input;
+	//std::unique_ptr<Geothermal::Input> input;
 	std::shared_ptr<DeviceResources> device;
 	//std::unique_ptr<CoreRenderPipeline> coreRenderer;
 };
