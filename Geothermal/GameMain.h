@@ -15,7 +15,7 @@ using namespace Geothermal::Graphics;
 class GameMain
 {
 public:
-	static GameMain* GetInstance();
+	static GameMain* Instance();
 	static void Initialize(std::shared_ptr<DeviceResources> device);
 
 	void Run();

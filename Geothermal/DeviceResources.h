@@ -34,7 +34,7 @@ namespace Geothermal::Graphics
 		D3D_FEATURE_LEVEL d3dFeatureLevel;
 		D3D11_VIEWPORT screenViewPort;
 
-		const FLOAT ClearColor[4] = { 0.0f,0.5f,0.0f,1.0f };
+		const FLOAT ClearColor[4] = { 0.0f,0.0f,0.0f,1.0f };
 
 		// Window-related resources
 		DirectX::XMUINT2 outputSize;

@@ -2,8 +2,6 @@
 #include "DeviceResources.h"
 #include "GameMain.h"
 
-std::shared_ptr<Geothermal::Graphics::DeviceResources> deviceResources;
-
 LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -20,9 +18,7 @@ void Update(MSG msg)
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
 
-	deviceResources->SetTargets();
-	deviceResources->ClearView();
-	deviceResources->Present();
+	GameMain::Instance()->Update();
 }
 
 int CALLBACK WinMain
@@ -62,13 +58,11 @@ int CALLBACK WinMain
 
 	ShowWindow(windowHandle, SW_SHOW);
 
-	deviceResources =
+	std::shared_ptr<Geothermal::Graphics::DeviceResources> deviceResources =
 		std::make_shared<Geothermal::Graphics::DeviceResources>();
 	deviceResources->SetWindow(windowHandle, width, height);
 	
-	deviceResources->SetTargets();
-	deviceResources->ClearView();
-	deviceResources->Present();
+	GameMain::Initialize(deviceResources);
 
 	// message pump
 	MSG msg;

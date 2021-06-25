@@ -6,6 +6,9 @@
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="CoreRenderPipeline.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -13,10 +16,34 @@
     <ClInclude Include="DeviceResources.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Graphics\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders.h">
+      <Filter>Graphics\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Graphics\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Graphics\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Graphics\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Graphics\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreRenderPipeline.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
       <UniqueIdentifier>{23b1871e-4c89-41d3-b47d-09f8beb902d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Bindables">
+      <UniqueIdentifier>{a1653fde-9c50-4466-b982-4b33093d9a0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

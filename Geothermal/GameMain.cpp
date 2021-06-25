@@ -20,7 +20,7 @@ GameMain::GameMain(shared_ptr<DeviceResources> device) :
 	input = make_unique<Input>(CoreWindow::GetForCurrentThread());*/
 }
 
-GameMain* GameMain::GetInstance()
+GameMain* GameMain::Instance()
 {
 	assert(GameMain::instance != nullptr);
 	return GameMain::instance;
@@ -54,7 +54,7 @@ void GameMain::Update()
 	deltaTime = timer->DeltaTime();
 	time = timer->PlayingTime();
 
-	for (GameObject*& gameObject : Scene::GetInstance()->ObjectsInScene)
+	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Update();
 	}*/

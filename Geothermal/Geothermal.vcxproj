@@ -143,14 +143,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bindable.h" />
+    <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="Shaders.h" />
+    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
