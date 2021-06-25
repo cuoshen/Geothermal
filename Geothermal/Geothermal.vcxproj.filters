@@ -9,6 +9,33 @@
     <ClCompile Include="CoreRenderPipeline.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMesh.cpp">
+      <Filter>Graphics\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Ultilities\ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_obj_loader.cpp">
+      <Filter>Ultilities\ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>Ultilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Graphics\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Graphics\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadMesh.cpp">
+      <Filter>Graphics\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderCache.cpp">
+      <Filter>Graphics\Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -37,6 +64,33 @@
     <ClInclude Include="CoreRenderPipeline.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMesh.h">
+      <Filter>Graphics\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>Ultilities\ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h">
+      <Filter>Ultilities\ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelLoader.h">
+      <Filter>Ultilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Graphics\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Graphics\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadMesh.h">
+      <Filter>Graphics\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderCache.h">
+      <Filter>Graphics\Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -44,6 +98,27 @@
     </Filter>
     <Filter Include="Graphics\Bindables">
       <UniqueIdentifier>{a1653fde-9c50-4466-b982-4b33093d9a0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ultilities">
+      <UniqueIdentifier>{3721caf1-a536-4e3a-8a2b-349548211206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Meshes">
+      <UniqueIdentifier>{d4d2dcf9-59e4-4efa-b5fd-9500f4b7199f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Structures">
+      <UniqueIdentifier>{9463b17f-24f5-4275-a2ce-219906e86dba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Materials">
+      <UniqueIdentifier>{61045a0a-de9a-4723-868c-0d334cbcaa0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{154189fc-b565-4e7b-bfea-ee3e8d808407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{c13eea96-1217-422f-b3f4-d09148fd8dbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ultilities\ThirdParty">
+      <UniqueIdentifier>{7aeddbdd-178f-44f7-883c-ebbcc3c8733b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
