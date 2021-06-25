@@ -9,57 +9,11 @@ using namespace D2D1;
 using namespace DirectX;
 using namespace winrt;
 
-DeviceResources::DeviceResources(HWND windowHandle):
+DeviceResources::DeviceResources():
     d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0)
 {
-    /*CreateDeviceResources();
-    OutputDebugString(L"DeviceResources created \n");*/
-
-    // Create swap chain descriptor
-    DXGI_SWAP_CHAIN_DESC sd = {};
-    sd.BufferDesc.Width = 0;
-    sd.BufferDesc.Height = 0;
-    sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    sd.BufferDesc.RefreshRate.Numerator = 0;
-    sd.BufferDesc.RefreshRate.Denominator = 0;
-    sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    sd.SampleDesc.Count = 1;
-    sd.SampleDesc.Quality = 0;
-    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.BufferCount = 1;
-    sd.OutputWindow = windowHandle;
-    sd.Windowed = true;
-    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-    sd.Flags = 0;
-
-    // Create device, swap chain, context
-    D3D11CreateDeviceAndSwapChain(
-        nullptr,
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        0,
-        nullptr,
-        0,
-        D3D11_SDK_VERSION,
-        &sd,
-        swapChain.put(),
-        d3dDevice.put(),
-        nullptr,
-        d3dContext.put()
-    );
-
-    com_ptr<ID3D11Resource> backBuffer = nullptr;
-    swapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**)&backBuffer);
-    d3dDevice->CreateRenderTargetView(backBuffer.get(), nullptr, d3dRenderTargetView.put());
-
-    screenViewPort = CD3D11_VIEWPORT(
-        0.0f,
-        0.0f,
-        outputSize.x,
-        outputSize.y
-    );
-    d3dContext->RSSetViewports(1, &screenViewPort);
+    CreateDeviceResources();
+    OutputDebugString(L"DeviceResources created \n");
 }
 
 // Create Direct3D device and context
@@ -151,7 +105,7 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
             dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory))
         );
 
-        /*winrt::check_hresult(
+        winrt::check_hresult(
             dxgiFactory->CreateSwapChainForHwnd(
                 d3dDevice.get(),
                 windowHandle,
@@ -160,7 +114,7 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
                 nullptr,
                 swapChain.put()
             )
-        );*/
+        );
 
         winrt::check_hresult(
             dxgiDevice->SetMaximumFrameLatency(1)
@@ -170,7 +124,7 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
     }
 
     // After processing swap chain, we create a render target view of the swap chain back buffer
-    /*winrt::com_ptr<ID3D11Texture2D> backBuffer = winrt::capture<ID3D11Texture2D>(swapChain, &IDXGISwapChain1::GetBuffer, 0);
+    winrt::com_ptr<ID3D11Texture2D> backBuffer = winrt::capture<ID3D11Texture2D>(swapChain, &IDXGISwapChain1::GetBuffer, 0);
 
     winrt::check_hresult(
         d3dDevice->CreateRenderTargetView(
@@ -178,12 +132,7 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
             nullptr,
             d3dRenderTargetView.put()
         )
-    );*/
-
-    ID3D11Resource* backBuffer = nullptr;
-    swapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**)&backBuffer);
-    d3dDevice->CreateRenderTargetView(backBuffer, nullptr, d3dRenderTargetView.put());
-    backBuffer->Release();
+    );
 
     // TODO: add depth-stencil view
 
@@ -211,7 +160,7 @@ void DeviceResources::Present()
     winrt::check_hresult(
         swapChain->Present(1, 0)
     );
-    //d3dContext->DiscardView(d3dRenderTargetView.get());
+    d3dContext->DiscardView(d3dRenderTargetView.get());
 }
 
 void DeviceResources::ClearView()

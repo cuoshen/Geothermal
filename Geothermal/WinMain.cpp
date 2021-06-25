@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DeviceResources.h"
+#include "GameMain.h"
 
 std::shared_ptr<Geothermal::Graphics::DeviceResources> deviceResources;
 
@@ -62,8 +63,9 @@ int CALLBACK WinMain
 	ShowWindow(windowHandle, SW_SHOW);
 
 	deviceResources =
-		std::make_shared<Geothermal::Graphics::DeviceResources>(windowHandle);
-	//deviceResources->SetWindow(windowHandle, width, height);
+		std::make_shared<Geothermal::Graphics::DeviceResources>();
+	deviceResources->SetWindow(windowHandle, width, height);
+	
 	deviceResources->SetTargets();
 	deviceResources->ClearView();
 	deviceResources->Present();
