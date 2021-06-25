@@ -1,9 +1,9 @@
 #pragma once
 #include "DeviceResources.h"
 #include "CoreRenderPipeline.h"
-//#include "GameTimer.h"
+#include "GameTimer.h"
 //#include "Input.h"
-//#include "Scene.h"
+#include "Scene.h"
 
 using namespace Geothermal;
 using namespace Geothermal::Graphics;
@@ -30,7 +30,7 @@ private:
 	static GameMain* instance;
 
 	bool windowClosed;
-	//std::unique_ptr<GameTimer> timer;
+	std::unique_ptr<GameTimer> timer;
 	float time;
 	float deltaTime;
 	//std::unique_ptr<Geothermal::Input> input;

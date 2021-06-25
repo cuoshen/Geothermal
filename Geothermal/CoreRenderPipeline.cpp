@@ -4,7 +4,7 @@
 #include "Vertices.h"
 #include "Shaders.h"
 #include "GameMain.h"
-//#include "Scene.h"
+#include "Scene.h"
 
 #ifdef DEBUG_SHAPES
 #include "VertexBuffer.h"
@@ -51,10 +51,10 @@ void CoreRenderPipeline::Render()
 
 	// Simple forward rendering
 	// For each object we render it in a single pass
-	/*for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
+	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Render();
-	} */
+	}
 
 #ifdef DEBUG_SHAPES
 	DrawDebugMesh();

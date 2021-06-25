@@ -6,8 +6,8 @@ using namespace std;
 GameMain* GameMain::instance;
 
 GameMain::GameMain(shared_ptr<DeviceResources> device) :
-	windowClosed(false), deltaTime(0.0f), time(0.0f)
-	//, input(nullptr), timer(nullptr)
+	windowClosed(false), deltaTime(0.0f), time(0.0f), timer(nullptr)
+	//, input(nullptr)
 {
 	if (device)
 	{
@@ -15,9 +15,9 @@ GameMain::GameMain(shared_ptr<DeviceResources> device) :
 		coreRenderer = make_unique<CoreRenderPipeline>(device);
 		OutputDebugString(L"GameMain created \n");
 	}
-	/*timer = make_unique<GameTimer>();
+	timer = make_unique<GameTimer>();
 	timer->Start();
-	input = make_unique<Input>(CoreWindow::GetForCurrentThread());*/
+	//input = make_unique<Input>(CoreWindow::GetForCurrentThread());
 }
 
 GameMain* GameMain::Instance()
@@ -36,14 +36,14 @@ void GameMain::Initialize(shared_ptr<DeviceResources> device)
 /// </summary>
 void GameMain::Update()
 {
-	/*timer->Update();
+	timer->Update();
 	deltaTime = timer->DeltaTime();
 	time = timer->PlayingTime();
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Update();
-	}*/
+	}
 
 	coreRenderer->Render();
 }
