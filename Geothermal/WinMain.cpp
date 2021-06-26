@@ -13,16 +13,21 @@ LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT message, WPARAM wParam
 	return DefWindowProc(windowsHandle, message, wParam, lParam);
 }
 
-void Update(MSG msg)
+UINT Update(MSG msg)
 {
+	if (msg.message == WM_QUIT)
+	{
+		return 1;
+	}
+
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
 
 	OutputDebugString(L"update called \n");
 
 	GameMain::Instance()->GetInput()->RegisterInput(&msg);
-	GameMain::Instance()->Update();
-	GameMain::Instance()->LateUpdate();
+
+	return 0;
 }
 
 int CALLBACK WinMain
@@ -69,10 +74,19 @@ int CALLBACK WinMain
 	GameMain::Initialize(deviceResources);
 
 	// message pump
-	MSG msg;
-	while (GetMessage(&msg, nullptr, 0, 0) > 0)
+	MSG msg = {0};
+	while (true)
 	{
-		Update(msg);
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) > 0)
+		{
+			UINT result = Update(msg);
+			if (result != 0)
+			{
+				return msg.wParam;
+			}
+		}
+		GameMain::Instance()->Update();
+		GameMain::Instance()->LateUpdate();
 	}
 
 	return msg.wParam;
