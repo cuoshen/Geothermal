@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "Camera.h"
 #include "GameMain.h"
-//#include "Input.h"
+#include "Input.h"
 #include <algorithm>
 
 using namespace Geothermal;
 using namespace Graphics::Bindables;
-//using namespace winrt::Windows::System;
 using namespace std;
 
 Camera* Camera::main;
@@ -43,53 +42,53 @@ void Camera::Update()
 
 void Camera::HandleMovement()
 {
-	//float dt = GameMain::Instance()->GetDeltaTime();
-	//const float speed = 2.0f;
-	//float ds = dt * speed;
-	//Input* input = GameMain::Instance()->GetInput();
-	//// All movement is calculated relative to the object itself.
-	//XMVECTOR front = transform->Front();
-	//XMVECTOR up = transform->Up();
-	//XMVECTOR left = XMVector3Cross(front, up);
+	float dt = GameMain::Instance()->GetDeltaTime();
+	const float speed = 0.1f;
+	float ds = dt * speed;
+	Input* input = GameMain::Instance()->GetInput();
+	// All movement is calculated relative to the object itself.
+	XMVECTOR front = transform->Front();
+	XMVECTOR up = transform->Up();
+	XMVECTOR left = XMVector3Cross(front, up);
 
-	//if (input->GetKey(VirtualKey::W))
-	//{
-	//	transform->ApplyTransform(XMMatrixTranslationFromVector(ds * front));
-	//}
-	//else if (input->GetKey(VirtualKey::S))
-	//{
-	//	transform->ApplyTransform(XMMatrixTranslationFromVector(-ds * front));
-	//}
+	if (input->GetKey('W'))
+	{
+		transform->ApplyTransform(XMMatrixTranslationFromVector(ds * front));
+	}
+	else if (input->GetKey('S'))
+	{
+		transform->ApplyTransform(XMMatrixTranslationFromVector(-ds * front));
+	}
 
-	//if (input->GetKey(VirtualKey::A))
-	//{
-	//	transform->ApplyTransform(XMMatrixTranslationFromVector(ds*left));
-	//}
-	//else if (input->GetKey(VirtualKey::D))
-	//{
-	//	transform->ApplyTransform(XMMatrixTranslationFromVector(-ds * left));
-	//}
+	if (input->GetKey('A'))
+	{
+		transform->ApplyTransform(XMMatrixTranslationFromVector(ds*left));
+	}
+	else if (input->GetKey('D'))
+	{
+		transform->ApplyTransform(XMMatrixTranslationFromVector(-ds * left));
+	}
 
-	//if (input->GetKeyDown(VirtualKey::Space))
-	//{
-	//	transform->ApplyTransform(XMMatrixTranslationFromVector(1.0f * up));
-	//}
-	//else if (input->GetKeyDown(VirtualKey::Control))
-	//{
-	//	transform->ApplyTransform(XMMatrixTranslationFromVector(-1.0f * up));
-	//}
+	if (input->GetKeyDown(VK_SPACE))
+	{
+		transform->ApplyTransform(XMMatrixTranslationFromVector(0.1f * up));
+	}
+	else if (input->GetKeyDown(VK_CONTROL))
+	{
+		transform->ApplyTransform(XMMatrixTranslationFromVector(-0.1f * up));
+	}
 }
 
 void Camera::HandleRotation()
 {
-	/*Input* input = GameMain::Instance()->GetInput();
-	if (input->GetKey(VirtualKey::X))
+	Input* input = GameMain::Instance()->GetInput();
+	if (input->GetKey(VK_RBUTTON))
 	{
 		XMFLOAT2 rotation = input->GetMouseMovement();
 		pitch += rotation.y * mouseSensitivity;
 		pitch = clamp(pitch, -pitchLimit, pitchLimit);
 		yaw += rotation.x * mouseSensitivity;
-	}*/
+	}
 }
 
 Camera* Camera::Main()

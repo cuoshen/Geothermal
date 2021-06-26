@@ -9,12 +9,6 @@ LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT msg, WPARAM wParam, LP
 	case WM_CLOSE:
 		PostQuitMessage(1);
 		break;
-	case WM_KEYDOWN:
-		if (wParam == 'F')
-		{
-			SetWindowText(windowsHandle, L"Key pressed");
-		}
-		break;
 	}
 	return DefWindowProc(windowsHandle, msg, wParam, lParam);
 }
@@ -24,7 +18,9 @@ void Update(MSG msg)
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
 
+	GameMain::Instance()->GetInput()->RegisterInput(&msg);
 	GameMain::Instance()->Update();
+	GameMain::Instance()->LateUpdate();
 }
 
 int CALLBACK WinMain

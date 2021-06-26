@@ -2,7 +2,7 @@
 #include "DeviceResources.h"
 #include "CoreRenderPipeline.h"
 #include "GameTimer.h"
-//#include "Input.h"
+#include "Input.h"
 #include "Scene.h"
 
 using namespace Geothermal;
@@ -24,7 +24,7 @@ public:
 
 	float GetDeltaTime() const { return deltaTime; }
 	float GetTime() const { return time; }
-	//Geothermal::Input* GetInput() const { return input.get(); }
+	Geothermal::Input* GetInput() const { return input.get(); }
 private:
 	GameMain(std::shared_ptr<DeviceResources> device);
 	static GameMain* instance;
@@ -33,7 +33,7 @@ private:
 	std::unique_ptr<GameTimer> timer;
 	float time;
 	float deltaTime;
-	//std::unique_ptr<Geothermal::Input> input;
+	std::unique_ptr<Geothermal::Input> input;
 	std::shared_ptr<DeviceResources> device;
 	std::unique_ptr<CoreRenderPipeline> coreRenderer;
 };

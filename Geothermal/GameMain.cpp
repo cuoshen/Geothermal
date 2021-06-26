@@ -6,8 +6,7 @@ using namespace std;
 GameMain* GameMain::instance;
 
 GameMain::GameMain(shared_ptr<DeviceResources> device) :
-	windowClosed(false), deltaTime(0.0f), time(0.0f), timer(nullptr)
-	//, input(nullptr)
+	windowClosed(false), deltaTime(0.0f), time(0.0f), timer(nullptr), input(nullptr)
 {
 	if (device)
 	{
@@ -17,7 +16,7 @@ GameMain::GameMain(shared_ptr<DeviceResources> device) :
 	}
 	timer = make_unique<GameTimer>();
 	timer->Start();
-	//input = make_unique<Input>(CoreWindow::GetForCurrentThread());
+	input = make_unique<Input>();
 }
 
 GameMain* GameMain::Instance()
@@ -53,5 +52,5 @@ void GameMain::Update()
 /// </summary>
 void GameMain::LateUpdate()
 {
-	//input->Update();
+	input->Update();
 }

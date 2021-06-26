@@ -100,7 +100,7 @@ void CoreRenderPipeline::LoadDebugMesh()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		loader.LoadObj2Mesh(L"Assets\\stanford_dragon.obj", L"Assets\\stanford_dragon.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	debugModelTransform = new VertexConstantBuffer<XMMATRIX>(deviceResources, 0u);
