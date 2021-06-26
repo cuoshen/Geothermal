@@ -17,11 +17,11 @@ void ObjectRenderer::Render(DirectX::XMMATRIX object2World)
 	// Issue draw call
 	if (mesh.vertices->IsIndexed())
 	{
-		deviceResources->GetD3DDeviceContext()->DrawIndexed(mesh.vertices->GetIndexCount(), 0u, 0u);
+		deviceResources->D3DDeviceContext()->DrawIndexed(mesh.vertices->GetIndexCount(), 0u, 0u);
 	}
 	else
 	{
-		deviceResources->GetD3DDeviceContext()->Draw(mesh.vertices->GetVertexCount(), 0u);
+		deviceResources->D3DDeviceContext()->Draw(mesh.vertices->GetVertexCount(), 0u);
 	}
 }
 

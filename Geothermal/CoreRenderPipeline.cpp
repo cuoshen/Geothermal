@@ -25,7 +25,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	deviceResources(deviceResources), camera(nullptr)
 {
 	LoadAllShaders();
-	camera = make_unique<Camera>(deviceResources->GetAspectRatio(), 0.1f, 100.0f, deviceResources);
+	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 100.0f, deviceResources);
 #ifdef DEBUG_SHAPES
 	LoadDebugMesh();
 #endif
@@ -78,7 +78,7 @@ void CoreRenderPipeline::DrawDebugTriangle()
 	triangleVertex.Bind();
 	VertexConstantBuffer<XMMATRIX> transform(deviceResources, XMMatrixScaling(2.0f, 2.0f, 1.0f), 0u);
 	transform.Bind();
-	deviceResources->GetD3DDeviceContext()->Draw(triangleVertex.GetVertexCount(), 0);
+	deviceResources->D3DDeviceContext()->Draw(triangleVertex.GetVertexCount(), 0);
 }
 
 void CoreRenderPipeline::DrawDebugQuad()
@@ -92,7 +92,7 @@ void CoreRenderPipeline::DrawDebugQuad()
 		0u
 	);
 	transform.Bind();
-	deviceResources->GetD3DDeviceContext()->DrawIndexed(quadMesh.vertices->GetIndexCount(), 0, 0);
+	deviceResources->D3DDeviceContext()->DrawIndexed(quadMesh.vertices->GetIndexCount(), 0, 0);
 }
 
 void CoreRenderPipeline::LoadDebugMesh()
@@ -100,7 +100,7 @@ void CoreRenderPipeline::LoadDebugMesh()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\stanford_dragon.obj", L"Assets\\stanford_dragon.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	debugModelTransform = new VertexConstantBuffer<XMMATRIX>(deviceResources, 0u);
@@ -130,6 +130,6 @@ void CoreRenderPipeline::DrawDebugMesh()
 	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
 	unlitProperties.Bind();
 
-	deviceResources->GetD3DDeviceContext()->Draw(debugMesh->vertices->GetVertexCount(), 0);
+	deviceResources->D3DDeviceContext()->Draw(debugMesh->vertices->GetVertexCount(), 0);
 }
 #endif

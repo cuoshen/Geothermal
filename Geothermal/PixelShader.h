@@ -23,14 +23,14 @@ namespace Geothermal::Graphics::Bindables
 				D3DReadFileToBlob(filename.c_str(), blob.put())
 			);
 			winrt::check_hresult(
-				deviceResources->GetD3DDevice()->
+				deviceResources->D3DDevice()->
 				CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, pixelShader.put())
 			);
 		}
 
 		void Bind() override
 		{
-			deviceResources->GetD3DDeviceContext()->PSSetShader(pixelShader.get(), 0, 0);
+			deviceResources->D3DDeviceContext()->PSSetShader(pixelShader.get(), 0, 0);
 		}
 
 	private:

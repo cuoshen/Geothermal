@@ -26,11 +26,11 @@ namespace Geothermal::Graphics::Bindables
 			);
 			// Create vertex shader
 			winrt::check_hresult(
-				deviceResources->GetD3DDevice()->
+				deviceResources->D3DDevice()->
 				CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, vertexShader.put())
 			);
 			winrt::check_hresult(
-				deviceResources->GetD3DDevice()->
+				deviceResources->D3DDevice()->
 				CreateInputLayout
 				(
 					vertexLayout,
@@ -44,8 +44,8 @@ namespace Geothermal::Graphics::Bindables
 
 		void Bind() override
 		{
-			deviceResources->GetD3DDeviceContext()->VSSetShader(vertexShader.get(), 0, 0);
-			deviceResources->GetD3DDeviceContext()->IASetInputLayout(layout.get());
+			deviceResources->D3DDeviceContext()->VSSetShader(vertexShader.get(), 0, 0);
+			deviceResources->D3DDeviceContext()->IASetInputLayout(layout.get());
 		}
 
 	private:

@@ -32,7 +32,7 @@ namespace Geothermal::Graphics::Bindables
 			D3D11_SUBRESOURCE_DATA data = { 0 };
 			data.pSysMem = &constant;
 			winrt::check_hresult(
-				deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDescription, &data, constantBuffer.put())
+				deviceResources->D3DDevice()->CreateBuffer(&constantBufferDescription, &data, constantBuffer.put())
 			);
 		}
 
@@ -51,7 +51,7 @@ namespace Geothermal::Graphics::Bindables
 			constantBufferDescription.StructureByteStride = 0u;
 
 			winrt::check_hresult(
-				deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDescription, nullptr, constantBuffer.put())
+				deviceResources->D3DDevice()->CreateBuffer(&constantBufferDescription, nullptr, constantBuffer.put())
 			);
 		}
 
@@ -61,10 +61,10 @@ namespace Geothermal::Graphics::Bindables
 		void Update(const C& newConstant)
 		{
 			D3D11_MAPPED_SUBRESOURCE subResource;
-			deviceResources->GetD3DDeviceContext()->
+			deviceResources->D3DDeviceContext()->
 				Map(constantBuffer.get(), 0u, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
 			memcpy(subResource.pData, &newConstant, sizeof(newConstant));
-			deviceResources->GetD3DDeviceContext()->
+			deviceResources->D3DDeviceContext()->
 				Unmap(constantBuffer.get(), 0u);
 		}
 
@@ -85,7 +85,7 @@ namespace Geothermal::Graphics::Bindables
 		void Bind() override
 		{
 			ID3D11Buffer* cbuffer = constantBuffer.get();
-			deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(slot, 1u, &cbuffer);
+			deviceResources->D3DDeviceContext()->VSSetConstantBuffers(slot, 1u, &cbuffer);
 		}
 	};
 
@@ -101,7 +101,7 @@ namespace Geothermal::Graphics::Bindables
 		void Bind() override
 		{
 			ID3D11Buffer* cbuffer = constantBuffer.get();
-			deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(slot, 1u, &cbuffer);
+			deviceResources->D3DDeviceContext()->PSSetConstantBuffers(slot, 1u, &cbuffer);
 		}
 	};
 }
