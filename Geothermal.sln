@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Geothermal", "Geothermal\Geothermal.vcxproj", "{EF7482E5-993D-4A1C-8F53-739E4EE3818F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\UnitTest1.vcxproj", "{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{EF7482E5-993D-4A1C-8F53-739E4EE3818F}.Release|x64.Build.0 = Release|x64
 		{EF7482E5-993D-4A1C-8F53-739E4EE3818F}.Release|x86.ActiveCfg = Release|Win32
 		{EF7482E5-993D-4A1C-8F53-739E4EE3818F}.Release|x86.Build.0 = Release|Win32
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Debug|x64.ActiveCfg = Debug|x64
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Debug|x64.Build.0 = Debug|x64
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Debug|x86.ActiveCfg = Debug|Win32
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Debug|x86.Build.0 = Debug|Win32
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Release|x64.ActiveCfg = Release|x64
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Release|x64.Build.0 = Release|x64
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Release|x86.ActiveCfg = Release|Win32
+		{AFFC139F-D91E-4908-BBE0-CA68013DD8EC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

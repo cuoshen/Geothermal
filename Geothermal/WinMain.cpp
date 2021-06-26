@@ -2,21 +2,23 @@
 #include "DeviceResources.h"
 #include "GameMain.h"
 
-LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
+	switch (message)
 	{
 	case WM_CLOSE:
 		PostQuitMessage(1);
 		break;
 	}
-	return DefWindowProc(windowsHandle, msg, wParam, lParam);
+	return DefWindowProc(windowsHandle, message, wParam, lParam);
 }
 
 void Update(MSG msg)
 {
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
+
+	OutputDebugString(L"update called \n");
 
 	GameMain::Instance()->GetInput()->RegisterInput(&msg);
 	GameMain::Instance()->Update();
