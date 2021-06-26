@@ -41,7 +41,8 @@ namespace Geothermal
 		XMMATRIX GetWorld2ClipMatrix();
 		void BindCamera2Pipeline();
 	private:
-		const float mouseSensitivity = 0.01f;
+		const float mouseSensitivity = 0.001f;
+		const float speed = 1.0f;
 		const float pitchLimit = XM_PIDIV2 - 0.01f;
 		void HandleMovement();
 		void HandleRotation();
