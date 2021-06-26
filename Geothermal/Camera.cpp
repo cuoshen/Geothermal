@@ -43,7 +43,6 @@ void Camera::Update()
 void Camera::HandleMovement()
 {
 	float dt = GameMain::Instance()->GetDeltaTime();
-	const float speed = 0.1f;
 	float ds = dt * speed;
 	Input* input = GameMain::Instance()->GetInput();
 	// All movement is calculated relative to the object itself.
@@ -82,7 +81,7 @@ void Camera::HandleMovement()
 void Camera::HandleRotation()
 {
 	Input* input = GameMain::Instance()->GetInput();
-	if (input->GetKey(VK_RBUTTON))
+	if (input->GetKey('X'))
 	{
 		XMFLOAT2 rotation = input->GetMouseMovement();
 		pitch += rotation.y * mouseSensitivity;

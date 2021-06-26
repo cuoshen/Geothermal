@@ -27,7 +27,7 @@ void Input::RegisterInput(MSG* msg)
 		OnKeyUp(msg->wParam, msg->lParam);
 		break;
 	case WM_MOUSEMOVE:
-		OnMouseMoved();
+		OnMouseMoved(msg->wParam, msg->lParam);
 		break;
 	}
 }
@@ -84,9 +84,12 @@ void Input::OnKeyUp(WPARAM wParam, LPARAM lParam)
 	keysDown.erase(wParam);
 }
 
-void Input::OnMouseMoved()
+void Input::OnMouseMoved(WPARAM wParam, LPARAM lParam)
 {
-	/*MouseDelta delta = args.MouseDelta();
-	mouseMovement.x = static_cast<float>(delta.X);
-	mouseMovement.y = static_cast<float>(delta.Y);*/
+	DirectX::XMINT2 newMousePosition = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+	
+	mouseMovement.x = static_cast<float>(newMousePosition.x - mousePosition.x);
+	mouseMovement.y = static_cast<float>(newMousePosition.y - mousePosition.y);
+
+	mousePosition = newMousePosition;
 }

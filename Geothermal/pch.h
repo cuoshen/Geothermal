@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <unknwn.h>
 #include <windows.h>
+#include <windowsx.h>
 
 #include <d3d11_3.h>
 #include <DirectXMath.h>

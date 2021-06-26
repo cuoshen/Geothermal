@@ -39,9 +39,12 @@ namespace Geothermal
 			LPARAM      lParam
 		);
 		void OnMouseMoved(
+			WPARAM      wParam,
+			LPARAM      lParam
 		);
 		std::unordered_set<char> keysDown;
 		std::unordered_set<char> keysDownThisFrame;
+		DirectX::XMINT2 mousePosition;
 		DirectX::XMFLOAT2 mouseMovement;
 	};
 }
