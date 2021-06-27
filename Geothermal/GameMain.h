@@ -5,6 +5,12 @@
 #include "Input.h"
 #include "Scene.h"
 
+#define DEBUG_SCENE
+
+#ifdef DEBUG_SCENE
+
+#endif
+
 using namespace Geothermal;
 using namespace Geothermal::Graphics;
 
@@ -38,4 +44,9 @@ private:
 	std::unique_ptr<Geothermal::Input> input;
 	std::shared_ptr<DeviceResources> device;
 	std::unique_ptr<CoreRenderPipeline> coreRenderer;
+
+#ifdef DEBUG_SCENE
+	void InstantiateDebugScene();
+	void AddDebugGameObject(XMMATRIX initialTransform);
+#endif
 };

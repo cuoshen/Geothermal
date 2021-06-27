@@ -7,6 +7,7 @@
 #ifdef DEBUG_SHAPES
 #include "Mesh.h"
 #include "ConstantBuffer.h"
+#include "ShadingAttributes.h"
 #endif
 
 namespace Geothermal::Graphics
@@ -26,26 +27,18 @@ namespace Geothermal::Graphics
 		/// </summary>
 		void Render();
 	private:
+		std::shared_ptr<DeviceResources> deviceResources;
+		std::unique_ptr<Camera> camera;
+
 #ifdef DEBUG_SHAPES
 		void DrawDebugTriangle();
 		void DrawDebugQuad();
 
 		Meshes::Mesh* debugMesh;
 		Graphics::Bindables::VertexConstantBuffer<XMMATRIX>* debugModelTransform;
-		struct PhongAttributes
-		{
-			XMFLOAT4 Ambient;
-			XMFLOAT4 BaseColor;
-			float Diffuse;
-			float Specular;
-			float Smoothness;
-			float Padding;	// Constant buffer size must be a multiple of 16 bytes, add empty padding
-		};
-		PhongAttributes shadingParameters;
+		Graphics::Structures::PhongAttributes shadingParameters;
 		void LoadDebugMesh();
 		void DrawDebugMesh();
 #endif
-		std::shared_ptr<DeviceResources> deviceResources;
-		std::unique_ptr<Camera> camera;
 	};
 }

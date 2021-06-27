@@ -187,6 +187,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCache.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="ShadingAttributes.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexBuffer.h" />

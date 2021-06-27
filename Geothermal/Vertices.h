@@ -1,26 +1,24 @@
 #pragma once
 #include "pch.h"
 
-using namespace DirectX;
-
 namespace Geothermal::Graphics::Structures
 {
 	struct VertexP
 	{
-		XMFLOAT3 position;
+		DirectX::XMFLOAT3 position;
 	};
 
 	struct VertexPN
 	{
-		XMFLOAT3 position;
-		XMFLOAT3 normal;
+		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 normal;
 	};
 
 	struct VertexPNT
 	{
-		XMFLOAT3 position;
-		XMFLOAT3 normal;
-		XMFLOAT2 textureCoordinate;
+		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 textureCoordinate;
 	};
 
 	static D3D11_INPUT_ELEMENT_DESC VertexPLayout[] =

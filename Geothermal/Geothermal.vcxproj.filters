@@ -120,6 +120,9 @@
     <ClInclude Include="Input.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="ShadingAttributes.h">
+      <Filter>Graphics\Structures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

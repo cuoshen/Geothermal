@@ -91,3 +91,17 @@ void GameMain::LateUpdate()
 {
 	input->Update();
 }
+
+#ifdef DEBUG_SCENE
+
+void GameMain::InstantiateDebugScene()
+{
+	XMMATRIX initialTransform = XMMatrixTranslation(0.0f, 0.0f, 4.0f);
+	AddDebugGameObject(initialTransform);
+}
+
+void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
+{
+}
+
+#endif

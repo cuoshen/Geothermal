@@ -21,6 +21,6 @@ namespace Geothermal::Graphics
 		/// The transform constant buffer is bound to the vertex buffer
 		/// Its payload is a matrix that transforms the vertex position from object space to model space
 		/// </summary>
-		Bindables::VertexConstantBuffer<XMMATRIX> transformBuffer;
+		Bindables::VertexConstantBuffer<DirectX::XMMATRIX> transformBuffer;
 	};
 }
