@@ -30,6 +30,43 @@ void GameMain::Initialize(shared_ptr<DeviceResources> device)
 	GameMain::instance = new GameMain(device);
 }
 
+UINT GameMain::HandleMessage(MSG msg)
+{
+	if (msg.message == WM_QUIT)
+	{
+		return 1;
+	}
+
+	TranslateMessage(&msg);
+	DispatchMessage(&msg);
+
+	OutputDebugString(L"update called \n");
+
+	GameMain::Instance()->GetInput()->RegisterInput(&msg);
+
+	return 0;
+}
+
+WPARAM GameMain::Run()
+{
+	MSG msg = { 0 };
+	while (!windowClosed)
+	{
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) > 0)
+		{
+			UINT result = HandleMessage(msg);
+			if (result != 0)
+			{
+				return msg.wParam;
+			}
+		}
+		Update();
+		LateUpdate();
+	}
+
+	return msg.wParam;
+}
+
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
 /// </summary>

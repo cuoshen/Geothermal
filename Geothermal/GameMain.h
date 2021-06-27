@@ -18,6 +18,7 @@ public:
 	static GameMain* Instance();
 	static void Initialize(std::shared_ptr<DeviceResources> device);
 
+	WPARAM Run();
 	void Update();
 	void LateUpdate();
 	void Close() { windowClosed = true; }
@@ -26,6 +27,7 @@ public:
 	float GetTime() const { return time; }
 	Geothermal::Input* GetInput() const { return input.get(); }
 private:
+	UINT HandleMessage(MSG msg);
 	GameMain(std::shared_ptr<DeviceResources> device);
 	static GameMain* instance;
 

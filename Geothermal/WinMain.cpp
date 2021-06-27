@@ -13,32 +13,8 @@ LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT message, WPARAM wParam
 	return DefWindowProc(windowsHandle, message, wParam, lParam);
 }
 
-UINT Update(MSG msg)
+void RegisterWindowsClass(LPCWSTR className, HINSTANCE hInstance)
 {
-	if (msg.message == WM_QUIT)
-	{
-		return 1;
-	}
-
-	TranslateMessage(&msg);
-	DispatchMessage(&msg);
-
-	OutputDebugString(L"update called \n");
-
-	GameMain::Instance()->GetInput()->RegisterInput(&msg);
-
-	return 0;
-}
-
-int CALLBACK WinMain
-(
-	HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nCmdShow
-)
-{
-	const auto className = L"cuo";
 	// Register window class
 	WNDCLASSEX wc = { 0 };
 	wc.cbSize = sizeof(wc);
@@ -54,11 +30,23 @@ int CALLBACK WinMain
 	wc.lpszClassName = className;
 	wc.hIconSm = nullptr;
 	RegisterClassEx(&wc);
+}
 
-	// Create instance of the window
+int CALLBACK WinMain
+(
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine,
+	int nCmdShow
+)
+{
+	const auto className = L"cuo";
+	RegisterWindowsClass(className, hInstance);
+
 	const UINT width = 1600;
 	const UINT height = 900;
 
+	// Create instance of the window
 	HWND windowHandle = CreateWindowEx(
 		0, className, L"Geothermal", WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		200, 200, width, height,
@@ -72,22 +60,8 @@ int CALLBACK WinMain
 	deviceResources->SetWindow(windowHandle, width, height);
 	
 	GameMain::Initialize(deviceResources);
+	// Run the game
+	WPARAM exitResult = GameMain::Instance()->Run();
 
-	// message pump
-	MSG msg = {0};
-	while (true)
-	{
-		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) > 0)
-		{
-			UINT result = Update(msg);
-			if (result != 0)
-			{
-				return msg.wParam;
-			}
-		}
-		GameMain::Instance()->Update();
-		GameMain::Instance()->LateUpdate();
-	}
-
-	return msg.wParam;
+	return exitResult;
 }
