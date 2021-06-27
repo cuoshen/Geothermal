@@ -1,17 +1,26 @@
 #include "pch.h"
 #include "GameMain.h"
 
+#ifdef DEBUG_SCENE
+#include "ModelLoader.h"
+#include "Mesh.h"
+using namespace Geothermal;
+using namespace Graphics;
+using namespace Structures;
+using namespace Meshes;
+#endif
+
 using namespace std;
 
 GameMain* GameMain::instance;
 
-GameMain::GameMain(shared_ptr<DeviceResources> device) :
+GameMain::GameMain(shared_ptr<DeviceResources> deviceResources) :
 	windowClosed(false), deltaTime(0.0f), time(0.0f), timer(nullptr), input(nullptr)
 {
-	if (device)
+	if (deviceResources)
 	{
-		this->device = device;
-		coreRenderer = make_unique<CoreRenderPipeline>(device);
+		this->deviceResources = deviceResources;
+		coreRenderer = make_unique<CoreRenderPipeline>(deviceResources);
 		OutputDebugString(L"GameMain created \n");
 	}
 	timer = make_unique<GameTimer>();
@@ -25,9 +34,14 @@ GameMain* GameMain::Instance()
 	return GameMain::instance;
 }
 
-void GameMain::Initialize(shared_ptr<DeviceResources> device)
+void GameMain::Initialize(shared_ptr<DeviceResources> deviceResources)
 {
-	GameMain::instance = new GameMain(device);
+	GameMain::instance = new GameMain(deviceResources);
+
+#ifdef DEBUG_SCENE
+	GameMain::instance->LoadDebugMesh();
+	GameMain::instance->InstantiateDebugScene();
+#endif
 }
 
 UINT GameMain::HandleMessage(MSG msg)
@@ -100,8 +114,35 @@ void GameMain::InstantiateDebugScene()
 	AddDebugGameObject(initialTransform);
 }
 
+void GameMain::LoadDebugMesh()
+{
+	ModelLoader loader;
+	debugMesh = new Mesh();
+	bool loaded =
+		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+	assert(loaded);
+	shadingParameters = PhongAttributes
+	{
+		{0.0f, 0.0f, 0.0f, 0.0f},	// Ambient
+		{1.0f, 1.0f, 1.0f, 1.0f},	// Base color
+		1.5f,									// Diffuse
+		1.0f,									// Specular
+		40.0f,									// Smoothness
+		0.0f										// Padding
+	};
+}
+
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 {
+	GameObjectFactory factory;
+	factory.MakeNewProduct();
+	factory.BuildTransform(initialTransform);
+	factory.BuildRenderer(*debugMesh, deviceResources); // Use the debug mesh
+	factory.SetObjectID(0x01);
+	shared_ptr<GameObject> product = factory.GetProduct();
+
+	Scene::Instance()->ObjectsInScene.push_back(product.get());
+	debugGameObjects.push_back(product);
 }
 
 #endif

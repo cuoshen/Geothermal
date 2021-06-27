@@ -2,7 +2,7 @@
 #include "DeviceResources.h"
 #include "Camera.h"
 
-#define DEBUG_SHAPES	// TODO: put this entire test region into a debug scene
+//#define DEBUG_SHAPES	// TODO: put this entire test region into a debug scene
 
 #ifdef DEBUG_SHAPES
 #include "Mesh.h"
