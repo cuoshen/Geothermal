@@ -45,9 +45,11 @@
     <ClCompile Include="Transform.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectRenderer.cpp" />
     <ClCompile Include="Input.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectRenderer.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,12 +118,14 @@
     <ClInclude Include="Transform.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectRenderer.h" />
     <ClInclude Include="Input.h">
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="ShadingAttributes.h">
       <Filter>Graphics\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectRenderer.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,8 +4,10 @@
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
 #include "Mesh.h"
+#include "ConstantBuffer.h"
 using namespace Geothermal;
 using namespace Graphics;
+using namespace Bindables;
 using namespace Structures;
 using namespace Meshes;
 #endif
@@ -130,6 +132,8 @@ void GameMain::LoadDebugMesh()
 		40.0f,									// Smoothness
 		0.0f										// Padding
 	};
+	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
+	unlitProperties.Bind();
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)

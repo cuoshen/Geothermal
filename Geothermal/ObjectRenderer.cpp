@@ -3,6 +3,7 @@
 
 using namespace Geothermal::Graphics;
 using namespace Meshes;
+using namespace DirectX;
 
 ObjectRenderer::ObjectRenderer(Mesh mesh, shared_ptr<DeviceResources> const& deviceResources):
 	mesh(), transformBuffer(deviceResources, 0u), deviceResources(deviceResources)
@@ -10,9 +11,9 @@ ObjectRenderer::ObjectRenderer(Mesh mesh, shared_ptr<DeviceResources> const& dev
 	this->mesh.vertices = mesh.vertices;
 }
 
-void ObjectRenderer::Render(DirectX::XMMATRIX object2World)
+void ObjectRenderer::Render(XMMATRIX object2World)
 {
-	transformBuffer.Update(object2World);
+	transformBuffer.Update(XMMatrixTranspose(object2World));
 	BindAllResources();
 	// Issue draw call
 	if (mesh.vertices->IsIndexed())
