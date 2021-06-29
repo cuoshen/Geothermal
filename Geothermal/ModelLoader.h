@@ -35,7 +35,6 @@ namespace Geothermal
 		);
 	private:
 		std::vector<Geothermal::Graphics::Structures::VertexPNT> ParseVertices();
-		std::string ReadData(winrt::hstring const& filename);
 
 		tinyobj::ObjReader reader;
 		tinyobj::ObjReaderConfig reader_config;

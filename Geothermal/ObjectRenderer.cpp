@@ -6,14 +6,14 @@ using namespace Meshes;
 using namespace DirectX;
 
 ObjectRenderer::ObjectRenderer(Mesh mesh, shared_ptr<DeviceResources> const& deviceResources):
-	mesh(), transformBuffer(deviceResources, 0u), deviceResources(deviceResources)
+	mesh(), object2WorldTransformBuffer(deviceResources, 0u), deviceResources(deviceResources)
 {
 	this->mesh.vertices = mesh.vertices;
 }
 
 void ObjectRenderer::Render(XMMATRIX object2World)
 {
-	transformBuffer.Update(XMMatrixTranspose(object2World));
+	object2WorldTransformBuffer.Update(XMMatrixTranspose(object2World));
 	BindAllResources();
 	// Issue draw call
 	if (mesh.vertices->IsIndexed())
@@ -29,5 +29,5 @@ void ObjectRenderer::Render(XMMATRIX object2World)
 void ObjectRenderer::BindAllResources()
 {
 	mesh.vertices->Bind();
-	transformBuffer.Bind();
+	object2WorldTransformBuffer.Bind();
 }

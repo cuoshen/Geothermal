@@ -125,12 +125,12 @@ void GameMain::LoadDebugMesh()
 	assert(loaded);
 	shadingParameters = PhongAttributes
 	{
-		{0.0f, 0.0f, 0.0f, 0.0f},	// Ambient
-		{1.0f, 1.0f, 1.0f, 1.0f},	// Base color
+		{0.0f, 0.0f, 0.0f, 0.0f},		// Ambient
+		{1.0f, 1.0f, 1.0f, 1.0f},		// Base color
 		1.5f,									// Diffuse
 		1.0f,									// Specular
-		40.0f,									// Smoothness
-		0.0f										// Padding
+		40.0f,								// Smoothness
+		0.0f									// Padding
 	};
 	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
 	unlitProperties.Bind();

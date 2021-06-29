@@ -51,6 +51,9 @@
     <ClCompile Include="ObjectRenderer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>Ultilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -126,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="ObjectRenderer.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>Ultilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
