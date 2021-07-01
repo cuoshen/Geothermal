@@ -36,13 +36,14 @@ void GameObject::Render() const
 }
 
 GameObjectFactory::GameObjectFactory():
-	product(nullptr)
+	product(nullptr), registered(false)
 {
 }
 
 void GameObjectFactory::MakeNewProduct()
 {
 	product = make_shared<GameObject>();
+	registered = false;
 }
 
 void GameObjectFactory::BuildTransform(DirectX::XMMATRIX initialTransform)
@@ -60,8 +61,23 @@ void GameObjectFactory::SetObjectID(UINT64 id)
 	product->id = id;
 }
 
+/// <summary>
+/// Register the current object to main scene by default
+/// </summary>
+void GameObjectFactory::registerToScene()
+{
+	if (!registered)
+	{
+		Scene::Instance()->ObjectsInScene.push_back(product.get());
+	}
+}
+
 shared_ptr<GameObject> GameObjectFactory::GetProduct()
 {
+	if (!registered)
+	{
+		registerToScene();
+	}
 	shared_ptr<GameObject> currentProduct = product;
 	product.reset();	// Release ownership from builder class
 	return currentProduct;

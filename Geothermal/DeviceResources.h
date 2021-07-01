@@ -18,7 +18,13 @@ namespace Geothermal::Graphics
 		IDXGISwapChain1* SwapChain() const { return swapChain.get(); }
 		float AspectRatio() const { return (float)outputSize.x / (float)outputSize.y; }
 
+		/// <summary>
+		/// Clear back buffer to constant ClearColor
+		/// </summary>
 		void ClearView();
+		/// <summary>
+		/// Set graphic pipeline output to the back buffer
+		/// </summary>
 		void SetTargets();
 	private:
 		void CreateDeviceResources();

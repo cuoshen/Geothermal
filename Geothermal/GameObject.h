@@ -53,6 +53,8 @@ namespace Geothermal
 		std::shared_ptr<GameObject> GetProduct();
 
 	protected:
+		void registerToScene();
+		bool registered;
 		std::shared_ptr<GameObject> product;
 	};
 }

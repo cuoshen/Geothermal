@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
-    <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -172,7 +171,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
-    <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="GameMain.h" />

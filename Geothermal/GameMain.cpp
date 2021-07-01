@@ -63,6 +63,10 @@ UINT GameMain::HandleMessage(MSG msg)
 	return 0;
 }
 
+/// <summary>
+/// Runs the main game of Update-Render until quit
+/// </summary>
+/// <returns>Exit state</returns>
 WPARAM GameMain::Run()
 {
 	MSG msg = { 0 };
@@ -143,9 +147,8 @@ void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 	factory.BuildTransform(initialTransform);
 	factory.BuildRenderer(*debugMesh, deviceResources); // Use the debug mesh
 	factory.SetObjectID(0x01);
-	shared_ptr<GameObject> product = factory.GetProduct();
+	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 
-	Scene::Instance()->ObjectsInScene.push_back(product.get());
 	debugGameObjects.push_back(product);
 }
 

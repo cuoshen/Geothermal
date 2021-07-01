@@ -12,9 +12,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="CubeMesh.cpp">
-      <Filter>Graphics\Meshes</Filter>
-    </ClCompile>
     <ClCompile Include="GameTimer.cpp">
       <Filter>Ultilities\ThirdParty</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMesh.h">
-      <Filter>Graphics\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="GameTimer.h">
       <Filter>Ultilities\ThirdParty</Filter>

@@ -170,7 +170,6 @@ void DeviceResources::ClearView()
 
 void DeviceResources::SetTargets()
 {
-    // Set graphic pipeline output to the back buffer
     // TODO: bind depth stencil view
     ID3D11RenderTargetView* target = d3dRenderTargetView.get();
     d3dContext->OMSetRenderTargets(1, &target, nullptr);
