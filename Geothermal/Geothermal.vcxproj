@@ -162,6 +162,7 @@
     <ClCompile Include="QuadMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderCache.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="ShaderCache.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="ShadingAttributes.h" />
+    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexBuffer.h" />

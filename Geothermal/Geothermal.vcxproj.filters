@@ -51,6 +51,9 @@
     <ClCompile Include="FileIO.cpp">
       <Filter>Ultilities</Filter>
     </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -126,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="FileIO.h">
       <Filter>Ultilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
