@@ -23,7 +23,14 @@ namespace Geothermal::Graphics
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
 	private:
+		void CreateShaderResourceView();
+		void CreateRenderTargetView();
+
+		std::shared_ptr<DeviceResources> deviceResources;
+
 		winrt::com_ptr<ID3D11Texture2D> texture;
-		winrt::com_ptr<ID3D11View> view;
+		DXGI_FORMAT format;
+		winrt::com_ptr<ID3D11ShaderResourceView> shaderResourceView;
+		winrt::com_ptr<ID3D11RenderTargetView> renderTargetView;
 	};
 }

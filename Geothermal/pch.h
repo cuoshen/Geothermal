@@ -5,6 +5,7 @@
 #include <unknwn.h>
 #include <windows.h>
 #include <windowsx.h>
+#include <wincodec.h>
 
 #include <d3d11_3.h>
 #include <DirectXMath.h>
