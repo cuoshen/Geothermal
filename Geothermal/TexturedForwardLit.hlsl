@@ -15,6 +15,7 @@ cbuffer UnlitProperties
 float4 main(Varyings input) : SV_TARGET
 {
 	float4 textureColor = Albedo.Sample(Sampler, input.texcoord);
+	return textureColor;		// DEBUG: visualize texture only
 	float4 pixelColor = BaseColor + textureColor;
 	float3 normal = normalize(input.normal);
 
