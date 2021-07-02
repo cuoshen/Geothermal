@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <DDSTextureLoader.h>
 #include "Texture2D.h"
 
 using namespace std;
@@ -31,7 +30,7 @@ Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const&
 		resource->GetType(&resourceType);
 		assert(resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D);
 
-		texture = resource.as<ID3D10Texture2D>();
+		texture = resource.as<ID3D11Texture2D>();
 
 		return;
 	}

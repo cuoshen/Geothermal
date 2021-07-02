@@ -125,7 +125,7 @@ void GameMain::LoadDebugMesh()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\smooth_sphere.obj", L"Assets\\smooth_sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 	shadingParameters = PhongAttributes
 	{

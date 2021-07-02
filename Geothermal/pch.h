@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <assert.h>
+#include <DDSTextureLoader.h>
 #include <unknwn.h>
 #include <windows.h>
 #include <windowsx.h>
