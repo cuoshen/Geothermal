@@ -1,15 +1,42 @@
 #include "pch.h"
+#include <DDSTextureLoader.h>
 #include "Texture2D.h"
 
 using namespace std;
 using namespace winrt;
+using namespace DirectX;
 using namespace Geothermal::Graphics;
-
 
 Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const& filename, TEXTURE_FILE_TYPE fileType):
 	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(DXGI_FORMAT_R8G8B8A8_SNORM)
 {
-	// Read file into buffer, TODO: maybe refactor into FileIO or a separate class
+	D3D11_TEXTURE2D_DESC description = { 0 };
+
+	if (fileType == DDS)
+	{
+		// Use DDSTextureLoader
+
+		com_ptr<ID3D11Resource> resource;
+		check_hresult
+		(
+			CreateDDSTextureFromFile
+			(
+				deviceResources->D3DDevice(),
+				filename.c_str(),
+				resource.put(),
+				nullptr
+			)
+		);
+		D3D11_RESOURCE_DIMENSION resourceType = D3D11_RESOURCE_DIMENSION_UNKNOWN;
+		resource->GetType(&resourceType);
+		assert(resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D);
+
+		texture = resource.as<ID3D10Texture2D>();
+
+		return;
+	}
+
+	// Use WIC to load the image
 
 	// Create factory
 	com_ptr<IWICImagingFactory> factory;
@@ -22,7 +49,7 @@ Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const&
 			(LPVOID*)factory.get()			// We pass in * instead of ** here
 		)
 	);
-	
+
 	com_ptr<IWICBitmapDecoder> decoder;
 	check_hresult(
 		factory->CreateDecoderFromFilename(filename.c_str(), 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, decoder.put())
@@ -32,9 +59,7 @@ Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const&
 		decoder->GetFrame(0, frame.put())
 	);
 
-	// Create texture
-	D3D11_TEXTURE2D_DESC description = {0};
-
+	// TODO: Create texture
 }
 
 Texture2D::Texture2D

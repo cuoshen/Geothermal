@@ -4,7 +4,7 @@
 
 namespace Geothermal::Graphics
 {
-	// TODO: find a subnamespace to put this class
+	// TODO: find a subnamespace to put this module
 
 	enum TEXTURE_FILE_TYPE
 	{
@@ -17,9 +17,21 @@ namespace Geothermal::Graphics
 	/// </summary>
 	class Texture2D
 	{
+		// To represent the fact that an underlying texture can be used as 
+		// many different views, we do not make this class into a Bindable
+
 	public:
-		Texture2D(std::shared_ptr<DeviceResources> deviceResources, winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType);
-		Texture2D(std::shared_ptr<DeviceResources> deviceResources, std::vector<char> data, DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel);
+		/// <summary>
+		/// Create texture from a file of a supported type
+		/// </summary>
+		Texture2D(std::shared_ptr<DeviceResources> deviceResources, 
+			winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType);
+
+		/// <summary>
+		/// For non-DDS image file loaded into the memory, we need to pass in metadata
+		/// </summary>
+		Texture2D(std::shared_ptr<DeviceResources> deviceResources, 
+			std::vector<char> data, DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel);
 
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
