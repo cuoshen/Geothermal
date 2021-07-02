@@ -24,13 +24,13 @@ namespace Geothermal::Graphics
 		/// <summary>
 		/// Create texture from a file of a supported type
 		/// </summary>
-		Texture2D(std::shared_ptr<DeviceResources> deviceResources, 
+		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
 			winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType);
 
 		/// <summary>
 		/// For non-DDS image file loaded into the memory, we need to pass in metadata
 		/// </summary>
-		Texture2D(std::shared_ptr<DeviceResources> deviceResources, 
+		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
 			std::vector<char> data, DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel);
 
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();

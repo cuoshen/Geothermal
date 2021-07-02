@@ -5,6 +5,8 @@
 #include "ModelLoader.h"
 #include "Mesh.h"
 #include "ConstantBuffer.h"
+#include "SamplerState.h"
+#include "Texture2D.h"
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;
@@ -129,15 +131,21 @@ void GameMain::LoadDebugMesh()
 	assert(loaded);
 	shadingParameters = PhongAttributes
 	{
-		{0.0f, 0.0f, 0.0f, 0.0f},		// Ambient
+		{0.0f, 0.0f, 0.1f, 0.0f},		// Ambient
 		{1.0f, 1.0f, 1.0f, 1.0f},		// Base color
-		1.5f,									// Diffuse
-		1.0f,									// Specular
-		40.0f,								// Smoothness
-		0.0f									// Padding
+		1.5f,										// Diffuse
+		1.0f,										// Specular
+		40.0f,										// Smoothness
+		0.0f											// Padding
 	};
 	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
 	unlitProperties.Bind();
+	SamplerState samplerState(deviceResources);
+	samplerState.Bind();
+	Texture2D debugTexture(deviceResources, L"Assets\\seafloor.dds", DDS);
+	winrt::com_ptr<ID3D11ShaderResourceView> textureAsSRV =  debugTexture.UseAsShaderResource();
+	ID3D11ShaderResourceView* srvAddress = textureAsSRV.get();
+	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &srvAddress);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)

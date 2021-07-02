@@ -6,8 +6,14 @@ using namespace winrt;
 using namespace DirectX;
 using namespace Geothermal::Graphics;
 
-Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const& filename, TEXTURE_FILE_TYPE fileType):
-	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(DXGI_FORMAT_R8G8B8A8_SNORM)
+Texture2D::Texture2D
+(
+	shared_ptr<DeviceResources> const& deviceResources, 
+	hstring const& filename, TEXTURE_FILE_TYPE fileType
+):
+	deviceResources(deviceResources),
+	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), 
+	format(DXGI_FORMAT_R8G8B8A8_SNORM)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 
@@ -26,7 +32,8 @@ Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const&
 				nullptr
 			)
 		);
-		D3D11_RESOURCE_DIMENSION resourceType = D3D11_RESOURCE_DIMENSION_UNKNOWN;
+		D3D11_RESOURCE_DIMENSION resourceType = 
+			D3D11_RESOURCE_DIMENSION_UNKNOWN;
 		resource->GetType(&resourceType);
 		assert(resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D);
 
@@ -51,7 +58,14 @@ Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const&
 
 	com_ptr<IWICBitmapDecoder> decoder;
 	check_hresult(
-		factory->CreateDecoderFromFilename(filename.c_str(), 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, decoder.put())
+		factory->CreateDecoderFromFilename
+		(
+			filename.c_str(), 
+			0, 
+			GENERIC_READ, 
+			WICDecodeMetadataCacheOnDemand, 
+			decoder.put()
+		)
 	);
 	com_ptr<IWICBitmapFrameDecode> frame;
 	check_hresult(
@@ -63,9 +77,10 @@ Texture2D::Texture2D(shared_ptr<DeviceResources> deviceResources, hstring const&
 
 Texture2D::Texture2D
 (
-	std::shared_ptr<DeviceResources> deviceResources, std::vector<char> data, 
+	shared_ptr<DeviceResources> const& deviceResources, vector<char> data,
 	DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel
 ):
+	deviceResources(deviceResources),
 	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(format)
 {
 	CreateTextureFromMemory(data, width, height, bitsPerPixel);
@@ -126,7 +141,7 @@ void Texture2D::CreateShaderResourceView()
 	SRVDescription.Texture2D.MipLevels = 1;
 
 	check_hresult(
-		deviceResources->D3DDevice()->CreateShaderResourceView(texture.get(), &SRVDescription, shaderResourceView.put())
+		deviceResources->D3DDevice()->CreateShaderResourceView(texture.get(), nullptr, shaderResourceView.put())
 	);
 }
 
