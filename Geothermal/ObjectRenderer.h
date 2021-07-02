@@ -20,7 +20,7 @@ namespace Geothermal::Graphics
 	class ObjectRenderer
 	{
 	public:
-		ObjectRenderer(Meshes::Mesh mesh, shared_ptr<DeviceResources> const& deviceResources);
+		ObjectRenderer(Meshes::Mesh mesh, std::shared_ptr<DeviceResources> const& deviceResources);
 		void Render(DirectX::XMMATRIX object2World);
 		void BindAllResources();
 	protected:

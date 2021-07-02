@@ -3,8 +3,6 @@
 #include "Bindable.h"
 #include <d3dcompiler.h>
 
-using namespace std;
-
 namespace Geothermal::Graphics::Bindables
 {
 	class PixelShader : public Bindable
@@ -12,8 +10,8 @@ namespace Geothermal::Graphics::Bindables
 	public:
 		PixelShader
 		(
-			shared_ptr<DeviceResources> const& deviceResources,
-			wstring filename
+			std::shared_ptr<DeviceResources> const& deviceResources,
+			std::wstring filename
 		):
 			Bindable(deviceResources)
 		{

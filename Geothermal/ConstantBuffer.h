@@ -2,8 +2,6 @@
 #include "DeviceResources.h"
 #include "Bindable.h"
 
-using namespace std;
-
 namespace Geothermal::Graphics::Bindables
 {
 	/// <summary>
@@ -18,7 +16,11 @@ namespace Geothermal::Graphics::Bindables
 		/// <summary>
 		/// Create constant buffer from data
 		/// </summary>
-		ConstantBuffer(shared_ptr<DeviceResources> const& deviceResources, const C& constant, UINT slot = 0u):
+		ConstantBuffer
+		(
+			std::shared_ptr<DeviceResources> const& deviceResources,
+			const C& constant, UINT slot = 0u
+		):
 			Bindable(deviceResources),
 			slot(slot)
 		{
@@ -39,7 +41,10 @@ namespace Geothermal::Graphics::Bindables
 		/// <summary>
 		/// Create empty constant buffer
 		/// </summary>
-		ConstantBuffer(shared_ptr<DeviceResources> const& deviceResources, UINT slot = 0u) :
+		ConstantBuffer
+		(
+			std::shared_ptr<DeviceResources> const& deviceResources, UINT slot = 0u
+		):
 			Bindable(deviceResources),
 			slot(slot)
 		{
