@@ -1,5 +1,8 @@
 #include "Common.hlsli"
 
+Texture2D Albedo : register(t0);
+SamplerState Sampler;
+
 cbuffer UnlitProperties
 {
 	float4 Ambient;
@@ -11,7 +14,8 @@ cbuffer UnlitProperties
 
 float4 main(Varyings input) : SV_TARGET
 {
-	float4 pixelColor = BaseColor;
+	float4 textureColor = Albedo.Sample(Sampler, input.texcoord);
+	float4 pixelColor = BaseColor + textureColor;
 	float3 normal = normalize(input.normal);
 
 	float3 overheadLight = normalize(float3(0.0f, 1.0f, 1.0f));

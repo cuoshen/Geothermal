@@ -1,5 +1,5 @@
-#ifndef AERIEL_SHADING_COMMON
-#define AERIEL_SHADING_COMMON
+#ifndef GEOTHERMAL_SHADING_COMMON
+#define GEOTHERMAL_SHADING_COMMON
 
 // Each model is responsible for supplying its own transform
 cbuffer TransformBuffer : register(b0)
