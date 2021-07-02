@@ -108,7 +108,12 @@ vector<VertexPNT> ModelLoader::ParseVertices()
 					vertex.normal.y = attrib.normals[startingIndex + 1];
 					vertex.normal.z = attrib.normals[startingIndex + 2];
 				}
-				// TODO: parse tex coords
+				if (index.texcoord_index >= 0)
+				{
+					startingIndex = 2 * size_t(index.texcoord_index);
+					vertex.textureCoordinate.x = attrib.texcoords[startingIndex + 0];
+					vertex.textureCoordinate.y = attrib.texcoords[startingIndex + 1];
+				}
 				vertices.push_back(vertex);
 			}
 			index_offset += 3;
@@ -117,4 +122,3 @@ vector<VertexPNT> ModelLoader::ParseVertices()
 
 	return vertices;
 }
-

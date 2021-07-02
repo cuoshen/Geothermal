@@ -17,7 +17,7 @@ Varyings main(VertexInput input)
 	output.normal = normalize(
 										mul(float4(input.normal, 0.0f), Model2WorldTransform)
 									);
-	// TODO: transfer uv
+
 	output.texcoord = input.texcoord;
 
 	return output;

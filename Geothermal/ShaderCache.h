@@ -12,7 +12,7 @@ namespace Geothermal::Graphics
 	public:
 
 	private:
-		std::unordered_map<string, Bindables::VertexShader> vertexShaderCache;
-		std::unordered_map<string, Bindables::PixelShader> pixelShaderCache;
+		std::unordered_map<std::string, Bindables::VertexShader> vertexShaderCache;
+		std::unordered_map<std::string, Bindables::PixelShader> pixelShaderCache;
 	};
 }

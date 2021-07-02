@@ -2,8 +2,6 @@
 #include "DeviceResources.h"
 #include "Bindable.h"
 
-using namespace std;
-
 namespace Geothermal::Graphics::Bindables
 {
 	/// <summary>
@@ -18,8 +16,8 @@ namespace Geothermal::Graphics::Bindables
 		/// </summary>
 		VertexBuffer
 		(
-			shared_ptr<DeviceResources> const& deviceResources, 
-			const vector<V> vertices
+			std::shared_ptr<DeviceResources> const& deviceResources,
+			const std::vector<V> vertices
 		):
 			Bindable(deviceResources),
 			vertices(vertices), vertexBuffer(nullptr), stride(sizeof(V)), offset(0), vertexCount(vertices.size())
@@ -60,7 +58,7 @@ namespace Geothermal::Graphics::Bindables
 		const UINT offset;
 		const UINT stride;
 		UINT vertexCount;
-		vector<V> vertices;
+		std::vector<V> vertices;
 		winrt::com_ptr<ID3D11Buffer> vertexBuffer;
 	};
 
@@ -73,8 +71,8 @@ namespace Geothermal::Graphics::Bindables
 		/// </summary>
 		IndexedVertexBuffer
 		(
-			shared_ptr<DeviceResources> const& deviceResources,
-			const vector<V> vertices
+			std::shared_ptr<DeviceResources> const& deviceResources,
+			const std::vector<V> vertices
 		):
 			VertexBuffer<V>(deviceResources, vertices), 
 			isIndexed(false), indexBuffer(nullptr), indices(), indexCount(0)
@@ -86,9 +84,9 @@ namespace Geothermal::Graphics::Bindables
 		/// </summary>
 		IndexedVertexBuffer
 		(
-			shared_ptr<DeviceResources> const& deviceResources,
-			const vector<V> vertices,
-			const vector<UINT> indices
+			std::shared_ptr<DeviceResources> const& deviceResources,
+			const std::vector<V> vertices,
+			const std::vector<UINT> indices
 		) :
 			VertexBuffer<V>(deviceResources, vertices), 
 			isIndexed(true), indexBuffer(nullptr), indices(indices), indexCount(indices.size())
@@ -134,7 +132,7 @@ namespace Geothermal::Graphics::Bindables
 	private:
 		bool isIndexed;
 		UINT indexCount;
-		vector<UINT> indices;
+		std::vector<UINT> indices;
 		winrt::com_ptr<ID3D11Buffer> indexBuffer;
 	};
 }

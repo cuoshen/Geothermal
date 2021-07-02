@@ -24,7 +24,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 // TODO: refactor into (Shader Cache + Material) system in support of custom shader
 void CoreRenderPipeline::LoadAllShaders()
 {
-	PixelShader unlitPixelShader(deviceResources, L"ForwardLit.cso");
+	PixelShader unlitPixelShader(deviceResources, L"TexturedForwardLit.cso");
 	VertexShader defaultVertexShader(deviceResources, L"VertexShader.cso", VertexPNTLayout, (UINT)size(VertexPNTLayout));
 	unlitPixelShader.Bind();
 	defaultVertexShader.Bind();
