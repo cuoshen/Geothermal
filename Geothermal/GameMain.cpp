@@ -101,6 +101,14 @@ void GameMain::Update()
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Update();
+
+#ifdef DEBUG_SCENE
+		// Self-rotate
+		XMVECTOR position = gameObject->GetTransform()->WorldPosition();
+		gameObject->GetTransform()->ApplyTransform(XMMatrixTranslationFromVector(-position));
+		gameObject->GetTransform()->ApplyTransform(XMMatrixRotationY(deltaTime));
+		gameObject->GetTransform()->ApplyTransform(XMMatrixTranslationFromVector(position));
+#endif
 	}
 
 	coreRenderer->Render();
@@ -118,7 +126,7 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX initialTransform = XMMatrixTranslation(0.0f, 0.0f, 4.0f);
+	XMMATRIX initialTransform = XMMatrixRotationX(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 4.0f) ;
 	AddDebugGameObject(initialTransform);
 }
 
@@ -131,18 +139,18 @@ void GameMain::LoadDebugMesh()
 	assert(loaded);
 	shadingParameters = PhongAttributes
 	{
-		{0.0f, 0.0f, 0.1f, 0.0f},		// Ambient
-		{1.0f, 1.0f, 1.0f, 1.0f},		// Base color
-		1.5f,										// Diffuse
+		{0.0f, 0.0f, 0.06f, 0.0f},		// Ambient
+		{0.1f, 0.1f, 0.1f, 1.0f},		// Base color
+		2.0f,										// Diffuse
 		1.0f,										// Specular
-		40.0f,										// Smoothness
+		20.0f,										// Smoothness
 		0.0f											// Padding
 	};
 	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
 	unlitProperties.Bind();
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
-	Texture2D debugTexture(deviceResources, L"Assets\\seafloor.dds", DDS);
+	Texture2D debugTexture(deviceResources, L"Assets\\earth.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> textureAsSRV =  debugTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* srvAddress = textureAsSRV.get();
 	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &srvAddress);
