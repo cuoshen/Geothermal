@@ -105,9 +105,12 @@ void GameMain::Update()
 #ifdef DEBUG_SCENE
 		// Self-rotate
 		XMVECTOR position = gameObject->GetTransform()->WorldPosition();
-		gameObject->GetTransform()->ApplyTransform(XMMatrixTranslationFromVector(-position));
-		gameObject->GetTransform()->ApplyTransform(XMMatrixRotationY(deltaTime));
-		gameObject->GetTransform()->ApplyTransform(XMMatrixTranslationFromVector(position));
+		gameObject->GetTransform()->ApplyTransform
+		(
+			XMMatrixTranslationFromVector(-position) * 
+			XMMatrixRotationY(deltaTime) * 
+			XMMatrixTranslationFromVector(position)
+		);
 #endif
 	}
 
