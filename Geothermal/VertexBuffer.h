@@ -20,18 +20,18 @@ namespace Geothermal::Graphics::Bindables
 			const std::vector<V> vertices
 		):
 			Bindable(deviceResources),
-			vertices(vertices), vertexBuffer(nullptr), stride(sizeof(V)), offset(0), vertexCount(vertices.size())
+			vertexBuffer(nullptr), stride(sizeof(V)), offset(0), vertexCount(vertices.size())
 		{
 			// Initialize vertex buffer
 			D3D11_BUFFER_DESC bufferDescription = { 0 };
 			bufferDescription.Usage = D3D11_USAGE_DEFAULT;
 			bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			// Default CPU access and misc flags
-			bufferDescription.ByteWidth = sizeof(V) * this->vertices.size();
+			bufferDescription.ByteWidth = sizeof(V) * vertices.size();
 			bufferDescription.StructureByteStride = sizeof(V);
 
 			D3D11_SUBRESOURCE_DATA data = { 0 };
-			data.pSysMem = this->vertices.data();
+			data.pSysMem = vertices.data();
 
 			winrt::check_hresult(
 				deviceResources->D3DDevice()->CreateBuffer(&bufferDescription, &data, vertexBuffer.put())
@@ -58,7 +58,6 @@ namespace Geothermal::Graphics::Bindables
 		const UINT offset;
 		const UINT stride;
 		UINT vertexCount;
-		std::vector<V> vertices;
 		winrt::com_ptr<ID3D11Buffer> vertexBuffer;
 	};
 
@@ -75,7 +74,7 @@ namespace Geothermal::Graphics::Bindables
 			const std::vector<V> vertices
 		):
 			VertexBuffer<V>(deviceResources, vertices), 
-			isIndexed(false), indexBuffer(nullptr), indices(), indexCount(0)
+			isIndexed(false), indexBuffer(nullptr),  indexCount(0)
 		{
 		}
 
@@ -89,18 +88,18 @@ namespace Geothermal::Graphics::Bindables
 			const std::vector<UINT> indices
 		) :
 			VertexBuffer<V>(deviceResources, vertices), 
-			isIndexed(true), indexBuffer(nullptr), indices(indices), indexCount(indices.size())
+			isIndexed(true), indexBuffer(nullptr),  indexCount(indices.size())
 		{
 			// Initialize index buffer
 			D3D11_BUFFER_DESC indexBufferDescription = { 0 };
 			indexBufferDescription.Usage = D3D11_USAGE_DEFAULT;
 			indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
 			// Default CPU access and misc flags
-			indexBufferDescription.ByteWidth = sizeof(UINT) * this->indices.size();
+			indexBufferDescription.ByteWidth = sizeof(UINT) * indices.size();
 			indexBufferDescription.StructureByteStride = sizeof(UINT);
 
 			D3D11_SUBRESOURCE_DATA data = { 0 };
-			data.pSysMem = this->indices.data();
+			data.pSysMem = indices.data();
 
 			winrt::check_hresult(
 				deviceResources->D3DDevice()->CreateBuffer(&indexBufferDescription, &data, indexBuffer.put())
@@ -132,7 +131,6 @@ namespace Geothermal::Graphics::Bindables
 	private:
 		bool isIndexed;
 		UINT indexCount;
-		std::vector<UINT> indices;
 		winrt::com_ptr<ID3D11Buffer> indexBuffer;
 	};
 }
