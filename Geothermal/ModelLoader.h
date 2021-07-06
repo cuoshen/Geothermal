@@ -14,7 +14,6 @@ namespace Geothermal
 		/// <summary>
 		/// Attempt to load an obj file into a mesh
 		/// </summary>
-		/// <returns>Whether the operation is successful</returns>
 		bool LoadObj2Mesh
 		(
 			winrt::hstring const& objFileName,
@@ -35,6 +34,12 @@ namespace Geothermal
 		);
 	private:
 		std::vector<Geothermal::Graphics::Structures::VertexPNT> ParseVertices();
+		void ConstructVertex
+		(
+			Geothermal::Graphics::Structures::VertexPNT* vertex,
+			tinyobj::index_t index, 
+			const tinyobj::attrib_t& attrib
+		);
 
 		tinyobj::ObjReader reader;
 		tinyobj::ObjReaderConfig reader_config;

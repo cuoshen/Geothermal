@@ -58,7 +58,6 @@ bool ModelLoader::LoadObjString2Mesh
 	if (verticesParsed.size() > 0)
 	{
 		// Create vertex buffer and load into mesh
-		mesh->vertices = nullptr;
 		mesh->vertices = make_shared<IndexedVertexBuffer<VertexPNT>>(deviceResources, verticesParsed);
 	}
 	else
@@ -71,9 +70,9 @@ bool ModelLoader::LoadObjString2Mesh
 
 vector<VertexPNT> ModelLoader::ParseVertices()
 {
-	auto& attrib = reader.GetAttrib();
-	auto& shapes = reader.GetShapes();
-	auto& materials = reader.GetMaterials();
+	const tinyobj::attrib_t& attrib = reader.GetAttrib();
+	const vector<tinyobj::shape_t>& shapes = reader.GetShapes();
+	const vector<tinyobj::material_t>& materials = reader.GetMaterials();
 
 	vector<VertexPNT> vertices;
 	// Loop over shapes
@@ -97,23 +96,7 @@ vector<VertexPNT> ModelLoader::ParseVertices()
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
 				VertexPNT vertex;
-				size_t startingIndex = 3 * size_t(index.vertex_index);
-				vertex.position.x = attrib.vertices[startingIndex + 0];
-				vertex.position.y = attrib.vertices[startingIndex + 1];
-				vertex.position.z = attrib.vertices[startingIndex + 2];
-				if (index.normal_index >= 0)
-				{
-					startingIndex = 3 * size_t(index.normal_index);
-					vertex.normal.x = attrib.normals[startingIndex + 0];
-					vertex.normal.y = attrib.normals[startingIndex + 1];
-					vertex.normal.z = attrib.normals[startingIndex + 2];
-				}
-				if (index.texcoord_index >= 0)
-				{
-					startingIndex = 2 * size_t(index.texcoord_index);
-					vertex.textureCoordinate.x = attrib.texcoords[startingIndex + 0];
-					vertex.textureCoordinate.y = attrib.texcoords[startingIndex + 1];
-				}
+				ConstructVertex(&vertex, index, attrib);
 				vertices.push_back(vertex);
 			}
 			index_offset += 3;
@@ -121,4 +104,25 @@ vector<VertexPNT> ModelLoader::ParseVertices()
 	}
 
 	return vertices;
+}
+
+void ModelLoader::ConstructVertex(VertexPNT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
+{
+	size_t startingIndex = 3 * size_t(index.vertex_index);
+	vertex->position.x = attrib.vertices[startingIndex + 0];
+	vertex->position.y = attrib.vertices[startingIndex + 1];
+	vertex->position.z = attrib.vertices[startingIndex + 2];
+	if (index.normal_index >= 0)
+	{
+		startingIndex = 3 * size_t(index.normal_index);
+		vertex->normal.x = attrib.normals[startingIndex + 0];
+		vertex->normal.y = attrib.normals[startingIndex + 1];
+		vertex->normal.z = attrib.normals[startingIndex + 2];
+	}
+	if (index.texcoord_index >= 0)
+	{
+		startingIndex = 2 * size_t(index.texcoord_index);
+		vertex->textureCoordinate.x = attrib.texcoords[startingIndex + 0];
+		vertex->textureCoordinate.y = attrib.texcoords[startingIndex + 1];
+	}
 }
