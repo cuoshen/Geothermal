@@ -142,10 +142,10 @@ void GameMain::LoadDebugMesh()
 	assert(loaded);
 	shadingParameters = PhongAttributes
 	{
-		{0.0f, 0.0f, 0.06f, 0.0f},		// Ambient
+		{0.0f, 0.0f, 0.06f, 0.0f},	// Ambient
 		{0.1f, 0.1f, 0.1f, 1.0f},		// Base color
-		2.0f,										// Diffuse
-		1.0f,										// Specular
+		1.0f,										// Diffuse
+		0.5f,										// Specular
 		20.0f,										// Smoothness
 		0.0f											// Padding
 	};

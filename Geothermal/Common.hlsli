@@ -20,6 +20,15 @@ struct Varyings
 	float3 worldPosition				:	WORLD_POSITION;
 	float2 texcoord						:	TEXCOORD;
 	float3 normal							:	NORMAL;
+	float3 tangent							:	TANGENT;
+};
+
+struct VertexColoredVaryings
+{
+	float4 clipPosition					:	SV_POSITION;
+	float3 worldPosition				:	WORLD_POSITION;
+	float4 vertexColor					:	VERTEX_COLOR;
+	float3 normal							:	NORMAL;
 };
 
 float Lambert(float3 normal, float3 lightDirection, float diffuseStrength)
@@ -42,7 +51,7 @@ float BlinnPhong(float3 normal, float3 worldPosition, float3 lightDirection, flo
 			max(0.0f, dot(normal, halfway)), smoothness
 	) * specularStrength;
 
-	return (0.5f * diffuse + 0.5f * specular);
+	return diffuse + specular;
 }
 
 #endif
