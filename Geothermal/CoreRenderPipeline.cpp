@@ -25,7 +25,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 void CoreRenderPipeline::LoadAllShaders()
 {
 	PixelShader unlitPixelShader(deviceResources, L"TexturedForwardLit.cso");
-	VertexShader defaultVertexShader(deviceResources, L"VertexShader.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
+	VertexShader defaultVertexShader(deviceResources, L"LitVertexShader.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
 	unlitPixelShader.Bind();
 	defaultVertexShader.Bind();
 }
