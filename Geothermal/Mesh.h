@@ -10,6 +10,6 @@ namespace Geothermal::Graphics::Meshes
 			vertices(nullptr)
 		{
 		}
-		std::shared_ptr<Bindables::IndexedVertexBuffer<Structures::VertexPNT>> vertices;
+		std::shared_ptr<Bindables::IndexedVertexBuffer<Structures::VertexPNTT>> vertices;
 	};
 }

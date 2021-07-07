@@ -1,7 +1,7 @@
 #include "Common.hlsli"
 
 // Tweak vertex layout by selecting feature sets
-// #define PRECOMPUTED_TANGENT
+#define PRECOMPUTED_TANGENT
 
 struct VertexInput
 {

@@ -17,7 +17,7 @@ namespace Geothermal::Graphics::Bindables
 		VertexBuffer
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			const std::vector<V> vertices
+			std::vector<V> const& vertices
 		):
 			Bindable(deviceResources),
 			vertexBuffer(nullptr), stride(sizeof(V)), offset(0), vertexCount(vertices.size())
@@ -71,7 +71,7 @@ namespace Geothermal::Graphics::Bindables
 		IndexedVertexBuffer
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			const std::vector<V> vertices
+			std::vector<V> const& vertices
 		):
 			VertexBuffer<V>(deviceResources, vertices), 
 			isIndexed(false), indexBuffer(nullptr),  indexCount(0)

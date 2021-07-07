@@ -33,13 +33,14 @@ namespace Geothermal
 			std::shared_ptr<Geothermal::Graphics::DeviceResources> const& deviceResources
 		);
 	private:
-		std::vector<Geothermal::Graphics::Structures::VertexPNT> ParseVertices();
+		std::vector<Geothermal::Graphics::Structures::VertexPNTT> ParseVertices();
 		void ConstructVertex
 		(
-			Geothermal::Graphics::Structures::VertexPNT* vertex,
+			Geothermal::Graphics::Structures::VertexPNTT* vertex,
 			tinyobj::index_t index, 
 			const tinyobj::attrib_t& attrib
 		);
+		void ComputeTangent(Geothermal::Graphics::Structures::VertexPNTT** triangle);
 
 		tinyobj::ObjReader reader;
 		tinyobj::ObjReaderConfig reader_config;

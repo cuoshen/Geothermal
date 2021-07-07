@@ -11,14 +11,14 @@ using namespace std;
 
 QuadMesh::QuadMesh(shared_ptr<DeviceResources> const& deviceResources)
 {
-	VertexPNT verts[] =
+	VertexPNTT verts[] =
 	{
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
-		{{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
-		{{-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
-		{{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
+		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+		{{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+		{{-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+		{{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
 	};
-	vector<VertexPNT> vertices(begin(verts), end(verts));
+	vector<VertexPNTT> vertices(begin(verts), end(verts));
 	UINT ind[] =
 	{
 		0, 2, 1,
@@ -27,5 +27,5 @@ QuadMesh::QuadMesh(shared_ptr<DeviceResources> const& deviceResources)
 		1, 3, 2,
 	};
 	vector<UINT> indices(begin(ind), end(ind));
-	this->vertices = make_shared<IndexedVertexBuffer<VertexPNT>>(deviceResources, vertices, indices);
+	this->vertices = make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, vertices, indices);
 }

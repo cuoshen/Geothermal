@@ -54,11 +54,11 @@ bool ModelLoader::LoadObjString2Mesh
 		OutputDebugStringA(reader.Warning().c_str());
 	}
 
-	vector<VertexPNT> verticesParsed = ParseVertices();
+	vector<VertexPNTT> verticesParsed = ParseVertices();
 	if (verticesParsed.size() > 0)
 	{
 		// Create vertex buffer and load into mesh
-		mesh->vertices = make_shared<IndexedVertexBuffer<VertexPNT>>(deviceResources, verticesParsed);
+		mesh->vertices = make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
 	}
 	else
 	{
@@ -68,45 +68,53 @@ bool ModelLoader::LoadObjString2Mesh
 	return true;
 }
 
-vector<VertexPNT> ModelLoader::ParseVertices()
+vector<VertexPNTT> ModelLoader::ParseVertices()
 {
 	const tinyobj::attrib_t& attrib = reader.GetAttrib();
 	const vector<tinyobj::shape_t>& shapes = reader.GetShapes();
 	const vector<tinyobj::material_t>& materials = reader.GetMaterials();
 
-	vector<VertexPNT> vertices;
+	vector<VertexPNTT> vertices;
+	VertexPNTT** triangle;
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++)
 	{
 		tinyobj::shape_t currentShape = shapes[s];
 		// Loop over faces
-
 		size_t index_offset = 0;
-		for (size_t f = 0; f < currentShape.mesh.num_face_vertices.size(); f++)
+		for (size_t f = 0; f < currentShape.mesh.num_face_vertices.size(); f++)	// For each triangle
 		{
 			// We enforce the rule that each face must be a triangle,
 			// if the shape is not fully triangulated, the loading operation is unsuccessful
 			if (currentShape.mesh.num_face_vertices[f] != 3)
 			{
 				OutputDebugString(L"Error parsing obj: Shape is not fully triangulated. \n");
-				return vector<VertexPNT>();
+				return vector<VertexPNTT>();
 			}
-			// Read vertices, always assume triangular face
-			for (size_t v = 0; v < 3; v++)
+
+			triangle = new VertexPNTT * [3];
+
+			for (size_t v = 0; v < 3; v++)	// For each vertex
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
-				VertexPNT vertex;
+				VertexPNTT vertex;
 				ConstructVertex(&vertex, index, attrib);
+				triangle[v] = &vertex;
 				vertices.push_back(vertex);
 			}
+
+			// Compute tangent
+			ComputeTangent(triangle);
+
 			index_offset += 3;
+			delete[] triangle;
 		}
 	}
 
 	return vertices;
 }
 
-void ModelLoader::ConstructVertex(VertexPNT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
+void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
 {
 	size_t startingIndex = 3 * size_t(index.vertex_index);
 	vertex->position.x = attrib.vertices[startingIndex + 0];
@@ -125,4 +133,9 @@ void ModelLoader::ConstructVertex(VertexPNT* vertex, tinyobj::index_t index, con
 		vertex->textureCoordinate.x = attrib.texcoords[startingIndex + 0];
 		vertex->textureCoordinate.y = attrib.texcoords[startingIndex + 1];
 	}
+}
+
+void ModelLoader::ComputeTangent(VertexPNTT** triangle)
+{
+
 }
