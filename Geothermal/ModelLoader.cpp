@@ -4,6 +4,7 @@
 #include "VertexBuffer.h"
 #include "FileIO.h"
 
+using namespace DirectX;
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Meshes;
@@ -75,7 +76,8 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 	const vector<tinyobj::material_t>& materials = reader.GetMaterials();
 
 	vector<VertexPNTT> vertices;
-	VertexPNTT** triangle;
+	VertexPNTT* triangle;
+	VertexPNTT* finishedTriangle = new VertexPNTT[3];
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++)
 	{
@@ -92,24 +94,29 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 				return vector<VertexPNTT>();
 			}
 
-			triangle = new VertexPNTT * [3];
+			triangle = new VertexPNTT[3];
 
 			for (size_t v = 0; v < 3; v++)	// For each vertex
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
 				VertexPNTT vertex;
 				ConstructVertex(&vertex, index, attrib);
-				triangle[v] = &vertex;
-				vertices.push_back(vertex);
+				triangle[v] = vertex;
 			}
 
 			// Compute tangent
-			ComputeTangent(triangle);
+			ComputeTangent(triangle, finishedTriangle);
+
+			for (int i = 0; i < 3; i++)
+			{
+				vertices.push_back(finishedTriangle[i]);
+			}
 
 			index_offset += 3;
 			delete[] triangle;
 		}
 	}
+	delete[] finishedTriangle;
 
 	return vertices;
 }
@@ -117,25 +124,68 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
 {
 	size_t startingIndex = 3 * size_t(index.vertex_index);
-	vertex->position.x = attrib.vertices[startingIndex + 0];
-	vertex->position.y = attrib.vertices[startingIndex + 1];
-	vertex->position.z = attrib.vertices[startingIndex + 2];
+	vertex->position = 
+	{
+		attrib.vertices[startingIndex + 0],
+		attrib.vertices[startingIndex + 1],
+		attrib.vertices[startingIndex + 2]
+	};
 	if (index.normal_index >= 0)
 	{
 		startingIndex = 3 * size_t(index.normal_index);
-		vertex->normal.x = attrib.normals[startingIndex + 0];
-		vertex->normal.y = attrib.normals[startingIndex + 1];
-		vertex->normal.z = attrib.normals[startingIndex + 2];
+		vertex->normal = 
+		{ 
+			attrib.normals[startingIndex + 0],
+			attrib.normals[startingIndex + 1],
+			attrib.normals[startingIndex + 2],
+		};
 	}
 	if (index.texcoord_index >= 0)
 	{
 		startingIndex = 2 * size_t(index.texcoord_index);
-		vertex->textureCoordinate.x = attrib.texcoords[startingIndex + 0];
-		vertex->textureCoordinate.y = attrib.texcoords[startingIndex + 1];
+		vertex->textureCoordinate = 
+		{ 
+			attrib.texcoords[startingIndex + 0],
+			attrib.texcoords[startingIndex + 1],
+		};
 	}
 }
 
-void ModelLoader::ComputeTangent(VertexPNTT** triangle)
+void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 {
+	// Solve the equation EdgeMatrix == DeltaUVMatrix . TangentBitangentBasisMatrix
 
+	XMFLOAT3& p0 = triangle[0].position;
+	XMFLOAT3& p1 = triangle[1].position;
+	XMFLOAT3& p2 = triangle[2].position;
+
+	XMFLOAT3 edge0 = 
+	{ 
+		p1.x - p0.x,
+		p1.y - p0.y,
+		p1.z - p0.z 
+	};
+	XMFLOAT3 edge1 =
+	{
+		p2.x - p0.x,
+		p2.y - p0.y,
+		p2.z - p0.z
+	};
+
+	float du0 = { triangle[1].textureCoordinate.x - triangle[0].textureCoordinate.x };
+	float du1 = { triangle[2].textureCoordinate.x - triangle[0].textureCoordinate.x };
+	float dv0 = { triangle[1].textureCoordinate.y - triangle[0].textureCoordinate.y };
+	float dv1 = { triangle[2].textureCoordinate.y - triangle[0].textureCoordinate.y };
+
+	float determinantReciprocal = 1.0f / (du0 * dv1 - du1 * dv0);
+	XMFLOAT3 tangent = 
+	{
+		determinantReciprocal * (dv1 * edge0.x - dv0 * edge1.x),
+		determinantReciprocal * (dv1 * edge0.y - dv0 * edge1.y),
+		determinantReciprocal * (dv1 * edge0.z - dv0 * edge1.z)
+	};
+
+	triangle[0].tangent = triangle[1].tangent = triangle[2].tangent = tangent;
+
+	memcpy(receiver, triangle, 3 * sizeof(VertexPNTT));
 }
