@@ -156,7 +156,7 @@ void GameMain::LoadDebugMesh()
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\earth.dds", DDS);
+	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
 	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &albedoSRVAddress);
