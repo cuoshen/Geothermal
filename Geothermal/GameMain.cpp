@@ -145,19 +145,26 @@ void GameMain::LoadDebugMesh()
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},	// Ambient
 		{0.1f, 0.1f, 0.1f, 1.0f},		// Base color
-		1.0f,										// Diffuse
-		1.0f,										// Specular
+		0.5f,										// Diffuse
+		0.5f,										// Specular
 		20.0f,										// Smoothness
 		0.0f											// Padding
 	};
 	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
 	unlitProperties.Bind();
+
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
-	Texture2D debugTexture(deviceResources, L"Assets\\earth.dds", DDS);
-	winrt::com_ptr<ID3D11ShaderResourceView> textureAsSRV =  debugTexture.UseAsShaderResource();
-	ID3D11ShaderResourceView* srvAddress = textureAsSRV.get();
-	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &srvAddress);
+
+	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\earth.dds", DDS);
+	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
+	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
+	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &albedoSRVAddress);
+
+	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", DDS);
+	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
+	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
+	deviceResources->D3DDeviceContext()->PSSetShaderResources(1, 1, &normalSRVAddress);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
