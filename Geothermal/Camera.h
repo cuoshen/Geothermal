@@ -40,6 +40,11 @@ namespace Geothermal
 
 		XMMATRIX GetWorld2ClipMatrix();
 		void BindCamera2Pipeline();
+
+		float Pitch() { return pitch; }
+		float Yaw() { return yaw; }
+		void Pitch(float pitch) { this->pitch = pitch; }
+		void Yaw(float yaw) { this->yaw = yaw; }
 	private:
 		const float mouseSensitivity = 0.001f;
 		const float speed = 1.0f;

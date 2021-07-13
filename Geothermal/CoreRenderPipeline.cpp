@@ -50,16 +50,28 @@ void CoreRenderPipeline::DrawGUI()
 	XMStoreFloat3(&cameraPosition, pos);
 	ImGui::Text
 	(
-		"Current camera world space coordinate is \n (%.2f, %.2f, %.2f) \n",
+		"Camera world space position \n (%.2f, %.2f, %.2f) \n",
 		cameraPosition.x, cameraPosition.y, cameraPosition.z
+	);
+	ImGui::Text
+	(
+		"Camera pitch yaw \n (%.2f, %.2f) \n",
+		camera->Pitch(), camera->Yaw()
 	);
 	if (ImGui::Button("Reset Camera"))
 	{
-		camera->GetTransform()->UpdateTransform(XMMatrixIdentity());
+		ResetCamera();
 	}
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}
+
+void CoreRenderPipeline::ResetCamera()
+{
+	camera->GetTransform()->UpdateTransform(XMMatrixIdentity());
+	camera->Pitch(0.0f);
+	camera->Yaw(0.0f);
 }
 
 void CoreRenderPipeline::Render()

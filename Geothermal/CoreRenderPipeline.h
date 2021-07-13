@@ -21,6 +21,7 @@ namespace Geothermal::Graphics
 	private:
 		void StartGUIFrame();
 		void DrawGUI();
+		void ResetCamera();
 
 		std::shared_ptr<DeviceResources> deviceResources;
 		std::unique_ptr<Camera> camera;

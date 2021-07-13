@@ -55,25 +55,25 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="imgui_demo.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="imgui_draw.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_dx11.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_win32.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="imgui_tables.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="imgui_widgets.cpp">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,28 +158,28 @@
       <Filter>Graphics\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="imconfig.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imgui_impl_dx11.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imgui_impl_win32.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imgui_internal.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imstb_rectpack.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imstb_textedit.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="imstb_truetype.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +216,9 @@
     <Filter Include="GUI">
       <UniqueIdentifier>{544a44fc-cb31-4173-9653-1006624b55d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\IMGUI">
+      <UniqueIdentifier>{dafc21e0-dadb-4fb2-b7e7-41585c5600cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ForwardLit.hlsl">
@@ -243,7 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt">
-      <Filter>GUI</Filter>
+      <Filter>GUI\IMGUI</Filter>
     </Text>
   </ItemGroup>
 </Project>
