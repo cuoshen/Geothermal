@@ -260,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Common.hlsli" />
+    <None Include="imgui.ini" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

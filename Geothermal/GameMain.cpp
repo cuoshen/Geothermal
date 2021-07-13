@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameMain.h"
+#include "imgui_impl_win32.h"
 
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
@@ -48,8 +49,13 @@ void GameMain::Initialize(shared_ptr<DeviceResources> deviceResources)
 #endif
 }
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 UINT GameMain::HandleMessage(MSG msg)
 {
+	// We don't really need the LRESULT from imgui
+	ImGui_ImplWin32_WndProcHandler(msg.hwnd, msg.message, msg.wParam, msg.lParam);
+
 	if (msg.message == WM_QUIT)
 	{
 		return 1;

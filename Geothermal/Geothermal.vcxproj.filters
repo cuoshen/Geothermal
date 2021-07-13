@@ -239,6 +239,7 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt">
