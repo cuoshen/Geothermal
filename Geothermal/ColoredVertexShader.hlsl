@@ -16,7 +16,7 @@ VertexColoredVaryings main(VertexInput input)
 
 	output.normal = normalize(
 		mul(float4(input.normal, 0.0f), Model2WorldTransform)
-	);
+	).xyz;
 
 	output.vertexColor = input.vertexColor;
 

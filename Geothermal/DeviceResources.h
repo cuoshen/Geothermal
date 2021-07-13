@@ -36,7 +36,8 @@ namespace Geothermal::Graphics
 		winrt::com_ptr<ID3D11DeviceContext3> d3dContext;
 		winrt::com_ptr<IDXGISwapChain1>       swapChain;
 
-		winrt::com_ptr<ID3D11RenderTargetView>  d3dRenderTargetView;
+		winrt::com_ptr<ID3D11RenderTargetView>  backBufferTargetView;
+		winrt::com_ptr<ID3D11DepthStencilView> depthStencilView;
 		D3D_FEATURE_LEVEL d3dFeatureLevel;
 		D3D11_VIEWPORT screenViewPort;
 

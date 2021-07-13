@@ -130,11 +130,37 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
         d3dDevice->CreateRenderTargetView(
             backBuffer.get(),
             nullptr,
-            d3dRenderTargetView.put()
+            backBufferTargetView.put()
         )
     );
 
-    // TODO: add depth-stencil view
+    // Create a depth stencil view for use with 3D rendering if needed.
+    CD3D11_TEXTURE2D_DESC depthStencilDesc(
+        DXGI_FORMAT_D24_UNORM_S8_UINT,
+        outputSize.x,
+        outputSize.y,
+        1,
+        1,
+        D3D11_BIND_DEPTH_STENCIL
+    );
+
+    winrt::com_ptr<ID3D11Texture2D> depthStencil;
+    winrt::check_hresult(
+        d3dDevice->CreateTexture2D(
+            &depthStencilDesc,
+            nullptr,
+            depthStencil.put()
+        )
+    );
+
+    CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+    winrt::check_hresult(
+        d3dDevice->CreateDepthStencilView(
+            depthStencil.get(),
+            &depthStencilViewDesc,
+            depthStencilView.put()
+        )
+    );
 
     // Bind viewport
     screenViewPort = CD3D11_VIEWPORT(
@@ -160,17 +186,18 @@ void DeviceResources::Present()
     winrt::check_hresult(
         swapChain->Present(1, 0)
     );
-    d3dContext->DiscardView(d3dRenderTargetView.get());
+    d3dContext->DiscardView(backBufferTargetView.get());
+    d3dContext->DiscardView(depthStencilView.get());
 }
 
 void DeviceResources::ClearView()
 {
-    d3dContext->ClearRenderTargetView(d3dRenderTargetView.get(), ClearColor);
+    d3dContext->ClearRenderTargetView(backBufferTargetView.get(), ClearColor);
+    d3dContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void DeviceResources::SetTargets()
 {
-    // TODO: bind depth stencil view
-    ID3D11RenderTargetView* target = d3dRenderTargetView.get();
-    d3dContext->OMSetRenderTargets(1, &target, nullptr);
+    ID3D11RenderTargetView* target = backBufferTargetView.get();
+    d3dContext->OMSetRenderTargets(1, &target, depthStencilView.get());
 }
