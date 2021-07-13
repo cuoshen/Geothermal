@@ -32,16 +32,16 @@ void DeviceResources::CreateDeviceResources()
     com_ptr<ID3D11DeviceContext> context;
 
     HRESULT hr = D3D11CreateDevice(
-        nullptr,                    // Specify nullptr to use the default adapter.
-        D3D_DRIVER_TYPE_HARDWARE,   // Create a device using the hardware graphics driver.
-        0,                          // Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
-        0,              // Set debug flags.
-        featureLevels,              // List of feature levels this app can support.
-        ARRAYSIZE(featureLevels),   // Size of the list above.
-        D3D11_SDK_VERSION,          // Always set this to D3D11_SDK_VERSION for Windows Runtime apps.
-        device.put(),               // Returns the Direct3D device created.
-        &d3dFeatureLevel,         // Returns feature level of device created.
-        context.put()                    // Returns the device immediate context.
+        nullptr,                                                    // Specify nullptr to use the default adapter.
+        D3D_DRIVER_TYPE_HARDWARE,  // Create a device using the hardware graphics driver.
+        0,                                                             // Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
+        0,                                                             // Set debug flags.
+        featureLevels,                                      // List of feature levels this app can support.
+        ARRAYSIZE(featureLevels),              // Size of the list above.
+        D3D11_SDK_VERSION,                    // Always set this to D3D11_SDK_VERSION for Windows Runtime apps.
+        device.put(),                                        // Returns the Direct3D device created.
+        &d3dFeatureLevel,                            // Returns feature level of device created.
+        context.put()                                       // Returns the device immediate context.
     );
     winrt::check_hresult(hr);
 

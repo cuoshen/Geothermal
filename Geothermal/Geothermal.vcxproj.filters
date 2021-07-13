@@ -54,6 +54,27 @@
     <ClCompile Include="Texture2D.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -136,6 +157,30 @@
     <ClInclude Include="SamplerState.h">
       <Filter>Graphics\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -168,6 +213,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{0770a173-4491-40f1-b72a-d540822a660e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{544a44fc-cb31-4173-9653-1006624b55d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ForwardLit.hlsl">
@@ -191,5 +239,10 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="imgui_LICENSE.txt">
+      <Filter>GUI</Filter>
+    </Text>
   </ItemGroup>
 </Project>

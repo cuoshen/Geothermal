@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "DeviceResources.h"
 #include "GameMain.h"
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
 
 LRESULT CALLBACK WindowProcedure(HWND windowsHandle, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -32,6 +35,29 @@ void RegisterWindowsClass(LPCWSTR className, HINSTANCE hInstance)
 	RegisterClassEx(&wc);
 }
 
+void SetupGUI(HWND windowHandle, std::shared_ptr<DeviceResources> const& deviceResources)
+{
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplWin32_Init(windowHandle);
+	ImGui_ImplDX11_Init(deviceResources->D3DDevice(), deviceResources->D3DDeviceContext());
+}
+
+void CleanupGUI()
+{
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+}
+
 int CALLBACK WinMain
 (
 	HINSTANCE hInstance,
@@ -60,8 +86,11 @@ int CALLBACK WinMain
 	deviceResources->SetWindow(windowHandle, width, height);
 	
 	GameMain::Initialize(deviceResources);
+	SetupGUI(windowHandle, deviceResources);
 	// Run the game
 	WPARAM exitResult = GameMain::Instance()->Run();
+
+	CleanupGUI();
 
 	return exitResult;
 }

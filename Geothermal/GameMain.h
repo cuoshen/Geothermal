@@ -6,10 +6,10 @@
 #include "Scene.h"
 
 #define DEBUG_SCENE
+
+#ifdef DEBUG_SCENE
 #include "Mesh.h"
 #include "ShadingAttributes.h"
-#ifdef DEBUG_SCENE
-
 #endif
 
 using namespace Geothermal;
@@ -34,9 +34,10 @@ public:
 	float GetTime() const { return time; }
 	Geothermal::Input* GetInput() const { return input.get(); }
 private:
-	UINT HandleMessage(MSG msg);
 	GameMain(std::shared_ptr<DeviceResources> deviceResources);
 	static GameMain* instance;
+
+	UINT HandleMessage(MSG msg);
 
 	bool windowClosed;
 	std::unique_ptr<GameTimer> timer;
