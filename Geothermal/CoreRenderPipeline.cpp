@@ -41,10 +41,22 @@ void CoreRenderPipeline::StartGUIFrame()
 	ImGui::NewFrame();
 }
 
+// TODO: refactor actual windows configuration into its own class
 void CoreRenderPipeline::DrawGUI()
 {
-	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	ImGui::Begin("Camera Control");
+	XMFLOAT3 cameraPosition;
+	XMVECTOR pos = camera->GetTransform()->WorldPosition();
+	XMStoreFloat3(&cameraPosition, pos);
+	ImGui::Text
+	(
+		"Current camera world space coordinate is \n (%.2f, %.2f, %.2f) \n",
+		cameraPosition.x, cameraPosition.y, cameraPosition.z
+	);
+	if (ImGui::Button("Reset Camera"))
+	{
+		camera->GetTransform()->UpdateTransform(XMMatrixIdentity());
+	}
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

@@ -42,11 +42,11 @@ void Camera::Update()
 
 void Camera::HandleMovement()
 {
-	float dt = GameMain::Instance()->GetDeltaTime();
+	float dt = GameMain::Instance()->DeltaTime();
 	float ds = dt * speed;
 	Input* input = GameMain::Instance()->GetInput();
 	// All movement is calculated relative to the object itself.
-	XMVECTOR front = transform->Front();
+	XMVECTOR front = XMVector4Transform(transform->Front(), XMMatrixRotationY(yaw));
 	XMVECTOR up = transform->Up();
 	XMVECTOR left = XMVector3Cross(front, up);
 

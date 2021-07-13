@@ -30,8 +30,8 @@ public:
 	void LateUpdate();
 	void Close() { windowClosed = true; }
 
-	float GetDeltaTime() const { return deltaTime; }
-	float GetTime() const { return time; }
+	float DeltaTime() const { return deltaTime; }
+	float Time() const { return time; }
 	Geothermal::Input* GetInput() const { return input.get(); }
 private:
 	GameMain(std::shared_ptr<DeviceResources> deviceResources);
