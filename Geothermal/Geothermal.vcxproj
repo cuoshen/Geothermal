@@ -147,7 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Archtype.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -178,8 +180,10 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Archtype.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeviceResources.h" />
@@ -204,6 +208,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="QuadMesh.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RuntimeComponent.h" />
     <ClInclude Include="RuntimeSystem.h" />
     <ClInclude Include="SamplerState.h" />
@@ -271,6 +276,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Geothermal.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

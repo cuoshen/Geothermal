@@ -76,14 +76,18 @@
       <Filter>GUI\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="RuntimeComponent.cpp">
-      <Filter>ECS\Classes</Filter>
+      <Filter>ECS\Basic Classes</Filter>
     </ClCompile>
     <ClCompile Include="RuntimeSystem.cpp">
-      <Filter>ECS\Classes</Filter>
+      <Filter>ECS\Basic Classes</Filter>
     </ClCompile>
     <ClCompile Include="EntityManager.cpp">
-      <Filter>ECS\Classes</Filter>
+      <Filter>ECS\Basic Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Archtype.cpp">
+      <Filter>ECS\Metaclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -191,14 +195,19 @@
       <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="RuntimeSystem.h">
-      <Filter>ECS\Classes</Filter>
+      <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
     <ClInclude Include="RuntimeComponent.h">
-      <Filter>ECS\Classes</Filter>
+      <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
-      <Filter>ECS\Classes</Filter>
+      <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Archtype.h">
+      <Filter>ECS\Metaclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ComponentPool.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -240,8 +249,11 @@
     <Filter Include="ECS">
       <UniqueIdentifier>{a8cbdbe2-3892-4952-a7b6-20f603eb6e01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\Classes">
+    <Filter Include="ECS\Basic Classes">
       <UniqueIdentifier>{80e28424-91df-4f86-a6f0-49f6f5b9cf21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Metaclasses">
+      <UniqueIdentifier>{e4c62673-06d9-49e4-bd81-f79f9bb7da58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -272,5 +284,8 @@
     <Text Include="imgui_LICENSE.txt">
       <Filter>GUI\IMGUI</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Geothermal.rc" />
   </ItemGroup>
 </Project>
