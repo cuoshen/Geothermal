@@ -252,8 +252,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Common.hlsli" />
+    <None Include="Lighting.hlsli" />
     <None Include="imgui.ini" />
     <None Include="packages.config" />
+    <None Include="SlotConfig.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt" />

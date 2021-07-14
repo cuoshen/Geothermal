@@ -1,10 +1,10 @@
 #include "Common.hlsli"
 
-Texture2D AlbedoMap : register(t0);
-Texture2D NormalMap : register(t1);
+Texture2D AlbedoMap : register(ALBEDO_MAP_SLOT);
+Texture2D NormalMap : register(NORMAL_MAP_SLOT);
 SamplerState Sampler;
 
-cbuffer Properties
+cbuffer Properties : register(PROPERTIES_SLOT)
 {
 	float4		Ambient;
 	float4		BaseColor;

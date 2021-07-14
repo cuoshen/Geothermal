@@ -240,6 +240,12 @@
     </None>
     <None Include="packages.config" />
     <None Include="imgui.ini" />
+    <None Include="Lighting.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="SlotConfig.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt">
