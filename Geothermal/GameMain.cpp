@@ -149,15 +149,15 @@ void GameMain::LoadDebugMesh()
 	assert(loaded);
 	shadingParameters = PhongAttributes
 	{
-		{0.0f, 0.0f, 0.06f, 0.0f},	// Ambient
-		{0.1f, 0.1f, 0.1f, 1.0f},		// Base color
-		0.5f,										// Diffuse
-		0.5f,										// Specular
-		20.0f,										// Smoothness
-		0.0f											// Padding
+		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
+		{0.1f, 0.1f, 0.1f, 1.0f},												// Base color
+		0.5f,																			// Diffuse
+		0.5f,																			// Specular
+		20.0f,																			// Smoothness
+		USE_ALBEDO_MAP | USE_NORMAL_MAP			// Texture flags
 	};
-	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
-	unlitProperties.Bind();
+	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
+	properties.Bind();
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();

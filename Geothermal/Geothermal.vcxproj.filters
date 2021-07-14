@@ -221,16 +221,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ForwardLit.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Unlit.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="LitVertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="TexturedForwardLit.hlsl">
+    <FxCompile Include="ForwardLit.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="ColoredVertexShader.hlsl">

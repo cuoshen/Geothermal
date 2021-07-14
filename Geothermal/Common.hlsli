@@ -18,7 +18,7 @@ struct Varyings
 {
 	float4 clipPosition					:	SV_POSITION;
 	float3 worldPosition				:	WORLD_POSITION;
-	float2 texcoord						:	TEXCOORD;
+	float2 texcoord							:	TEXCOORD;
 	float3 normal							:	NORMAL;
 	float3 tangent							:	TANGENT;
 };

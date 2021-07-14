@@ -3,6 +3,12 @@
 
 namespace Geothermal::Graphics::Structures
 {
+	enum TEXTURE_FLAGS
+	{
+		USE_ALBEDO_MAP = 0x01,
+		USE_NORMAL_MAP = 0x02,
+	};
+
 	struct PhongAttributes
 	{
 		DirectX::XMFLOAT4 Ambient;
@@ -10,6 +16,9 @@ namespace Geothermal::Graphics::Structures
 		float Diffuse;
 		float Specular;
 		float Smoothness;
-		float Padding;	// Constant buffer size must be a multiple of 16 bytes, add empty padding
+		// In order to keep us aligned 
+		// we combine UseAlbedoMap and UserNormalMap into the same field
+		//	&0x01 bit for albedo, &0x02 bit for normal
+		int TextureFlags;
 	};
 }
