@@ -167,6 +167,8 @@
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="ObjectRenderer.cpp" />
     <ClCompile Include="QuadMesh.cpp" />
+    <ClCompile Include="RuntimeComponent.cpp" />
+    <ClCompile Include="RuntimeSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderCache.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -200,6 +202,8 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="QuadMesh.h" />
+    <ClInclude Include="RuntimeComponent.h" />
+    <ClInclude Include="RuntimeSystem.h" />
     <ClInclude Include="SamplerState.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCache.h" />

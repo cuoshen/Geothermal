@@ -75,6 +75,12 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>GUI\IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="RuntimeComponent.cpp">
+      <Filter>ECS\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="RuntimeSystem.cpp">
+      <Filter>ECS\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -181,6 +187,12 @@
     <ClInclude Include="imstb_truetype.h">
       <Filter>GUI\IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="RuntimeSystem.h">
+      <Filter>ECS\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeComponent.h">
+      <Filter>ECS\Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -218,6 +230,12 @@
     </Filter>
     <Filter Include="GUI\IMGUI">
       <UniqueIdentifier>{dafc21e0-dadb-4fb2-b7e7-41585c5600cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{a8cbdbe2-3892-4952-a7b6-20f603eb6e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Classes">
+      <UniqueIdentifier>{80e28424-91df-4f86-a6f0-49f6f5b9cf21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
