@@ -14,5 +14,5 @@ Install Visual Studio 2019 and cppwinrt plugin ([C++/WinRT - Visual Studio Marke
 
 After all is done, hit the big green button to fire it up :)
 
-![](docs\big_green_button.png)
+![image](docs\big_green_button.png)
 
