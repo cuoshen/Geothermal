@@ -150,6 +150,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="GameObject.h" />

@@ -81,6 +81,9 @@
     <ClCompile Include="RuntimeSystem.cpp">
       <Filter>ECS\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>ECS\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -191,6 +194,9 @@
       <Filter>ECS\Classes</Filter>
     </ClInclude>
     <ClInclude Include="RuntimeComponent.h">
+      <Filter>ECS\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
       <Filter>ECS\Classes</Filter>
     </ClInclude>
   </ItemGroup>
