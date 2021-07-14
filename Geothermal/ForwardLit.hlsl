@@ -52,8 +52,7 @@ float4 main(Varyings input) : SV_TARGET
 
 	// Lighting
 	float4 pixelColor = BaseColor + textureColor;
-	float3 mainLight = normalize(float3(0.0f, 1.0f, -1.0f));
-	float intensity = BlinnPhong(normal, input.worldPosition, mainLight, Diffuse, Specular, Smoothness);
+	float intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
 	pixelColor.xyz *= intensity;
 	pixelColor += Ambient;
 

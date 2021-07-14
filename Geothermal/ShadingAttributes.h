@@ -47,8 +47,16 @@ namespace Geothermal::Graphics::Structures
 	/// </summary>
 	struct LightBuffer
 	{
+		/// <summary>
+		/// Initialize with no additional lights
+		/// </summary>
+		LightBuffer(DirectionalLight main)
+		{
+			MainLight = main;
+			LightActivation.x = 0;
+		}
 		DirectionalLight			MainLight;
-		Light								AdditionalLight[MAX_POINT_LIGHTS_IN_SCENE];
-		DirectX::XMFLOAT4		LightActivation;
+		Light								AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
+		DirectX::XMUINT4		LightActivation;
 	};
 }

@@ -52,8 +52,7 @@ private:
 	void InstantiateDebugScene();
 
 	Meshes::Mesh* debugMesh;
-	Graphics::Structures::PhongAttributes shadingParameters;
-	void LoadDebugMesh();
+	void InitializeDebugResource();
 
 	void AddDebugGameObject(XMMATRIX initialTransform);
 #endif

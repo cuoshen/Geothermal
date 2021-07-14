@@ -49,7 +49,7 @@ cbuffer Lights : register(LIGHTS_SLOT)
 	DirectionalLight	MainLight;
 	Light						AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
 	// The x-component specify how many additional lights are active
-	float4						LightsActivation;
+	uint4						LightsActivation;
 };
 
 #endif

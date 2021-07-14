@@ -44,7 +44,7 @@ void GameMain::Initialize(shared_ptr<DeviceResources> deviceResources)
 	GameMain::instance = new GameMain(deviceResources);
 
 #ifdef DEBUG_SCENE
-	GameMain::instance->LoadDebugMesh();
+	GameMain::instance->InitializeDebugResource();
 	GameMain::instance->InstantiateDebugScene();
 #endif
 }
@@ -139,7 +139,7 @@ void GameMain::InstantiateDebugScene()
 	AddDebugGameObject(initialTransform);
 }
 
-void GameMain::LoadDebugMesh()
+void GameMain::InitializeDebugResource()
 {
 	ModelLoader loader;
 	debugMesh = new Mesh();
@@ -147,7 +147,8 @@ void GameMain::LoadDebugMesh()
 		//loader.LoadObj2Mesh(L"Assets\\stanford_dragon.obj", L"Assets\\stanford_dragon.mtl", debugMesh, deviceResources);
 		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
-	shadingParameters = PhongAttributes
+
+	PhongAttributes shadingParameters = PhongAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
 		{0.1f, 0.1f, 0.1f, 1.0f},												// Base color
@@ -158,6 +159,19 @@ void GameMain::LoadDebugMesh()
 	};
 	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
 	properties.Bind();
+
+	// For this debug scene we use a single main light
+	LightBuffer lightBuffer = LightBuffer
+	(
+		DirectionalLight
+		{
+			{1.0f, 1.0f, 1.0f, 1.0f},
+			{0.0f, -1.0f, 1.0f},
+			0.0f
+		}
+	);
+	PixelConstantBuffer<LightBuffer> lights(deviceResources, lightBuffer, 7u);
+	lights.Bind();
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
