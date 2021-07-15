@@ -54,6 +54,7 @@ namespace Geothermal::Graphics::Structures
 		{
 			MainLight = main;
 			LightActivation.x = 0;
+			memset(AdditionalLights, 0, sizeof(Light) * MAX_POINT_LIGHTS_IN_SCENE);
 		}
 		DirectionalLight			MainLight;
 		Light								AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
