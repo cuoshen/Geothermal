@@ -75,9 +75,6 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>GUI\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="RuntimeComponent.cpp">
-      <Filter>ECS\Basic Classes</Filter>
-    </ClCompile>
     <ClCompile Include="RuntimeSystem.cpp">
       <Filter>ECS\Basic Classes</Filter>
     </ClCompile>
@@ -87,7 +84,12 @@
     <ClCompile Include="Archtype.cpp">
       <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentPool.cpp" />
+    <ClCompile Include="ComponentPool.cpp">
+      <Filter>ECS\Metaclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="RuntimeComponent.cpp">
+      <Filter>ECS\Basic Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -197,9 +199,6 @@
     <ClInclude Include="RuntimeSystem.h">
       <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
-    <ClInclude Include="RuntimeComponent.h">
-      <Filter>ECS\Basic Classes</Filter>
-    </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
@@ -207,7 +206,12 @@
       <Filter>ECS\Metaclasses</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ComponentPool.h" />
+    <ClInclude Include="ComponentPool.h">
+      <Filter>ECS\Metaclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeComponent.h">
+      <Filter>ECS\Basic Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

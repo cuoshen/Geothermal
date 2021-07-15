@@ -1,4 +1,5 @@
 #pragma once
+
 /// <summary>
 /// systems should not contain any data, only methods
 /// this base class is abstract
@@ -6,6 +7,7 @@
 /// </summary>
 class RuntimeSystem
 {
+public:
 	virtual void Update();
 	virtual void LateUpdate();
 };
