@@ -170,12 +170,12 @@ void GameMain::InitializeDebugResource()
 	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
-	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &albedoSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(0, 1, &albedoSRVAddress);
 
 	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
-	deviceResources->D3DDeviceContext()->PSSetShaderResources(1, 1, &normalSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(1, 1, &normalSRVAddress);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)

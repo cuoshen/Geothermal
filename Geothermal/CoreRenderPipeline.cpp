@@ -95,8 +95,8 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::Render()
 {
-	deviceResources->SetTargets();	// Always set target to current back buffer before drawing
-	deviceResources->ClearView();		// Clear the view before we start drawing
+	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
+	deviceResources->ClearFrame();		// Clear the view before we start drawing
 
 	StartGUIFrame();
 

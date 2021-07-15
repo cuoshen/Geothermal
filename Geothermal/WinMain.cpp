@@ -48,7 +48,7 @@ void SetupGUI(HWND windowHandle, std::shared_ptr<DeviceResources> const& deviceR
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(windowHandle);
-	ImGui_ImplDX11_Init(deviceResources->D3DDevice(), deviceResources->D3DDeviceContext());
+	ImGui_ImplDX11_Init(deviceResources->Device(), deviceResources->Context());
 }
 
 void CleanupGUI()

@@ -34,15 +34,15 @@ namespace Geothermal::Graphics::Bindables
 			data.pSysMem = vertices.data();
 
 			winrt::check_hresult(
-				deviceResources->D3DDevice()->CreateBuffer(&bufferDescription, &data, vertexBuffer.put())
+				deviceResources->Device()->CreateBuffer(&bufferDescription, &data, vertexBuffer.put())
 			);
 		}
 
 		void Bind() override
 		{
 			ID3D11Buffer* vertexBufferPtr = this->vertexBuffer.get();
-			deviceResources->D3DDeviceContext()->IASetVertexBuffers(0, 1, &vertexBufferPtr, &stride, &offset);
-			deviceResources->D3DDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			deviceResources->Context()->IASetVertexBuffers(0, 1, &vertexBufferPtr, &stride, &offset);
+			deviceResources->Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
 		virtual bool IsIndexed() 
@@ -102,7 +102,7 @@ namespace Geothermal::Graphics::Bindables
 			data.pSysMem = indices.data();
 
 			winrt::check_hresult(
-				deviceResources->D3DDevice()->CreateBuffer(&indexBufferDescription, &data, indexBuffer.put())
+				deviceResources->Device()->CreateBuffer(&indexBufferDescription, &data, indexBuffer.put())
 			);
 		}
 
@@ -114,7 +114,7 @@ namespace Geothermal::Graphics::Bindables
 			if (isIndexed)
 			{
 				// Bind index buffer
-				deviceResources->D3DDeviceContext()->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
+				deviceResources->Context()->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
 			}
 		}
 

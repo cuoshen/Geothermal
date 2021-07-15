@@ -20,7 +20,7 @@ namespace Geothermal::Graphics::Bindables
 			samplerDescription.MaxLOD = FLT_MAX;
 
 			winrt::check_hresult(
-				deviceResources->D3DDevice()->
+				deviceResources->Device()->
 				CreateSamplerState(&samplerDescription, samplerState.put())
 			);
 		}
@@ -29,7 +29,7 @@ namespace Geothermal::Graphics::Bindables
 		{
 			// For a very preliminary implementation we should simply bind to PS
 			ID3D11SamplerState* samplerAddress = samplerState.get();
-			deviceResources->D3DDeviceContext()->PSSetSamplers(0, 1, &samplerAddress);
+			deviceResources->Context()->PSSetSamplers(0, 1, &samplerAddress);
 		}
 	private:
 		winrt::com_ptr<ID3D11SamplerState> samplerState;

@@ -26,7 +26,7 @@ Texture2D::Texture2D
 		(
 			CreateDDSTextureFromFile
 			(
-				deviceResources->D3DDevice(),
+				deviceResources->Device(),
 				filename.c_str(),
 				resource.put(),
 				nullptr
@@ -111,7 +111,7 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT heig
 	initialData.SysMemSlicePitch = static_cast<UINT>(imageSize);
 
 	check_hresult(
-		deviceResources->D3DDevice()->CreateTexture2D(&description, &initialData, texture.put())
+		deviceResources->Device()->CreateTexture2D(&description, &initialData, texture.put())
 	);
 }
 
@@ -141,7 +141,7 @@ void Texture2D::CreateShaderResourceView()
 	SRVDescription.Texture2D.MipLevels = 1;
 
 	check_hresult(
-		deviceResources->D3DDevice()->CreateShaderResourceView(texture.get(), nullptr, shaderResourceView.put())
+		deviceResources->Device()->CreateShaderResourceView(texture.get(), nullptr, shaderResourceView.put())
 	);
 }
 
@@ -152,6 +152,6 @@ void Texture2D::CreateRenderTargetView()
 	RTVDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	
 	check_hresult(
-		deviceResources->D3DDevice()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
+		deviceResources->Device()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
 	);
 }

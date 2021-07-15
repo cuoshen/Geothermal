@@ -171,7 +171,7 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
     );
     d3dContext->RSSetViewports(1, &screenViewPort);
 
-    SetTargets();
+    SetTargetsToBackBuffer();
 }
 
 void DeviceResources::ClearPreviousSizeDependentResources()
@@ -190,13 +190,13 @@ void DeviceResources::Present()
     d3dContext->DiscardView(depthStencilView.get());
 }
 
-void DeviceResources::ClearView()
+void DeviceResources::ClearFrame()
 {
     d3dContext->ClearRenderTargetView(backBufferTargetView.get(), ClearColor);
     d3dContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void DeviceResources::SetTargets()
+void DeviceResources::SetTargetsToBackBuffer()
 {
     ID3D11RenderTargetView* target = backBufferTargetView.get();
     d3dContext->OMSetRenderTargets(1, &target, depthStencilView.get());
