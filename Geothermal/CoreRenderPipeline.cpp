@@ -17,10 +17,12 @@ using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
-	deviceResources(deviceResources), camera(nullptr)
+	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr), 
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} )
 {
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
+	lightConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	OutputDebugString(L"Core Renderer ready \n");
 }
 
@@ -28,10 +30,10 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 // TODO: refactor into (Shader Cache + Material) system in support of custom shader
 void CoreRenderPipeline::LoadAllShaders()
 {
-	PixelShader unlitPixelShader(deviceResources, L"ForwardLit.cso");
-	VertexShader defaultVertexShader(deviceResources, L"LitVertexShader.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
-	unlitPixelShader.Bind();
-	defaultVertexShader.Bind();
+	PixelShader forwardLitPixelShader(deviceResources, L"ForwardLit.cso");
+	VertexShader litVertexShader(deviceResources, L"LitVertexShader.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
+	forwardLitPixelShader.Bind();
+	litVertexShader.Bind();
 }
 
 void CoreRenderPipeline::StartGUIFrame()
@@ -74,6 +76,23 @@ void CoreRenderPipeline::ResetCamera()
 	camera->Yaw(0.0f);
 }
 
+void CoreRenderPipeline::ShadowPass()
+{
+}
+
+void CoreRenderPipeline::SimpleForwardPass()
+{
+	// Update & bind all the lights
+	lightConstantBuffer->Update(lights);
+	lightConstantBuffer->Bind();
+
+	// For each object we render it in a single pass
+	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
+	{
+		gameObject->Render();
+	}
+}
+
 void CoreRenderPipeline::Render()
 {
 	deviceResources->SetTargets();	// Always set target to current back buffer before drawing
@@ -84,12 +103,8 @@ void CoreRenderPipeline::Render()
 	camera->Update();
 	camera->BindCamera2Pipeline();
 
-	// Simple forward rendering
-	// For each object we render it in a single pass
-	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
-	{
-		gameObject->Render();
-	}
+	ShadowPass();
+	SimpleForwardPass();
 
 	// Draw GUI on top of the game
 	DrawGUI();

@@ -164,19 +164,6 @@ void GameMain::InitializeDebugResource()
 	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
 	properties.Bind();
 
-	// For this debug scene we use a single main light
-	LightBuffer lightBuffer = LightBuffer
-	(
-		DirectionalLight
-		{
-			{1.0f, 1.0f, 1.0f, 1.0f},
-			{0.0f, -1.0f, 1.0f},
-			0.0f
-		}
-	);
-	PixelConstantBuffer<LightBuffer> lights(deviceResources, lightBuffer, 7u);
-	lights.Bind();
-
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
