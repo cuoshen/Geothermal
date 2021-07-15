@@ -170,6 +170,25 @@ void GameMain::InitializeDebugResource()
 			0.0f
 		}
 	);
+	lightBuffer.AdditionalLights[0] = Light
+	{
+		{1.0f, 1.0f, 1.0f, 1.0f},
+		{5.0f, 0.0f, 4.0f, 1.0f},
+		100.0f,
+		0.0f,
+		0,
+		0.0f
+	};
+	lightBuffer.AdditionalLights[1] = Light
+	{
+		{1.0f, 1.0f, 1.0f, 1.0f},
+		{-5.0f, 0.0f, 4.0f, 1.0f},
+		100.0f,
+		0.0f,
+		0,
+		0.0f
+	};
+	lightBuffer.LightActivation.x = 2;
 	PixelConstantBuffer<LightBuffer> lights(deviceResources, lightBuffer, 7u);
 	lights.Bind();
 

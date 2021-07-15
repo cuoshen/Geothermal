@@ -10,7 +10,15 @@ float Lambert(float3 normal, float3 lightDirection, float diffuseStrength)
 	return diffuse;
 }
 
-float BlinnPhong(float3 normal, float3 worldPosition, float3 lightDirection, float diffuseStrength, float specularStrength, float smoothness)
+float BlinnPhong
+(
+	float3 normal,
+	float3 worldPosition,
+	float3 lightDirection,
+	float diffuseStrength,
+	float specularStrength,
+	float smoothness
+)
 {
 	float3 viewDirection = normalize(CameraWorldPosition - worldPosition);
 	float3 halfway = normalize(lightDirection + viewDirection);

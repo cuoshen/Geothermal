@@ -1,5 +1,7 @@
 #include "Common.hlsli"
 
+#define ADDITIONAL_LIGHTS
+
 Texture2D AlbedoMap : register(ALBEDO_MAP_SLOT);
 Texture2D NormalMap : register(NORMAL_MAP_SLOT);
 SamplerState Sampler;
@@ -52,7 +54,24 @@ float4 main(Varyings input) : SV_TARGET
 
 	// Lighting
 	float4 pixelColor = BaseColor + textureColor;
-	float intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
+	// We want light direction to point TOWARDS the light, thus we negate main light direction
+	float3 mainLightDirection = normalize(-MainLight.Direction);
+	float intensity = 0.0f;
+	//intensity = BlinnPhong(normal, input.worldPosition, mainLightDirection, Diffuse, Specular, Smoothness);
+
+#ifdef	ADDITIONAL_LIGHTS
+	// For each additional light
+	for (uint i = 0; i < LightsActivation.x; i++)
+	{
+		Light light = AdditionalLights[i];
+		float3 lightDirection = light.Position - input.worldPosition;
+		if (length(lightDirection) < light.Radius)
+		{
+			intensity += BlinnPhong(normal, input.worldPosition, normalize(lightDirection), Diffuse, Specular, Smoothness);
+		}
+	}
+#endif
+
 	pixelColor.xyz *= intensity;
 	pixelColor += Ambient;
 
