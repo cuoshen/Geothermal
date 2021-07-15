@@ -20,7 +20,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	deviceResources(deviceResources), camera(nullptr)
 {
 	LoadAllShaders();
-	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 100.0f, deviceResources);
+	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	OutputDebugString(L"Core Renderer ready \n");
 }
 

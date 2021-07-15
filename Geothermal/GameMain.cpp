@@ -135,8 +135,12 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX initialTransform = XMMatrixRotationX(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 4.0f) ;
-	AddDebugGameObject(initialTransform);
+	XMMATRIX center = XMMatrixRotationX(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
+	for (int i = -2; i <= 2; i++)
+	{
+		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 3.0f, 0.0f, 0.0f);
+		AddDebugGameObject(initialTransform);
+	}
 }
 
 void GameMain::InitializeDebugResource()

@@ -47,7 +47,7 @@ namespace Geothermal
 		void Yaw(float yaw) { this->yaw = yaw; }
 	private:
 		const float mouseSensitivity = 0.001f;
-		const float speed = 1.0f;
+		const float speed = 2.0f;
 		const float pitchLimit = XM_PIDIV2 - 0.01f;
 		void HandleMovement();
 		void HandleRotation();
