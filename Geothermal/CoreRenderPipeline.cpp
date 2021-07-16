@@ -19,7 +19,7 @@ using namespace DirectX;
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr), 
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} ),
-	mainShadowMap(deviceResources, DXGI_FORMAT_D32_FLOAT, shadowMapDimensions.x, shadowMapDimensions.y)
+	mainShadowMap(deviceResources, DXGI_FORMAT_R32_TYPELESS, shadowMapDimensions.x, shadowMapDimensions.y)
 {
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
@@ -84,6 +84,8 @@ void CoreRenderPipeline::ShadowPass()
 		mainShadowMap.UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
 	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
+
+	// TODO: Draw from the perspective of light
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{

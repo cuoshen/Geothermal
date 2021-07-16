@@ -173,7 +173,7 @@ void Texture2D::CreateRenderTargetView()
 void Texture2D::CreateDepthStencilView()
 {
 	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-	depthStencilViewDesc.Format = format;
+	depthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
 
 	winrt::check_hresult(
 		deviceResources->Device()->CreateDepthStencilView(
@@ -189,13 +189,13 @@ D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UIN
 	D3D11_TEXTURE2D_DESC description = { 0 };
 	description.Width = width;
 	description.Height = height;
-	description.MipLevels = 1;
+	description.MipLevels = 0;
 	description.ArraySize = 1;
 	description.Format = format;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
 	description.Usage = D3D11_USAGE_DEFAULT;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_DEPTH_STENCIL;
+	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
 	description.CPUAccessFlags = 0;
 	description.MiscFlags = 0;
 
