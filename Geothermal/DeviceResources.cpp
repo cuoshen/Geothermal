@@ -31,11 +31,17 @@ void DeviceResources::CreateDeviceResources()
     com_ptr<ID3D11Device> device;
     com_ptr<ID3D11DeviceContext> context;
 
+    UINT creationFlags = 0;
+
+//#if defined(_DEBUG)
+//    creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+//#endif
+
     HRESULT hr = D3D11CreateDevice(
         nullptr,                                                    // Specify nullptr to use the default adapter.
         D3D_DRIVER_TYPE_HARDWARE,  // Create a device using the hardware graphics driver.
         0,                                                             // Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
-        0,                                                             // Set debug flags.
+        creationFlags,                                      // Set debug flags.
         featureLevels,                                      // List of feature levels this app can support.
         ARRAYSIZE(featureLevels),              // Size of the list above.
         D3D11_SDK_VERSION,                    // Always set this to D3D11_SDK_VERSION for Windows Runtime apps.
