@@ -88,18 +88,7 @@ Texture2D::Texture2D
 
 void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT height, UINT bitsPerPixel)
 {
-	D3D11_TEXTURE2D_DESC description = { 0 };
-	description.Width = width;
-	description.Height = height;
-	description.MipLevels = 1;
-	description.ArraySize = 1;
-	description.Format = format;
-	description.SampleDesc.Count = 1;
-	description.SampleDesc.Quality = 0;
-	description.Usage = D3D11_USAGE_DEFAULT;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	description.CPUAccessFlags = 0;
-	description.MiscFlags = 0;
+	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height);
 
 	// Take quotient
 	size_t rowPitch = (width * bitsPerPixel + 7) / 8;
@@ -112,6 +101,17 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT heig
 
 	check_hresult(
 		deviceResources->Device()->CreateTexture2D(&description, &initialData, texture.put())
+	);
+}
+
+Texture2D::Texture2D(shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, UINT width, UINT height) :
+	deviceResources(deviceResources),
+	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(format)
+{
+	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height);
+
+	check_hresult(
+		deviceResources->Device()->CreateTexture2D(&description, nullptr, texture.put())
 	);
 }
 
@@ -154,4 +154,22 @@ void Texture2D::CreateRenderTargetView()
 	check_hresult(
 		deviceResources->Device()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
 	);
+}
+
+D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UINT height)
+{
+	D3D11_TEXTURE2D_DESC description = { 0 };
+	description.Width = width;
+	description.Height = height;
+	description.MipLevels = 1;
+	description.ArraySize = 1;
+	description.Format = format;
+	description.SampleDesc.Count = 1;
+	description.SampleDesc.Quality = 0;
+	description.Usage = D3D11_USAGE_DEFAULT;
+	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	description.CPUAccessFlags = 0;
+	description.MiscFlags = 0;
+
+	return description;
 }

@@ -33,12 +33,20 @@ namespace Geothermal::Graphics
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
 			std::vector<char> data, DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel);
 
+		/// <summary>
+		/// Build one from scratch
+		/// </summary>
+		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
+			DXGI_FORMAT format, UINT width, UINT height);
+
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
 	private:
 		void CreateTextureFromMemory(std::vector<char> data, UINT width, UINT height, UINT bitsPerPixel);
 		void CreateShaderResourceView();
 		void CreateRenderTargetView();
+
+		D3D11_TEXTURE2D_DESC DefaultDescriptionFromParameters(UINT width, UINT height);
 
 		std::shared_ptr<DeviceResources> deviceResources;
 
