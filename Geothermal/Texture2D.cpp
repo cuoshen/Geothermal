@@ -12,7 +12,8 @@ Texture2D::Texture2D
 	hstring const& filename, TEXTURE_FILE_TYPE fileType
 ):
 	deviceResources(deviceResources),
-	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), 
+	texture(nullptr), 
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(DXGI_FORMAT_R8G8B8A8_SNORM)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
@@ -81,7 +82,9 @@ Texture2D::Texture2D
 	DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel
 ):
 	deviceResources(deviceResources),
-	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(format)
+	texture(nullptr), 
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
+	format(format)
 {
 	CreateTextureFromMemory(data, width, height, bitsPerPixel);
 }
@@ -106,7 +109,9 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT heig
 
 Texture2D::Texture2D(shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, UINT width, UINT height) :
 	deviceResources(deviceResources),
-	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(format)
+	texture(nullptr), 
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr), 
+	format(format)
 {
 	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height);
 
@@ -133,6 +138,15 @@ com_ptr<ID3D11RenderTargetView> Texture2D::UseAsRenderTarget()
 	return renderTargetView;
 }
 
+com_ptr<ID3D11DepthStencilView> Texture2D::UseAsDepthStencil()
+{
+	if (depthStencilView == nullptr)
+	{
+		CreateDepthStencilView();
+	}
+	return depthStencilView;
+}
+
 void Texture2D::CreateShaderResourceView()
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDescription = {};
@@ -156,6 +170,20 @@ void Texture2D::CreateRenderTargetView()
 	);
 }
 
+void Texture2D::CreateDepthStencilView()
+{
+	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+	depthStencilViewDesc.Format = format;
+
+	winrt::check_hresult(
+		deviceResources->Device()->CreateDepthStencilView(
+			texture.get(),
+			&depthStencilViewDesc,
+			depthStencilView.put()
+		)
+	);
+}
+
 D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UINT height)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
@@ -167,7 +195,7 @@ D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UIN
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
 	description.Usage = D3D11_USAGE_DEFAULT;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_DEPTH_STENCIL;
 	description.CPUAccessFlags = 0;
 	description.MiscFlags = 0;
 

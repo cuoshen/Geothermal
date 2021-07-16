@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "ShadingAttributes.h"
 #include "ConstantBuffer.h"
+#include "Texture2D.h"
 
 namespace Geothermal::Graphics
 {
@@ -36,6 +37,9 @@ namespace Geothermal::Graphics
 		void SimpleForwardPass();
 
 		Structures::DirectionalLight mainLight;
+
+		const XMUINT2 shadowMapDimensions = { 512, 512 };
+		Texture2D mainShadowMap;
 
 		Structures::LightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;

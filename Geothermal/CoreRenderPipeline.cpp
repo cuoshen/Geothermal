@@ -18,7 +18,8 @@ using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr), 
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} )
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} ),
+	mainShadowMap(deviceResources, DXGI_FORMAT_D32_FLOAT, shadowMapDimensions.x, shadowMapDimensions.y)
 {
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
@@ -78,10 +79,23 @@ void CoreRenderPipeline::ResetCamera()
 
 void CoreRenderPipeline::ShadowPass()
 {
+	deviceResources->Context()->ClearDepthStencilView
+	(
+		mainShadowMap.UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
+	);
+	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
+
+	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
+	{
+		gameObject->Render();
+	}
 }
 
 void CoreRenderPipeline::SimpleForwardPass()
 {
+	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
+	deviceResources->ClearFrame();		// Clear the view before we start drawing
+
 	// Update & bind all the lights
 	lightConstantBuffer->Update(lights);
 	lightConstantBuffer->Bind();
@@ -95,9 +109,6 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::Render()
 {
-	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
-	deviceResources->ClearFrame();		// Clear the view before we start drawing
-
 	StartGUIFrame();
 
 	camera->Update();

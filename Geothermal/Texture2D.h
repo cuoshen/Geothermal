@@ -41,10 +41,12 @@ namespace Geothermal::Graphics
 
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
+		winrt::com_ptr<ID3D11DepthStencilView> UseAsDepthStencil();
 	private:
 		void CreateTextureFromMemory(std::vector<char> data, UINT width, UINT height, UINT bitsPerPixel);
 		void CreateShaderResourceView();
 		void CreateRenderTargetView();
+		void CreateDepthStencilView();
 
 		D3D11_TEXTURE2D_DESC DefaultDescriptionFromParameters(UINT width, UINT height);
 
@@ -54,5 +56,6 @@ namespace Geothermal::Graphics
 		DXGI_FORMAT format;
 		winrt::com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 		winrt::com_ptr<ID3D11RenderTargetView> renderTargetView;
+		winrt::com_ptr<ID3D11DepthStencilView> depthStencilView;
 	};
 }

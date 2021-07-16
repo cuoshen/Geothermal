@@ -144,7 +144,7 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
         D3D11_BIND_DEPTH_STENCIL
     );
 
-    winrt::com_ptr<ID3D11Texture2D> depthStencil;
+    winrt::com_ptr<ID3D11Texture2D> depthStencil(nullptr);
     winrt::check_hresult(
         d3dDevice->CreateTexture2D(
             &depthStencilDesc,
@@ -199,5 +199,16 @@ void DeviceResources::ClearFrame()
 void DeviceResources::SetTargetsToBackBuffer()
 {
     ID3D11RenderTargetView* target = backBufferTargetView.get();
-    d3dContext->OMSetRenderTargets(1, &target, depthStencilView.get());
+    SetTargets(1, &target, depthStencilView.get());
+}
+
+void DeviceResources::SetTargets
+(
+    UINT numberOfViews, 
+    ID3D11RenderTargetView** targets, 
+    ID3D11DepthStencilView* depthStencilView
+)
+{
+    // Simply wraps OMSetRenderTargets
+    d3dContext->OMSetRenderTargets(numberOfViews, targets, depthStencilView);
 }

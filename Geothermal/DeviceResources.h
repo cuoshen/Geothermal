@@ -13,6 +13,8 @@ namespace Geothermal::Graphics
 		void SetWindow(HWND windowHandle, UINT width, UINT height);
 		void Present();
 
+		// Accessors
+
 		ID3D11Device* Device() const { return d3dDevice.get(); }
 		ID3D11DeviceContext3* Context() const { return d3dContext.get(); }
 		IDXGISwapChain1* SwapChain() const { return swapChain.get(); }
@@ -24,10 +26,21 @@ namespace Geothermal::Graphics
 		/// Clear back buffer to constant ClearColor
 		/// </summary>
 		void ClearFrame();
+
 		/// <summary>
 		/// Set graphic pipeline output to the back buffer
 		/// </summary>
 		void SetTargetsToBackBuffer();
+
+		/// <summary>
+		/// Set the output of OM stage to targets
+		/// </summary>
+		void SetTargets
+		(
+			UINT numberOfViews,
+			ID3D11RenderTargetView** targets,
+			ID3D11DepthStencilView* depthStencilView
+		);
 	private:
 		void CreateDeviceResources();
 		void CreateWindowSizeDependentResources(HWND windowHandle);
