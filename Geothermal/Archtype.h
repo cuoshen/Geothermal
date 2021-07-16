@@ -7,6 +7,12 @@ namespace ECS {
 	/// </summary>
 	class Archtype
 	{
+	public:
+		/// <summary>
+		/// request a 
+		/// </summary>
+		/// <returns></returns>
+		static int RequestTypeNumber();
 	};
 }
 
