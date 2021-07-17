@@ -72,7 +72,7 @@ UINT GameMain::HandleMessage(MSG msg)
 }
 
 /// <summary>
-/// Runs the main game of Update-Render until quit
+/// Runs the main game loop of Update-Render until quit
 /// </summary>
 /// <returns>Exit state</returns>
 WPARAM GameMain::Run()
@@ -95,7 +95,7 @@ WPARAM GameMain::Run()
 	return msg.wParam;
 }
 
-//#define SELF_ROTATE
+#define SELF_ROTATE
 
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
@@ -169,12 +169,12 @@ void GameMain::InitializeDebugResource()
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\paint_albedo.dds", DDS);
+	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
 	deviceResources->Context()->PSSetShaderResources(0, 1, &albedoSRVAddress);
 
-	Texture2D debugNormalTexture(deviceResources, L"Assets\\paint_normal.dds", DDS);
+	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
 	deviceResources->Context()->PSSetShaderResources(1, 1, &normalSRVAddress);

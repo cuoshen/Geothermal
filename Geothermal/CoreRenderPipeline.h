@@ -39,8 +39,9 @@ namespace Geothermal::Graphics
 
 		Structures::DirectionalLight mainLight;
 
-		const XMUINT2 shadowMapDimensions = { 512, 512 };
+		const XMUINT2 shadowMapDimensions = { 1024, 1024 };
 		ShadowMap mainShadowMap;
+		D3D11_VIEWPORT shadowViewPort;
 
 		Structures::LightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;

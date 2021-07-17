@@ -27,6 +27,12 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
+	shadowViewPort = CD3D11_VIEWPORT(
+		0.0f,
+		0.0f,
+		shadowMapDimensions.x,
+		shadowMapDimensions.y
+	);
 	OutputDebugString(L"Core Renderer ready \n");
 }
 
@@ -86,6 +92,7 @@ void CoreRenderPipeline::ShadowPass()
 	(
 		mainShadowMap.UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
+	deviceResources->Context()->RSSetViewports(1, &shadowViewPort);
 	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
 
 	// TODO: Draw from the perspective of light

@@ -204,6 +204,7 @@ void DeviceResources::ClearFrame()
 
 void DeviceResources::SetTargetsToBackBuffer()
 {
+    d3dContext->RSSetViewports(1, &screenViewPort);
     ID3D11RenderTargetView* target = backBufferTargetView.get();
     SetTargets(1, &target, depthStencilView.get());
 }
