@@ -19,7 +19,11 @@ using namespace DirectX;
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr), 
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} ),
-	mainShadowMap(deviceResources, DXGI_FORMAT_R32_TYPELESS, shadowMapDimensions.x, shadowMapDimensions.y)
+	mainShadowMap
+	(
+		deviceResources, DXGI_FORMAT_R32_TYPELESS, shadowMapDimensions.x, shadowMapDimensions.y, 
+		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL
+	)
 {
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
@@ -98,6 +102,8 @@ void CoreRenderPipeline::SimpleForwardPass()
 	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
 	deviceResources->ClearFrame();		// Clear the view before we start drawing
 
+	camera->BindCamera2Pipeline();		// Render from the perspective of the camera
+
 	// Update & bind all the lights
 	lightConstantBuffer->Update(lights);
 	lightConstantBuffer->Bind();
@@ -114,7 +120,6 @@ void CoreRenderPipeline::Render()
 	StartGUIFrame();
 
 	camera->Update();
-	camera->BindCamera2Pipeline();
 
 	ShadowPass();
 	SimpleForwardPass();

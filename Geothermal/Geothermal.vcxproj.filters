@@ -181,6 +181,9 @@
     <ClInclude Include="imstb_truetype.h">
       <Filter>GUI\IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

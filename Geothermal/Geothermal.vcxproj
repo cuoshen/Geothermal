@@ -205,6 +205,7 @@
     <ClInclude Include="ShaderCache.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="ShadingAttributes.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
