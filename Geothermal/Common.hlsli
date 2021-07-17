@@ -10,7 +10,7 @@ cbuffer TransformBuffer : register(TRANSFORM_BUFFER_SLOT)
 };
 
 // Camera supplies the world 2 clip transform as well as its position
-cbuffer CameraParameters : register(CAMERA_PARAMETERS_SLOT)
+cbuffer ViewParameters : register(VIEW_PARAMETERS_SLOT)
 {
 	matrix World2ClipTransform;
 	float3 CameraWorldPosition;

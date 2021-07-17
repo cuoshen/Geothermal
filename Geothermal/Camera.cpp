@@ -20,8 +20,8 @@ Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceReso
 	{
 		main = this;
 	}
-	parametersBufferVS = make_unique<VertexConstantBuffer<CameraParameters>>(deviceResources, 1u);
-	parametersBufferPS = make_unique<PixelConstantBuffer<CameraParameters>>(deviceResources, 1u);
+	parametersBufferVS = make_unique<VertexConstantBuffer<ViewParameters>>(deviceResources, 1u);
+	parametersBufferPS = make_unique<PixelConstantBuffer<ViewParameters>>(deviceResources, 1u);
 }
 
 Camera::~Camera()

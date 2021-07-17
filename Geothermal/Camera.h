@@ -12,7 +12,7 @@ namespace Geothermal
 	/// <summary>
 	/// Camera parameters constant buffer structure layout
 	/// </summary>
-	struct CameraParameters
+	struct ViewParameters
 	{
 		XMMATRIX World2ClipTransform;
 		XMFLOAT3 CameraWorldPosition;
@@ -59,9 +59,9 @@ namespace Geothermal
 		float pitch;
 		float yaw;
 
-		CameraParameters parameters;
-		std::unique_ptr<Graphics::Bindables::VertexConstantBuffer<CameraParameters>> parametersBufferVS;
-		std::unique_ptr<Graphics::Bindables::PixelConstantBuffer<CameraParameters>> parametersBufferPS;
+		ViewParameters parameters;
+		std::unique_ptr<Graphics::Bindables::VertexConstantBuffer<ViewParameters>> parametersBufferVS;
+		std::unique_ptr<Graphics::Bindables::PixelConstantBuffer<ViewParameters>> parametersBufferPS;
 
 		static Camera* main;
 	};

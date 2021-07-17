@@ -105,8 +105,8 @@ void CoreRenderPipeline::ShadowPass()
 	mainLightViewParameters.World2ClipTransform = 
 		XMMatrixLookToLH(position, direction, up) * XMMatrixOrthographicLH(30.0f, 30.0f, 0.0f, 1000.0f);
 
-	VertexConstantBuffer<CameraParameters> parametersBufferVS(deviceResources, mainLightViewParameters, 1u);
-	PixelConstantBuffer<CameraParameters> parametersBufferPS(deviceResources, mainLightViewParameters, 1u);
+	VertexConstantBuffer<ViewParameters> parametersBufferVS(deviceResources, mainLightViewParameters, 1u);
+	PixelConstantBuffer<ViewParameters> parametersBufferPS(deviceResources, mainLightViewParameters, 1u);
 	parametersBufferVS.Bind();
 	parametersBufferPS.Bind();
 
