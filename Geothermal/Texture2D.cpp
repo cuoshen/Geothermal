@@ -135,7 +135,7 @@ Texture2D::Texture2D
 
 com_ptr<ID3D11ShaderResourceView> Texture2D::UseAsShaderResource()
 {
-	if (shaderResourceView == nullptr)
+	if ((shaderResourceView == nullptr) && (bindFlags & D3D11_BIND_SHADER_RESOURCE))
 	{
 		CreateShaderResourceView();
 	}
@@ -144,7 +144,7 @@ com_ptr<ID3D11ShaderResourceView> Texture2D::UseAsShaderResource()
 
 com_ptr<ID3D11RenderTargetView> Texture2D::UseAsRenderTarget()
 {
-	if (renderTargetView == nullptr)
+	if ((renderTargetView == nullptr) && (bindFlags & D3D11_BIND_RENDER_TARGET))
 	{
 		CreateRenderTargetView();
 	}
@@ -153,7 +153,7 @@ com_ptr<ID3D11RenderTargetView> Texture2D::UseAsRenderTarget()
 
 com_ptr<ID3D11DepthStencilView> Texture2D::UseAsDepthStencil()
 {
-	if (depthStencilView == nullptr)
+	if ((depthStencilView == nullptr) && (bindFlags & D3D11_BIND_DEPTH_STENCIL))
 	{
 		CreateDepthStencilView();
 	}
@@ -186,7 +186,21 @@ void Texture2D::CreateRenderTargetView()
 void Texture2D::CreateDepthStencilView()
 {
 	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-	depthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
+
+	DXGI_FORMAT depthFormat;
+	switch (format)
+	{
+	case(DXGI_FORMAT_R32_TYPELESS):
+		depthFormat = DXGI_FORMAT_D32_FLOAT;
+		break;
+	case(DXGI_FORMAT_R24G8_TYPELESS):
+		depthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		break;
+	default:
+		throw runtime_error("incompatible format for depth stencil view creation");
+		break;
+	}
+	depthStencilViewDesc.Format = depthFormat;
 
 	winrt::check_hresult(
 		deviceResources->Device()->CreateDepthStencilView(

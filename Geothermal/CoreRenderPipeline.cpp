@@ -21,8 +21,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} ),
 	mainShadowMap
 	(
-		deviceResources, DXGI_FORMAT_R32_TYPELESS, shadowMapDimensions.x, shadowMapDimensions.y, 
-		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL
+		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
 	)
 {
 	LoadAllShaders();

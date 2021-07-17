@@ -4,6 +4,7 @@
 #include "ShadingAttributes.h"
 #include "ConstantBuffer.h"
 #include "Texture2D.h"
+#include "ShadowMap.h"
 
 namespace Geothermal::Graphics
 {
@@ -39,7 +40,7 @@ namespace Geothermal::Graphics
 		Structures::DirectionalLight mainLight;
 
 		const XMUINT2 shadowMapDimensions = { 512, 512 };
-		Texture2D mainShadowMap;
+		ShadowMap mainShadowMap;
 
 		Structures::LightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;
