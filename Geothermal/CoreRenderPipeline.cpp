@@ -75,6 +75,7 @@ void CoreRenderPipeline::DrawGUI()
 		ResetCamera();
 	}
 	ImGui::End();
+	
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
@@ -95,7 +96,19 @@ void CoreRenderPipeline::ShadowPass()
 	deviceResources->Context()->RSSetViewports(1, &shadowViewPort);
 	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
 
-	// TODO: Draw from the perspective of light
+	// Render from the perspective of the main light
+	mainLightViewParameters.CameraWorldPosition = mainLightShadowCastingOrigin;
+	XMVECTOR position = XMLoadFloat3(&mainLightShadowCastingOrigin);
+	XMVECTOR direction = XMLoadFloat3(&lights.MainLight.Direction);
+	XMFLOAT3 upFloat3 = XMFLOAT3{ 0.0f, 1.0f, 0.0f };
+	XMVECTOR up = XMLoadFloat3(&upFloat3);
+	mainLightViewParameters.World2ClipTransform = 
+		XMMatrixLookToLH(position, direction, up) * XMMatrixOrthographicLH(30.0f, 30.0f, 0.0f, 1000.0f);
+
+	VertexConstantBuffer<CameraParameters> parametersBufferVS(deviceResources, mainLightViewParameters, 1u);
+	PixelConstantBuffer<CameraParameters> parametersBufferPS(deviceResources, mainLightViewParameters, 1u);
+	parametersBufferVS.Bind();
+	parametersBufferPS.Bind();
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
@@ -108,13 +121,14 @@ void CoreRenderPipeline::SimpleForwardPass()
 	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
 	deviceResources->ClearFrame();		// Clear the view before we start drawing
 
-	camera->BindCamera2Pipeline();		// Render from the perspective of the camera
+	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
 	// Update & bind all the lights
 	lightConstantBuffer->Update(lights);
 	lightConstantBuffer->Bind();
 
 	// For each object we render it in a single pass
+	// TODO: sort objects
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Render();
