@@ -95,6 +95,8 @@ WPARAM GameMain::Run()
 	return msg.wParam;
 }
 
+//#define SELF_ROTATE
+
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
 /// </summary>
@@ -108,8 +110,7 @@ void GameMain::Update()
 	{
 		gameObject->Update();
 
-#ifdef DEBUG_SCENE
-		// Self-rotate
+#ifdef SELF_ROTATE
 		XMVECTOR position = gameObject->GetTransform()->WorldPosition();
 		gameObject->GetTransform()->ApplyTransform
 		(
@@ -135,7 +136,7 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX center = XMMatrixRotationX(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
+	XMMATRIX center = XMMatrixRotationY(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
 	for (int i = -2; i <= 2; i++)
 	{
 		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 3.0f, 0.0f, 0.0f);
@@ -148,31 +149,32 @@ void GameMain::InitializeDebugResource()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		//loader.LoadObj2Mesh(L"Assets\\stanford_dragon.obj", L"Assets\\stanford_dragon.mtl", debugMesh, deviceResources);
-		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\stanford_dragon_2.obj", L"Assets\\stanford_dragon_2.mtl", debugMesh, deviceResources);
+		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	PhongAttributes shadingParameters = PhongAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
 		{0.1f, 0.1f, 0.1f, 1.0f},												// Base color
-		0.5f,																			// Diffuse
-		0.5f,																			// Specular
-		20.0f,																			// Smoothness
-		USE_ALBEDO_MAP | USE_NORMAL_MAP			// Texture flags
+		0.5f,																				// Diffuse
+		0.5f,																				// Specular
+		10.0f,																				// Smoothness
+		USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
 	};
+
 	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
 	properties.Bind();
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", DDS);
+	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\paint_albedo.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
 	deviceResources->Context()->PSSetShaderResources(0, 1, &albedoSRVAddress);
 
-	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", DDS);
+	Texture2D debugNormalTexture(deviceResources, L"Assets\\paint_normal.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
 	deviceResources->Context()->PSSetShaderResources(1, 1, &normalSRVAddress);
