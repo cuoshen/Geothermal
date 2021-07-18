@@ -115,6 +115,14 @@ void CoreRenderPipeline::ShadowPass()
 	{
 		gameObject->Render();
 	}
+}
+
+void CoreRenderPipeline::SimpleForwardPass()
+{
+	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
+	deviceResources->ClearFrame();		// Clear the view before we start drawing
+
+	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
 	// Upload shadow map to GPU
 	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap.UseAsShaderResource();
@@ -126,14 +134,6 @@ void CoreRenderPipeline::ShadowPass()
 		deviceResources, XMMatrixTranspose(world2light * shadowCaster.Perspective()), 5u
 	);
 	parametersBufferVS.Bind();
-}
-
-void CoreRenderPipeline::SimpleForwardPass()
-{
-	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
-	deviceResources->ClearFrame();		// Clear the view before we start drawing
-
-	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
 	// Update & bind all the lights
 	lightConstantBuffer->Update(lights);
