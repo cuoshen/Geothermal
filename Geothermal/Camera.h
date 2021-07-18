@@ -6,8 +6,6 @@
 #include "DeviceResources.h"
 #include "ViewPoint.h"
 
-using namespace DirectX;
-
 namespace Geothermal
 {
 	/// <summary>
@@ -30,8 +28,8 @@ namespace Geothermal
 		/// </summary>
 		void SetMainToThis();
 
-		XMMATRIX World2View();
-		XMMATRIX World2Clip();
+		DirectX::XMMATRIX World2View();
+		DirectX::XMMATRIX World2Clip();
 		void BindCamera2Pipeline();
 
 		float Pitch() { return pitch; }
@@ -41,7 +39,7 @@ namespace Geothermal
 	private:
 		const float mouseSensitivity = 0.001f;
 		const float speed = 2.0f;
-		const float pitchLimit = XM_PIDIV2 - 0.01f;
+		const float pitchLimit = DirectX::XM_PIDIV2 - 0.01f;
 		void HandleMovement();
 		void HandleRotation();
 

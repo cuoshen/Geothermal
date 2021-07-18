@@ -5,6 +5,7 @@
 #include "ConstantBuffer.h"
 #include "Texture2D.h"
 #include "ShadowMap.h"
+#include "ViewPoint.h"
 
 namespace Geothermal::Graphics
 {
