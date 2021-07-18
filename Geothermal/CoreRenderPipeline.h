@@ -40,7 +40,7 @@ namespace Geothermal::Graphics
 
 		Structures::DirectionalLight mainLight;
 
-		const XMUINT2 shadowMapDimensions = { 1024, 1024 };
+		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
 		const XMFLOAT3 mainLightShadowCastingOrigin = {0.0f, 10.0f, 0.0f};
 		ShadowMap mainShadowMap;
 		D3D11_VIEWPORT shadowViewPort;
