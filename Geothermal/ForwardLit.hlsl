@@ -18,11 +18,6 @@ cbuffer Properties : register(PROPERTIES_SLOT)
 	int			TextureFlags;
 };
 
-cbuffer ShadowCasterParameters
-{
-	matrix World2Light;
-};
-
 float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample) 
 {
 	normalSample = (2.0f * normalSample) - 1.0f;		// Bring sample range from [0,1] to [-1,1]
@@ -36,9 +31,30 @@ float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 n
 	return normalize(mul(normalSample , tangent2World));
 }
 
-bool IsInShadow()
+const float BIAS = 0.01f;
+
+bool IsInShadow(float4 lightSpacePosition)
 {
-	return false;
+	// Project into Light Space NDC
+	float2 projectedPosition;
+	projectedPosition.x = lightSpacePosition.x / lightSpacePosition.w / 2.0f + 0.5f;
+	projectedPosition.y = lightSpacePosition.y / lightSpacePosition.w / 2.0f + 0.5f;
+
+	// Check whether both x and y falls within (0,1), if so it may fall in shadow
+	if 
+	(
+		(saturate(projectedPosition.x) == projectedPosition.x) &&
+		(saturate(projectedPosition.y) == projectedPosition.y)
+	)
+	{
+		float depthReachedByLight = ShadowMap.Sample(Sampler, projectedPosition);
+		depthReachedByLight += BIAS;
+		float depthOfPoint = lightSpacePosition.z / lightSpacePosition.w;
+
+		return (depthOfPoint > depthReachedByLight);
+	}
+
+	return false;		// Unaffected by this light source
 }
 
 float4 main(Varyings input) : SV_TARGET
@@ -46,10 +62,12 @@ float4 main(Varyings input) : SV_TARGET
 	float4 textureColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	float3 normal = normalize(input.normal);
 
-	// Sample textures if needed
+	// Parse texture flags
 	int useAlbedoMap = TextureFlags & 0x01;
 	int useNormalMap = TextureFlags & 0x02;
 	int useShadowMap = TextureFlags & 0x03;
+
+	// Sample textures if needed
 	if (useAlbedoMap)
 	{
 		textureColor = AlbedoMap.Sample(Sampler, input.texcoord);
@@ -68,7 +86,7 @@ float4 main(Varyings input) : SV_TARGET
 	if (useShadowMap)
 	{
 		// Evaluate IsInShadow iff we use shadow map
-		if (!IsInShadow())
+		if (!IsInShadow(input.lightSpacePosition))
 		{
 			intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
 		}
@@ -76,6 +94,16 @@ float4 main(Varyings input) : SV_TARGET
 	else
 	{
 		intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
+	}
+
+	for (uint i = 0; i < LightsActivation.x; i++)
+	{
+		float3 pointToLight = AdditionalLights[i].Position.xyz - input.worldPosition;
+		if (length(pointToLight) < AdditionalLights[i].Radius)
+		{
+			float3 lightDirection = normalize(pointToLight);
+			intensity += BlinnPhong(normal, input.worldPosition, lightDirection, Diffuse, Specular, Smoothness);
+		}
 	}
 
 	pixelColor.xyz *= intensity;

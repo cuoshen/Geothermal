@@ -109,13 +109,20 @@ void CoreRenderPipeline::ShadowPass()
 
 	// Render from the perspective of the main light
 	UpdateWorld2Light();
-
 	shadowCaster.Bind(world2light);
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
 		gameObject->Render();
 	}
+
+	// Upload shadow map to GPU
+	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap.UseAsShaderResource();
+	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
+	deviceResources->Context()->PSSetShaderResources(2, 1, &shadowMapSRVAddress);
+	// Upload shadow parameters to GPU
+	VertexConstantBuffer<XMMATRIX > parametersBufferVS(deviceResources, XMMatrixTranspose(world2light), 5u);
+	parametersBufferVS.Bind();
 }
 
 void CoreRenderPipeline::SimpleForwardPass()

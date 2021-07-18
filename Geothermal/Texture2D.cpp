@@ -163,12 +163,15 @@ com_ptr<ID3D11DepthStencilView> Texture2D::UseAsDepthStencil()
 void Texture2D::CreateShaderResourceView()
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDescription = {};
-	SRVDescription.Format = format;
+	if (format == DXGI_FORMAT_R32_TYPELESS)
+	{
+		SRVDescription.Format = DXGI_FORMAT_R32_FLOAT;
+	}
 	SRVDescription.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	SRVDescription.Texture2D.MipLevels = 1;
 
 	check_hresult(
-		deviceResources->Device()->CreateShaderResourceView(texture.get(), nullptr, shaderResourceView.put())
+		deviceResources->Device()->CreateShaderResourceView(texture.get(), &SRVDescription, shaderResourceView.put())
 	);
 }
 

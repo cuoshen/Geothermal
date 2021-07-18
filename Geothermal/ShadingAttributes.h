@@ -7,6 +7,7 @@ namespace Geothermal::Graphics::Structures
 	{
 		USE_ALBEDO_MAP = 0x01,
 		USE_NORMAL_MAP = 0x02,
+		USE_SHADOW_MAP = 0x03
 	};
 
 	struct PhongAttributes
