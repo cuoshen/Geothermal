@@ -31,14 +31,14 @@ float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 n
 	return normalize(mul(normalSample , tangent2World));
 }
 
-const float BIAS = 0.01f;
+const float BIAS = 0.001f;
 
 bool IsInShadow(float4 lightSpacePosition)
 {
 	// Project into Light Space NDC
 	float2 projectedPosition;
 	projectedPosition.x = lightSpacePosition.x / lightSpacePosition.w / 2.0f + 0.5f;
-	projectedPosition.y = lightSpacePosition.y / lightSpacePosition.w / 2.0f + 0.5f;
+	projectedPosition.y = -lightSpacePosition.y / lightSpacePosition.w / 2.0f + 0.5f;
 
 	// Check whether both x and y falls within (0,1), if so it may fall in shadow
 	if 
@@ -47,7 +47,7 @@ bool IsInShadow(float4 lightSpacePosition)
 		(saturate(projectedPosition.y) == projectedPosition.y)
 	)
 	{
-		float depthReachedByLight = ShadowMap.Sample(Sampler, projectedPosition);
+		float depthReachedByLight = ShadowMap.Sample(Sampler, projectedPosition).r;
 		depthReachedByLight += BIAS;
 		float depthOfPoint = lightSpacePosition.z / lightSpacePosition.w;
 
@@ -89,6 +89,10 @@ float4 main(Varyings input) : SV_TARGET
 		if (!IsInShadow(input.lightSpacePosition))
 		{
 			intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
+		}
+		else
+		{
+			return float4(1.0f, 0.0f, 0.0f, 1.0f);
 		}
 	}
 	else

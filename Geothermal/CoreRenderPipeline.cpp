@@ -121,7 +121,10 @@ void CoreRenderPipeline::ShadowPass()
 	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
 	deviceResources->Context()->PSSetShaderResources(2, 1, &shadowMapSRVAddress);
 	// Upload shadow parameters to GPU
-	VertexConstantBuffer<XMMATRIX > parametersBufferVS(deviceResources, XMMatrixTranspose(world2light), 5u);
+	VertexConstantBuffer<XMMATRIX > parametersBufferVS
+	(
+		deviceResources, XMMatrixTranspose(world2light * shadowCaster.Perspective()), 5u
+	);
 	parametersBufferVS.Bind();
 }
 

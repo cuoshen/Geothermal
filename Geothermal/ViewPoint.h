@@ -30,9 +30,9 @@ namespace Geothermal::Graphics
 
 		void Bind(DirectX::XMMATRIX world2View);
 
-	protected:
 		DirectX::XMMATRIX const& Perspective() { return perspective; }
 
+	protected:
 		float aspectRatio;
 		float nearZ;
 		float farZ;
