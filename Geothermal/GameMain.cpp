@@ -96,7 +96,7 @@ WPARAM GameMain::Run()
 	return msg.wParam;
 }
 
-//#define SELF_ROTATE
+#define SELF_ROTATE
 
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
@@ -112,13 +112,16 @@ void GameMain::Update()
 		gameObject->Update();
 
 #ifdef SELF_ROTATE
-		XMVECTOR position = gameObject->GetTransform()->WorldPosition();
-		gameObject->GetTransform()->ApplyTransform
-		(
-			XMMatrixTranslationFromVector(-position) * 
-			XMMatrixRotationY(deltaTime) * 
-			XMMatrixTranslationFromVector(position)
-		);
+		if (gameObject != ground)
+		{
+			XMVECTOR position = gameObject->GetTransform()->WorldPosition();
+			gameObject->GetTransform()->ApplyTransform
+			(
+				XMMatrixTranslationFromVector(-position) *
+				XMMatrixRotationY(deltaTime) *
+				XMMatrixTranslationFromVector(position)
+			);
+		}
 #endif
 	}
 
@@ -209,6 +212,7 @@ void GameMain::AddGround(XMMATRIX initialTransform)
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 
+	ground = product.get();
 	debugGameObjects.push_back(product);
 }
 

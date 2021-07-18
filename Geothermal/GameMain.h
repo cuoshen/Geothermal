@@ -53,6 +53,7 @@ private:
 
 	Meshes::Mesh* debugMesh;
 	Meshes::Mesh* debugPlane;
+	GameObject* ground;
 	void InitializeDebugResource();
 
 	void AddDebugGameObject(XMMATRIX initialTransform);
