@@ -64,7 +64,7 @@ float4 main(Varyings input) : SV_TARGET
 	// Parse texture flags
 	int useAlbedoMap = TextureFlags & 0x01;
 	int useNormalMap = TextureFlags & 0x02;
-	int useShadowMap = TextureFlags & 0x03;
+	int useShadowMap = TextureFlags & 0x04;
 
 	// Sample textures if needed
 	if (useAlbedoMap)
