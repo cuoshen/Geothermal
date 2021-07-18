@@ -2,6 +2,7 @@
 
 Texture2D AlbedoMap : register(ALBEDO_MAP_SLOT);
 Texture2D NormalMap : register(NORMAL_MAP_SLOT);
+Texture2D ShadowMap : register(t2);
 SamplerState Sampler;
 
 cbuffer Properties : register(PROPERTIES_SLOT)
@@ -12,9 +13,14 @@ cbuffer Properties : register(PROPERTIES_SLOT)
 	float		Specular;
 	float		Smoothness;
 	// In order to keep us aligned 
-	// we combine UseAlbedoMap and UserNormalMap into the same field
-	//	&0x01 bit for albedo, &0x02 bit for normal
+	// we combine texture usage into a single int32
+	//	&0x01 for albedo, &0x02 for normal, &0x03 for shadow
 	int			TextureFlags;
+};
+
+cbuffer ShadowCasterParameters
+{
+	matrix World2Light;
 };
 
 float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample) 
@@ -30,6 +36,11 @@ float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 n
 	return normalize(mul(normalSample , tangent2World));
 }
 
+bool IsInShadow()
+{
+	return false;
+}
+
 float4 main(Varyings input) : SV_TARGET
 {
 	float4 textureColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -38,6 +49,7 @@ float4 main(Varyings input) : SV_TARGET
 	// Sample textures if needed
 	int useAlbedoMap = TextureFlags & 0x01;
 	int useNormalMap = TextureFlags & 0x02;
+	int useShadowMap = TextureFlags & 0x03;
 	if (useAlbedoMap)
 	{
 		textureColor = AlbedoMap.Sample(Sampler, input.texcoord);
@@ -52,7 +64,20 @@ float4 main(Varyings input) : SV_TARGET
 
 	// Lighting
 	float4 pixelColor = BaseColor + textureColor;
-	float intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
+	float intensity = 0.0f;
+	if (useShadowMap)
+	{
+		// Evaluate IsInShadow iff we use shadow map
+		if (!IsInShadow())
+		{
+			intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
+		}
+	}
+	else
+	{
+		intensity = BlinnPhong(normal, input.worldPosition, -MainLight.Direction, Diffuse, Specular, Smoothness);
+	}
+
 	pixelColor.xyz *= intensity;
 	pixelColor += Ambient;
 

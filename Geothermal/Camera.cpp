@@ -68,11 +68,11 @@ void Camera::HandleMovement()
 
 	if (input->GetKeyDown(VK_SPACE))
 	{
-		transform->ApplyTransform(XMMatrixTranslationFromVector(0.1f * up));
+		transform->ApplyTransform(XMMatrixTranslationFromVector(0.5f * up));
 	}
 	else if (input->GetKeyDown(VK_CONTROL))
 	{
-		transform->ApplyTransform(XMMatrixTranslationFromVector(-0.1f * up));
+		transform->ApplyTransform(XMMatrixTranslationFromVector(-0.5f * up));
 	}
 }
 

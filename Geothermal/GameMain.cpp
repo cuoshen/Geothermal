@@ -16,6 +16,7 @@ using namespace Meshes;
 #endif
 
 using namespace std;
+using namespace DirectX;
 
 GameMain* GameMain::instance;
 
@@ -95,7 +96,7 @@ WPARAM GameMain::Run()
 	return msg.wParam;
 }
 
-#define SELF_ROTATE
+//#define SELF_ROTATE
 
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
@@ -136,12 +137,13 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX center = XMMatrixRotationY(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
+	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
 	for (int i = -2; i <= 2; i++)
 	{
 		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 3.0f, 0.0f, 0.0f);
 		AddDebugGameObject(initialTransform);
 	}
+	AddGround(center);
 }
 
 void GameMain::InitializeDebugResource()
@@ -151,6 +153,12 @@ void GameMain::InitializeDebugResource()
 	bool loaded =
 		loader.LoadObj2Mesh(L"Assets\\stanford_dragon_2.obj", L"Assets\\stanford_dragon_2.mtl", debugMesh, deviceResources);
 		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+	assert(loaded);
+
+	debugPlane = new Mesh();
+	ModelLoader loader2;
+	loaded =
+		loader2.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
 	PhongAttributes shadingParameters = PhongAttributes
@@ -186,6 +194,18 @@ void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
 	factory.BuildRenderer(*debugMesh, deviceResources); // Use the debug mesh
+	factory.SetObjectID(0x01);
+	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
+
+	debugGameObjects.push_back(product);
+}
+
+void GameMain::AddGround(XMMATRIX initialTransform)
+{
+	GameObjectFactory factory;
+	factory.MakeNewProduct();
+	factory.BuildTransform(initialTransform);
+	factory.BuildRenderer(*debugPlane, deviceResources); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 

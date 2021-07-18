@@ -52,8 +52,10 @@ private:
 	void InstantiateDebugScene();
 
 	Meshes::Mesh* debugMesh;
+	Meshes::Mesh* debugPlane;
 	void InitializeDebugResource();
 
 	void AddDebugGameObject(XMMATRIX initialTransform);
+	void AddGround(XMMATRIX initialTransform);
 #endif
 };
