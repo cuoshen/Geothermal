@@ -171,7 +171,7 @@ void GameMain::InitializeDebugResource()
 		0.5f,																				// Diffuse
 		0.5f,																				// Specular
 		10.0f,																				// Smoothness
-		USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
+		USE_ALBEDO_MAP | USE_NORMAL_MAP | USE_SHADOW_MAP		// Texture flags
 	};
 
 	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
