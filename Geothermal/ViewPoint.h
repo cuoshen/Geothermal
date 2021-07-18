@@ -28,8 +28,9 @@ namespace Geothermal::Graphics
 		ViewPoint(std::shared_ptr<DeviceResources> const& deviceResources,
 			float aspectRatio, float nearZ, float farZ);
 
-	protected:
 		void Bind(DirectX::XMMATRIX world2View);
+
+	protected:
 		DirectX::XMMATRIX const& Perspective() { return perspective; }
 
 		float aspectRatio;

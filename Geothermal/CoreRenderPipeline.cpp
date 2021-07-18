@@ -22,7 +22,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	mainShadowMap
 	(
 		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
-	)
+	),
+	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f)
 {
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
@@ -97,18 +98,12 @@ void CoreRenderPipeline::ShadowPass()
 	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
 
 	// Render from the perspective of the main light
-	mainLightViewParameters.CameraWorldPosition = mainLightShadowCastingOrigin;
 	XMVECTOR position = XMLoadFloat3(&mainLightShadowCastingOrigin);
 	XMVECTOR direction = XMLoadFloat3(&lights.MainLight.Direction);
 	XMFLOAT3 upFloat3 = XMFLOAT3{ 0.0f, 1.0f, 0.0f };
 	XMVECTOR up = XMLoadFloat3(&upFloat3);
-	mainLightViewParameters.World2ClipTransform = 
-		XMMatrixLookToLH(position, direction, up) * XMMatrixOrthographicLH(30.0f, 30.0f, 0.0f, 1000.0f);
 
-	VertexConstantBuffer<ViewParameters> parametersBufferVS(deviceResources, mainLightViewParameters, 1u);
-	PixelConstantBuffer<ViewParameters> parametersBufferPS(deviceResources, mainLightViewParameters, 1u);
-	parametersBufferVS.Bind();
-	parametersBufferPS.Bind();
+	shadowCaster.Bind(XMMatrixLookToLH(position, direction, up));
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{
