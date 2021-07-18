@@ -75,6 +75,9 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>GUI\IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="ViewPoint.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -182,6 +185,9 @@
       <Filter>GUI\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="ShadowMap.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewPoint.h">
       <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>

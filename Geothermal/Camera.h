@@ -4,28 +4,20 @@
 #include "GameObject.h"
 #include "ConstantBuffer.h"
 #include "DeviceResources.h"
+#include "ViewPoint.h"
 
 using namespace DirectX;
 
 namespace Geothermal
 {
 	/// <summary>
-	/// Camera parameters constant buffer structure layout
-	/// </summary>
-	struct ViewParameters
-	{
-		XMMATRIX World2ClipTransform;
-		XMFLOAT3 CameraWorldPosition;
-	};
-
-	/// <summary>
 	/// Camera object which describes how we view the scene.
 	/// Always manage with raw pointers, never use smart pointers.
 	/// </summary>
-	class Camera : public GameObject
+	class Camera : public Graphics::ViewPoint, public GameObject
 	{
 	public:
-		Camera(float aspectRatio, float nearZ, float farZ, std::shared_ptr<Graphics::DeviceResources> deviceResources);
+		Camera(float aspectRatio, float nearZ, float farZ, std::shared_ptr<Graphics::DeviceResources> const& deviceResources);
 		~Camera();
 		void Update() override;
 
@@ -38,7 +30,8 @@ namespace Geothermal
 		/// </summary>
 		void SetMainToThis();
 
-		XMMATRIX GetWorld2ClipMatrix();
+		XMMATRIX World2View();
+		XMMATRIX World2Clip();
 		void BindCamera2Pipeline();
 
 		float Pitch() { return pitch; }
@@ -52,16 +45,8 @@ namespace Geothermal
 		void HandleMovement();
 		void HandleRotation();
 
-		XMMATRIX perspective;
-		float aspectRatio;
-		float nearZ;
-		float farZ;
 		float pitch;
 		float yaw;
-
-		ViewParameters parameters;
-		std::unique_ptr<Graphics::Bindables::VertexConstantBuffer<ViewParameters>> parametersBufferVS;
-		std::unique_ptr<Graphics::Bindables::PixelConstantBuffer<ViewParameters>> parametersBufferPS;
 
 		static Camera* main;
 	};
