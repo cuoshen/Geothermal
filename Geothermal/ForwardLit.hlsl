@@ -31,6 +31,8 @@ float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 n
 	return normalize(mul(normalSample , tangent2World));
 }
 
+#define SHADOW_BIAS 0.0001f
+
 bool IsInShadow(float4 lightSpacePosition)
 {
 	// Project into Light Space NDC
@@ -46,8 +48,7 @@ bool IsInShadow(float4 lightSpacePosition)
 	)
 	{
 		float depthReachedByLight = ShadowMap.Sample(Sampler, projectedPosition).r;
-		float bias = 0.0001f;
-		depthReachedByLight += bias;
+		depthReachedByLight += SHADOW_BIAS;
 		float depthOfPoint = lightSpacePosition.z / lightSpacePosition.w;
 
 		return (depthOfPoint > depthReachedByLight);

@@ -40,6 +40,7 @@ namespace Geothermal::Graphics
 
 		Structures::DirectionalLight mainLight;
 
+		// TODO: Refactor into dedicated shadow caster class
 		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
 		const XMFLOAT3 mainLightShadowCastingOrigin = {0.0f, 10.0f, 0.0f};
 		ShadowMap mainShadowMap;
@@ -47,6 +48,9 @@ namespace Geothermal::Graphics
 		ViewPoint shadowCaster;
 		XMMATRIX world2light;
 		void UpdateWorld2Light();
+
+		void UploadShadowResources();
+		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > parametersBufferVS;
 
 		Structures::LightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;

@@ -23,7 +23,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	(
 		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
 	),
-	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f)
+	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
+	parametersBufferVS(deviceResources, 5u)
 {
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
@@ -98,6 +99,17 @@ void CoreRenderPipeline::UpdateWorld2Light()
 	world2light = XMMatrixLookToLH(position, direction, up);
 }
 
+void CoreRenderPipeline::UploadShadowResources()
+{
+	// Upload shadow map to GPU
+	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap.UseAsShaderResource();
+	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
+	deviceResources->Context()->PSSetShaderResources(2, 1, &shadowMapSRVAddress);
+	// Upload shadow parameters to GPU
+	parametersBufferVS.Update(XMMatrixTranspose(world2light * shadowCaster.Perspective()));
+	parametersBufferVS.Bind();
+}
+
 void CoreRenderPipeline::ShadowPass()
 {
 	deviceResources->Context()->ClearDepthStencilView
@@ -124,16 +136,7 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
-	// Upload shadow map to GPU
-	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap.UseAsShaderResource();
-	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
-	deviceResources->Context()->PSSetShaderResources(2, 1, &shadowMapSRVAddress);
-	// Upload shadow parameters to GPU
-	VertexConstantBuffer<XMMATRIX > parametersBufferVS
-	(
-		deviceResources, XMMatrixTranspose(world2light * shadowCaster.Perspective()), 5u
-	);
-	parametersBufferVS.Bind();
+	UploadShadowResources();
 
 	// Update & bind all the lights
 	lightConstantBuffer->Update(lights);
