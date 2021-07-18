@@ -150,6 +150,7 @@
     <ClCompile Include="Archtype.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ComponentPool.cpp" />
+    <ClCompile Include="ComponentPoolBase.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ComponentPool.h" />
+    <ClInclude Include="ComponentPoolBase.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeviceResources.h" />

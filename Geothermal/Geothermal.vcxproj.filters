@@ -84,12 +84,17 @@
     <ClCompile Include="Archtype.cpp">
       <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="EntityManager.cpp">
       <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
     <ClCompile Include="T_DummyComponent.cpp">
       <Filter>ECS\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentPool.cpp">
+      <Filter>ECS\Metaclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentPoolBase.cpp">
+      <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,12 +212,17 @@
       <Filter>ECS\Metaclasses</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="EntityManager.h">
       <Filter>ECS\Metaclasses</Filter>
     </ClInclude>
     <ClInclude Include="T_DummyComponent.h">
       <Filter>ECS\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentPool.h">
+      <Filter>ECS\Metaclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentPoolBase.h">
+      <Filter>ECS\Metaclasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

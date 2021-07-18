@@ -11,25 +11,11 @@ namespace ECS {
 	/// </summary>
 	class RuntimeComponent
 	{
-	public:
+	public: /* fields */
 		/// <summary>
-		/// Request a unique integer representing a type of components.
+		/// Since we are using vector storage, we'll need a way to tell if a buffer member is used or not.
 		/// </summary>
-		/// <returns>integer represnets the calling type</returns>
-		static int RequestType();
-
-		/// <summary>
-		/// Get the integer representing this derived component type.
-		/// </summary>
-		/// <returns>type id of the component</returns>
-		virtual int GetType() = 0;
-	private: 
-		/// <summary>
-		/// how many types we currently have
-		/// </summary>
-		static int maxTypes;
+		bool isUsed = false;
 	};
-
-	int RuntimeComponent::maxTypes = 0;
 }
 
