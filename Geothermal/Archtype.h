@@ -1,5 +1,5 @@
 #pragma once
-
+#include <exception>
 
 namespace ECS {
 	/// <summary>
@@ -9,10 +9,18 @@ namespace ECS {
 	{
 	public:
 		/// <summary>
-		/// request a 
+		/// request a type identifier for your component
 		/// </summary>
 		/// <returns></returns>
 		static int RequestTypeNumber();
+
+		void SetTypes(int types, ...);
+	};
+
+	struct ArchtypeParameterException : public std::exception {
+		const char* what() const throw () {
+			return "Archtype parameter exception: Wrong argument to archtype constructor!";
+		}
 	};
 }
 

@@ -88,6 +88,9 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
+    <ClCompile Include="T_DummyComponent.cpp">
+      <Filter>ECS\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -208,6 +211,9 @@
     <ClInclude Include="EntityManager.h">
       <Filter>ECS\Metaclasses</Filter>
     </ClInclude>
+    <ClInclude Include="T_DummyComponent.h">
+      <Filter>ECS\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -254,6 +260,9 @@
     </Filter>
     <Filter Include="ECS\Metaclasses">
       <UniqueIdentifier>{e4c62673-06d9-49e4-bd81-f79f9bb7da58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Debug">
+      <UniqueIdentifier>{26adfe78-fd37-4e03-b27f-f75cf7889a51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

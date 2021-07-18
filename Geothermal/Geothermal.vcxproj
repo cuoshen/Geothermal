@@ -177,6 +177,7 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="T_DummyComponent.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +220,7 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="T_DummyComponent.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Vertices.h" />
