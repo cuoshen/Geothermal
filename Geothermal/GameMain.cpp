@@ -156,9 +156,9 @@ void GameMain::InitializeDebugResource()
 	assert(loaded);
 
 	debugPlane = new Mesh();
-	ModelLoader loader2;
+	ModelLoader planeLoader;
 	loaded =
-		loader2.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
+		planeLoader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
 	PhongAttributes shadingParameters = PhongAttributes

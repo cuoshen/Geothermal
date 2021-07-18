@@ -88,6 +88,16 @@ void CoreRenderPipeline::ResetCamera()
 	camera->Yaw(0.0f);
 }
 
+void CoreRenderPipeline::UpdateWorld2Light()
+{
+	XMVECTOR position = XMLoadFloat3(&mainLightShadowCastingOrigin);
+	XMVECTOR direction = XMLoadFloat3(&lights.MainLight.Direction);
+	XMFLOAT3 upFloat3 = XMFLOAT3{ 0.0f, 1.0f, 0.0f };
+	XMVECTOR up = XMLoadFloat3(&upFloat3);
+
+	world2light = XMMatrixLookToLH(position, direction, up);
+}
+
 void CoreRenderPipeline::ShadowPass()
 {
 	deviceResources->Context()->ClearDepthStencilView
@@ -98,12 +108,9 @@ void CoreRenderPipeline::ShadowPass()
 	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
 
 	// Render from the perspective of the main light
-	XMVECTOR position = XMLoadFloat3(&mainLightShadowCastingOrigin);
-	XMVECTOR direction = XMLoadFloat3(&lights.MainLight.Direction);
-	XMFLOAT3 upFloat3 = XMFLOAT3{ 0.0f, 1.0f, 0.0f };
-	XMVECTOR up = XMLoadFloat3(&upFloat3);
+	UpdateWorld2Light();
 
-	shadowCaster.Bind(XMMatrixLookToLH(position, direction, up));
+	shadowCaster.Bind(world2light);
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
 	{

@@ -45,6 +45,8 @@ namespace Geothermal::Graphics
 		ShadowMap mainShadowMap;
 		D3D11_VIEWPORT shadowViewPort;
 		ViewPoint shadowCaster;
+		XMMATRIX world2light;
+		void UpdateWorld2Light();
 
 		Structures::LightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;
