@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "ComponentPoolBase.h"
+#include "Primes.h"
 
 // TODO: implement the function
 int ECS::GetNthPrime(int n)
 {
-	return -1;
+	return ECS_Tools::primes[n];
 }
 
 // TODO: give each request a prime number instead of consecutive integers.

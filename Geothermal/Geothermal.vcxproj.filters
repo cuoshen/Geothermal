@@ -224,6 +224,9 @@
     <ClInclude Include="ComponentPoolBase.h">
       <Filter>ECS\Metaclasses</Filter>
     </ClInclude>
+    <ClInclude Include="Primes.h">
+      <Filter>ECS\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -273,6 +276,9 @@
     </Filter>
     <Filter Include="ECS\Debug">
       <UniqueIdentifier>{26adfe78-fd37-4e03-b27f-f75cf7889a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Utilities">
+      <UniqueIdentifier>{5044ac1d-0cca-4e49-b436-ce3a89ab0b70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
