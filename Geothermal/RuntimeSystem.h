@@ -8,7 +8,22 @@
 class RuntimeSystem
 {
 public:
+	bool activated;
+
+public:
+	void PublicTickHandle();
+
+	void PublicLateTickHandle();
+
+protected:
+	/// <summary>
+	/// Override the update function to add custom logic.
+	/// </summary>
 	virtual void Update() = 0;
+
+	/// <summary>
+	/// Override late update function to add logic that's executed after every update function.
+	/// </summary>
 	virtual void LateUpdate() = 0;
 };
 
