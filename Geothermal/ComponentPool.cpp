@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ComponentPool.h"
 #include "RuntimeComponent.h"
 
@@ -38,6 +39,12 @@ namespace ECS {
 	void ComponentPool<C>::DeleteComponent(C* removee)
 	{
 
+	}
+
+	template<class C>
+	int ComponentPool<C>::GetType()
+	{
+		return m_type;
 	}
 }
 

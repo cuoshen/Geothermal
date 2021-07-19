@@ -50,6 +50,8 @@ namespace ECS
 		/// <param name="removee">component to be removed</param>
 		void DeleteComponent(C* removee);
 
+		int GetType() override;
+
 
 	private: /* methods */
 		/// <summary>
