@@ -42,7 +42,7 @@ namespace ECS {
 	}
 
 	template<class C>
-	int ComponentPool<C>::GetType()
+	int ComponentPool<C>::GetType() const
 	{
 		return m_type;
 	}

@@ -50,8 +50,7 @@ namespace ECS
 		/// <param name="removee">component to be removed</param>
 		void DeleteComponent(C* removee);
 
-		int GetType() override;
-
+		int GetType() const override;
 
 	private: /* methods */
 		/// <summary>
@@ -61,7 +60,6 @@ namespace ECS
 		ComponentPool<C>();
 	};
 
-	// TODO: this might be erroneous
 	template <class C>
 	ComponentPool<C>* ComponentPool<C>::m_instance = nullptr;
 }

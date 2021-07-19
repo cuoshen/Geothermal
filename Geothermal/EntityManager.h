@@ -46,6 +46,7 @@ namespace ECS {
 		/// <param name="removee">entity of this component</param>
 		/// <returns></returns>
 		EntityID GetEntity(RuntimeComponent* source);
+		
 	};
 
 }

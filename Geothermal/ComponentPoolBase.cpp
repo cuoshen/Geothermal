@@ -1,6 +1,13 @@
 #include "pch.h"
 #include "ComponentPoolBase.h"
 
+// TODO: implement the function
+int ECS::GetNthPrime(int n)
+{
+	return -1;
+}
+
+// TODO: give each request a prime number instead of consecutive integers.
 int ECS::ComponentPoolBase::RequestTypeID(ComponentPoolBase* newPool)
 {
 	if (m_TypesCount >= MAX_TYPES)
@@ -12,8 +19,9 @@ int ECS::ComponentPoolBase::RequestTypeID(ComponentPoolBase* newPool)
 		return m_PoolToId[newPool];
 	}
 	else {
-		m_IdToPool.insert({ m_TypesCount, newPool });
-		return m_TypesCount++;
+		m_IdToPool.insert({ GetNthPrime(m_TypesCount), newPool });
+		m_TypesCount++;
+		return GetNthPrime(m_TypesCount);
 	}
 }
 
