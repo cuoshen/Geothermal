@@ -18,7 +18,7 @@ using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr), 
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, -1.0f, 1.0f}, 0.0f} ),
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f} ),
 	mainShadowMap
 	(
 		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
