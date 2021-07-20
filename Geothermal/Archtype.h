@@ -3,7 +3,8 @@
 #include "ComponentPoolBase.h"
 #include <vector>
 
-namespace ECS {
+namespace ECS 
+{
 	/// <summary>
 	/// we need a way to combine a vector of component types into uniquely identified archtypes
 	/// </summary>
@@ -21,7 +22,7 @@ namespace ECS {
 		/// <summary>
 		/// The js-like handler to add a new type into archtype.
 		/// The intended usage is like:
-		///		Archtype newArchType = Archtype()->AddType(A)->AddType(B);
+		///		Archtype newArchType(); newArchType.AddType(A)->AddType(B);
 		///	Caution: only unique types can be added!
 		/// </summary>
 		/// <param name="newTypePool">pass pointer to a concrete component pool</param>
@@ -41,6 +42,13 @@ namespace ECS {
 		/// <param name="other"></param>
 		/// <returns></returns>
 		bool IsContainedBy(const Archtype& other) const { return other.Contains(*this); }
+
+		/// <summary>
+		/// Decides if the 2 giving archtypes have any types in common.
+		/// </summary>
+		/// <param name="other">the other archtype to test with</param>
+		/// <returns>bool: if there's at least one overlapping type</returns>
+		bool Overlaps(const Archtype& other) const;
 	};
 }
 
