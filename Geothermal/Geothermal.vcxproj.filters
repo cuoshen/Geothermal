@@ -96,6 +96,9 @@
     <ClCompile Include="ComponentPoolBase.cpp">
       <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
+    <ClCompile Include="T_DummySystem.cpp">
+      <Filter>ECS\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -226,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="Primes.h">
       <Filter>ECS\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="T_DummySystem.h">
+      <Filter>ECS\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityComponentSystem.h">
+      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,29 +1,79 @@
 #pragma once
+#include "Archtype.h"
 
-/// <summary>
-/// systems should not contain any data, only methods
-/// this base class is abstract
-/// system is job (don't separate them into 2 concepts)
-/// </summary>
-class RuntimeSystem
-{
-public:
-	bool activated;
-
-public:
-	void PublicTickHandle();
-
-	void PublicLateTickHandle();
-
-protected:
+namespace ECS {
 	/// <summary>
-	/// Override the update function to add custom logic.
+	/// Systems should not contain any data, only methods
+	/// This base class is abstract
+	/// System is job (don't separate them into 2 concepts)
+	/// Destructor is not defined as systems are not supposed to have data member.
+	///
+	/// Implement these methods at the very least: Update(), ReadWriteRequest()
 	/// </summary>
-	virtual void Update() = 0;
+	class RuntimeSystem
+	{
+	public: /* static fields */
+		static std::vector<RuntimeSystem*> concreteSystems;
 
-	/// <summary>
-	/// Override late update function to add logic that's executed after every update function.
-	/// </summary>
-	virtual void LateUpdate() = 0;
-};
+	public: /* static methods */
+		static void RegisterSystem(RuntimeSystem* newSystem) { concreteSystems.push_back(newSystem); }
+		
+	public: /* fields */
+		/// <summary>
+		/// If this system should be executed. Default true.
+		/// </summary>
+		bool activated = true;
+
+	public: /* methods */
+		/// <summary>
+		/// When inheriting, make sure to include the base class as it's part of a observer interface.
+		/// </summary>
+		RuntimeSystem() : activated(true) { RegisterSystem(this); }
+
+		/// <summary>
+		/// Handle system tick, should not be overriden.
+		/// </summary>
+		void PublicTickHandle();
+
+		/// <summary>
+		/// Handle system late tick, should not be overriden.
+		/// </summary>
+		void PublicLateTickHandle();
+	
+	protected:
+		/// <summary>
+		/// Override the update function to add custom logic.
+		/// </summary>
+		virtual void Update() = 0;
+
+		/// <summary>
+		/// Override late update function to add logic that's executed after every update function.
+		/// </summary>
+		virtual void LateUpdate() {}
+
+		/// <summary>
+		/// Get the types this system will use.
+		/// </summary>
+		/// <returns>requested archtype</returns>
+		virtual ECS::Archtype ReadWriteRequest() = 0;
+
+		/// <summary>
+		/// Get the types this system will read, by default it's empty.
+		/// </summary>
+		/// <returns>requested archtype</returns>
+		virtual Archtype ReadOnlyRequest() { return Archtype(); }
+
+		/// <summary>
+		/// Get the types this system reads/writes during late update.
+		/// </summary>
+		/// <returns></returns>
+		virtual Archtype LateReadWriteRequest() { return Archtype(); }
+
+		/// <summary>
+		/// Get the types this system reads during late update
+		/// </summary>
+		/// <returns>requested archtype</returns>
+		virtual Archtype LateReadOnlyRequest() { return Archtype(); }
+	};
+}
 

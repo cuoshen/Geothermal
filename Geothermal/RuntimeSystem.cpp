@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "RuntimeSystem.h"
 
-void RuntimeSystem::PublicTickHandle()
+void ECS::RuntimeSystem::PublicTickHandle()
 {
+	Update();
 }
 
-void RuntimeSystem::PublicLateTickHandle()
+void ECS::RuntimeSystem::PublicLateTickHandle()
 {
+	LateUpdate();
 }

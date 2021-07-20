@@ -179,6 +179,7 @@
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="T_DummyComponent.cpp" />
+    <ClCompile Include="T_DummySystem.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +191,7 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="EntityComponentSystem.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="GameMain.h" />
@@ -224,6 +226,7 @@
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="T_DummyComponent.h" />
+    <ClInclude Include="T_DummySystem.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Vertices.h" />

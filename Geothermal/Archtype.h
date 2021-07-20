@@ -9,16 +9,20 @@ namespace ECS {
 	/// </summary>
 	class Archtype
 	{
-	private:
+	private: /* fields */
 		int m_TypeCombination;
-		
+	
 	public:
+		/// <summary>
+		/// The default constructor that does nothing.
+		/// </summary>
 		Archtype() : m_TypeCombination(1) {}
-
+		
 		/// <summary>
 		/// The js-like handler to add a new type into archtype.
 		/// The intended usage is like:
-		///		Archtype newArchType = Archtype()->AddType(acomponent)->AddType(bcomponent);
+		///		Archtype newArchType = Archtype()->AddType(A)->AddType(B);
+		///	Caution: only unique types can be added!
 		/// </summary>
 		/// <param name="newTypePool">pass pointer to a concrete component pool</param>
 		/// <returns></returns>
