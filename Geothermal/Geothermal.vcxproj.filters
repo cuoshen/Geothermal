@@ -99,6 +99,9 @@
     <ClCompile Include="T_DummySystem.cpp">
       <Filter>ECS\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="RuntimeSystemLinear.cpp">
+      <Filter>ECS\Basic Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -236,6 +239,7 @@
     <ClInclude Include="EntityComponentSystem.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="RuntimeSystemLinear.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
