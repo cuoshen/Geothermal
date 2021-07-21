@@ -35,7 +35,7 @@ namespace ECS
 			}
 		}
 
-		// if there's no qualifying prime, retreat
+		// if there's no qualifying prime, deny it
 		return false;
 	}
 }

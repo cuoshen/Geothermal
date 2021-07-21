@@ -2,12 +2,14 @@
 
 #include <unordered_map>
 #include <exception>
+#include "EntityManager.h"
 
 namespace ECS {
 	/// <summary>
 	/// The base class of Component pools,
 	/// used for type id management.
 	/// What does it mean by the error message?
+	/// ABSTRACT
 	/// </summary>
 	class ComponentPoolBase
 	{
@@ -32,11 +34,20 @@ namespace ECS {
 		/// </summary>
 		static int MAX_TYPES;
 
-	public: /* static methods */
+	private: /* static methods */
+		/// <summary>
+		/// Given a type number, return a pool instance.
+		/// Only open to EntityManager.
+		/// </summary>
+		/// <param name="typeNum"></param>
+		/// <returns></returns>
+		static ComponentPoolBase* GetPool(int typeNum);
+
+	protected: /* static methods */
 		/// <summary>
 		/// Request a unique type ID from a derived component pool singleton instance.
 		/// </summary>
-		/// <param name="newPool"></param>
+		/// <param name="newPool">pinter to the type's factory instance</param>
 		/// <returns></returns>
 		static int RequestTypeID(ComponentPoolBase* newPool);
 
@@ -49,6 +60,10 @@ namespace ECS {
 
 		// make the default destructor virtual
 		virtual ~ComponentPoolBase() = default;
+
+	private: /* friends */
+		// entity manager is still within the system so it can access the actual numerical representatio of types
+		friend class EntityManager;
 	};
 
 	/* initialize static members */
@@ -57,16 +72,16 @@ namespace ECS {
 	std::unordered_map<ComponentPoolBase*, int> ComponentPoolBase::m_PoolToId = std::unordered_map<ComponentPoolBase*, int>();
 	int ComponentPoolBase::MAX_TYPES = 1000;
 
-
-	/// <summary>
-	/// Custom exception class to handle type creation.
-	/// </summary>
-	class TooManyComponentTypesException : public std::exception
-	{
-		const char * what () {
-			return "ECS Error: number of component types exceeds max defined in ComponentPoolBase.h";
-		}
-	};
+	// I removed this since there's no chance a user uses more than 100 components
+	///// <summary>
+	///// Custom exception class to handle type creation.
+	///// </summary>
+	//class TooManyComponentTypesException : public std::exception
+	//{
+	//	const char * what () {
+	//		return "ECS Error: number of component types exceeds max defined in ComponentPoolBase.h";
+	//	}
+	//};
 
 	/// <summary>
 	/// Utility function, find the nth prime number, start at 0.

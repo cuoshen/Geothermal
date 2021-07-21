@@ -7,13 +7,14 @@ namespace ECS
 {
 	/// <summary>
 	/// we need a way to combine a vector of component types into uniquely identified archtypes
+	/// for the desired usage, we would also value fast creation and deletion of these
 	/// </summary>
 	class Archtype
 	{
 	private: /* fields */
 		int m_TypeCombination;
 	
-	public:
+	public: /* methods */
 		/// <summary>
 		/// The default constructor that does nothing.
 		/// </summary>

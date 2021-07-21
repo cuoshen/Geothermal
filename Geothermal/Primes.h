@@ -1,8 +1,12 @@
 #pragma once
 
+#include <vector>
+
 namespace ECS_Tools
 {
-	static int primes[] = {
+	//const int primes_used_count = 500;
+	
+	const int primes[] = {
 		2u, 3u, 5u, 7u, 11u, 13u, 17u, 19u, 23u, 29u, 31u, 
 		37u, 41u, 43u, 47u, 53u, 59u, 61u, 67u, 71u, 73u, 
 		79u, 83u, 89u, 97u, 101u, 103u, 107u, 109u, 113u, 

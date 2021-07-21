@@ -5,6 +5,7 @@
 #include "Archtype.h"
 #include "RuntimeComponent.h"
 
+// TODO: it seems this whole class can be made static
 
 namespace ECS {
 	using EntityID = int;
@@ -18,7 +19,13 @@ namespace ECS {
 	/// </summary>
 	class EntityManager
 	{
-	public:
+	private: /* fields */
+		/// <summary>
+		/// Currently how many entities are there
+		/// </summary>
+		int m_EntityCount = 0;
+
+	public: /* methods */
 		/// <summary>
 		/// create new entity by allocate new components according to archtype
 		/// </summary>
