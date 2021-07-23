@@ -16,7 +16,7 @@ cbuffer ViewParameters : register(VIEW_PARAMETERS_SLOT)
 	float3 CameraWorldPosition;
 };
 
-cbuffer ShadowCasterParameters : register(b5)
+cbuffer ShadowCasterParameters : register(SHADOW_TRANSFORM_SLOT)
 {
 	matrix World2Light;
 };

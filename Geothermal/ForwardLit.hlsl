@@ -2,7 +2,7 @@
 
 Texture2D AlbedoMap : register(ALBEDO_MAP_SLOT);
 Texture2D NormalMap : register(NORMAL_MAP_SLOT);
-Texture2D ShadowMap : register(t2);
+Texture2D ShadowMap : register(SHADOW_MAP_SLOT);
 SamplerState Sampler;
 
 cbuffer Properties : register(PROPERTIES_SLOT)
@@ -12,8 +12,7 @@ cbuffer Properties : register(PROPERTIES_SLOT)
 	float		Diffuse;
 	float		Specular;
 	float		Smoothness;
-	// In order to keep us aligned 
-	// we combine texture usage into a single int32
+	// In order to keep us aligned , we combine texture usage into a single int32
 	//	&0x01 for albedo, &0x02 for normal, &0x03 for shadow
 	int			TextureFlags;
 };
@@ -35,7 +34,7 @@ float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 n
 
 bool IsInShadow(float4 lightSpacePosition)
 {
-	// Project into Light Space NDC
+	// Project into Shadow map coordinates
 	float2 projectedPosition;
 	projectedPosition.x = (lightSpacePosition.x / lightSpacePosition.w / 2.0f) + 0.5f;
 	projectedPosition.y = (-lightSpacePosition.y / lightSpacePosition.w / 2.0f) + 0.5f;
@@ -54,7 +53,7 @@ bool IsInShadow(float4 lightSpacePosition)
 		return (depthOfPoint > depthReachedByLight);
 	}
 
-	return false;		// Unaffected by this light source
+	return false;		// Unaffected by this shadow casting light
 }
 
 float4 main(Varyings input) : SV_TARGET

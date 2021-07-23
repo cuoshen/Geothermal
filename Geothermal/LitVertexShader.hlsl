@@ -1,16 +1,11 @@
 #include "Common.hlsli"
 
-// Tweak vertex layout by selecting feature sets
-#define PRECOMPUTED_TANGENT
-
 struct VertexInput
 {
 	float3 pos : POSITION;
 	float3 normal : NORMAL;
 	float2 texcoord : TEXCOORD;
-#ifdef PRECOMPUTED_TANGENT
 	float3 tangent : TANGENT;
-#endif
 };
 
 Varyings main(VertexInput input)
@@ -27,11 +22,9 @@ Varyings main(VertexInput input)
 									);
 
 	output.tangent = float3(0.0f, 0.0f, 0.0f);
-#ifdef PRECOMPUTED_TANGENT
 	output.tangent = normalize(
 										mul(float4(input.tangent, 0.0f), Model2WorldTransform).xyz
 									);
-#endif
 
 	output.texcoord = input.texcoord;
 

@@ -5,9 +5,11 @@
 #define VIEW_PARAMETERS_SLOT b1
 #define PROPERTIES_SLOT b2
 
+#define SHADOW_TRANSFORM_SLOT b5
 #define LIGHTS_SLOT b7
 
 #define ALBEDO_MAP_SLOT t0
 #define NORMAL_MAP_SLOT t1
+#define SHADOW_MAP_SLOT t2
 
 #endif
