@@ -190,6 +190,9 @@
     <ClInclude Include="ViewPoint.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicResources.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

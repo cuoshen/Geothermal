@@ -1,8 +1,7 @@
 #pragma once
 #include "tiny_obj_loader.h"
 #include "Mesh.h"
-#include "Vertices.h"
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 
 namespace Geothermal
 {

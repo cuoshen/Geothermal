@@ -1,7 +1,6 @@
 #pragma once
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 #include "Mesh.h"
-#include "ConstantBuffer.h"
 
 namespace Geothermal::Graphics
 {

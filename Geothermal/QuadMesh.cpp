@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "QuadMesh.h"
-#include "Vertices.h"
-#include "VertexBuffer.h"
 
 using namespace Geothermal::Graphics;
 using namespace Meshes;

@@ -2,8 +2,7 @@
 #include "pch.h"
 #include "Transform.h"
 #include "GameObject.h"
-#include "ConstantBuffer.h"
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 #include "ViewPoint.h"
 
 namespace Geothermal

@@ -1,10 +1,6 @@
 #pragma once
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 #include "Camera.h"
-#include "ShadingAttributes.h"
-#include "ConstantBuffer.h"
-#include "Texture2D.h"
-#include "ShadowMap.h"
 #include "ViewPoint.h"
 
 namespace Geothermal::Graphics

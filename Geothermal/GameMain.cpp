@@ -5,9 +5,6 @@
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
 #include "Mesh.h"
-#include "ConstantBuffer.h"
-#include "SamplerState.h"
-#include "Texture2D.h"
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;

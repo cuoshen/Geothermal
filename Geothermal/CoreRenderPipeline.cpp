@@ -1,11 +1,9 @@
 #include "pch.h"
 #include <d3dcompiler.h>
 #include "CoreRenderPipeline.h"
-#include "Vertices.h"
-#include "Shaders.h"
+#include "GraphicResources.h"
 #include "GameMain.h"
 #include "Scene.h"
-
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"

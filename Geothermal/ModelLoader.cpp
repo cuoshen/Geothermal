@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModelLoader.h"
 #include "Mesh.h"
-#include "VertexBuffer.h"
+#include "GraphicResources.h"
 #include "FileIO.h"
 
 using namespace DirectX;

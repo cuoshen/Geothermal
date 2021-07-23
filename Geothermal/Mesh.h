@@ -1,6 +1,5 @@
 #pragma once
-#include "VertexBuffer.h"
-#include "Vertices.h"
+#include "GraphicResources.h"
 
 namespace Geothermal::Graphics::Meshes
 {

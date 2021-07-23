@@ -1,5 +1,5 @@
 #pragma once
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 #include "CoreRenderPipeline.h"
 #include "GameTimer.h"
 #include "Input.h"
@@ -9,7 +9,6 @@
 
 #ifdef DEBUG_SCENE
 #include "Mesh.h"
-#include "ShadingAttributes.h"
 #endif
 
 using namespace Geothermal;
