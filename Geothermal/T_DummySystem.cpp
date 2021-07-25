@@ -8,9 +8,9 @@ void ECS_Debug::T_DummySystem::Update()
 	// does nothing
 }
 
-ECS::Archtype ECS_Debug::T_DummySystem::ReadWriteRequest()
+ECS::Archetype ECS_Debug::T_DummySystem::ReadWriteRequest()
 {
-	ECS::Archtype a;
+	ECS::Archetype a;
 	a.Add(ECS::TypeOf<ECS_Debug::T_DummyComponent>());
 	return a;
 }

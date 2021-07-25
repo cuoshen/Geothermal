@@ -21,9 +21,14 @@ namespace ECS {
 	{
 	private: /* fields */
 		/// <summary>
-		/// Currently how many entities are there
+		/// Currently how many entities are there.
 		/// </summary>
 		int m_EntityCount = 0;
+
+		/// <summary>
+		/// A list representing each entity.
+		/// </summary>
+		std::vector<Archetype> entityArctypes;
 
 	public: /* methods */
 		/// <summary>
@@ -31,7 +36,7 @@ namespace ECS {
 		/// </summary>
 		/// <param name="entityType">the archtype for this new entity</param>
 		/// <returns>the ID of new entity</returns>
-		EntityID NewEntity(ECS::Archtype entityType);
+		EntityID NewEntity(ECS::Archetype entityType);
 
 		/// <summary>
 		/// batch create new entities of the same type
@@ -39,7 +44,7 @@ namespace ECS {
 		/// </summary>
 		/// <param name="entityType">type of new entities</param>
 		/// <param name="amount">amount of entities to create in this batch</param>
-		void NewEntity(ECS::Archtype entityType, int amount);
+		void NewEntity(ECS::Archetype entityType, int amount);
 
 		/// <summary>
 		/// remove the given entity (and its components)

@@ -5,7 +5,7 @@
 
 namespace ECS 
 {
-	Archtype* Archtype::Add(ComponentPoolBase* newTypePool)
+	Archetype* Archetype::Add(ComponentPoolBase* newTypePool)
 	{
 		// get the ID of incoming type
 		const int newTypeID = newTypePool->GetType();
@@ -22,7 +22,7 @@ namespace ECS
 		return this;
 	}
 
-	bool Archtype::Overlaps(const Archtype& other) const
+	bool Archetype::Overlaps(const Archetype& other) const
 	{
 		// decompose the 2 testers' type number
 		const int myTypes = m_TypeCombination;

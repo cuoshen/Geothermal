@@ -55,25 +55,25 @@ namespace ECS {
 		/// Get the types this system will use.
 		/// </summary>
 		/// <returns>requested archtype</returns>
-		virtual ECS::Archtype ReadWriteRequest() = 0;
+		virtual ECS::Archetype ReadWriteRequest() = 0;
 
 		/// <summary>
 		/// Get the types this system will read, by default it's empty.
 		/// </summary>
 		/// <returns>requested archtype</returns>
-		virtual Archtype ReadOnlyRequest() { return Archtype(); }
+		virtual Archetype ReadOnlyRequest() { return Archetype(); }
 
 		/// <summary>
 		/// Get the types this system reads/writes during late update.
 		/// </summary>
 		/// <returns></returns>
-		virtual Archtype LateReadWriteRequest() { return Archtype(); }
+		virtual Archetype LateReadWriteRequest() { return Archetype(); }
 
 		/// <summary>
 		/// Get the types this system reads during late update
 		/// </summary>
 		/// <returns>requested archtype</returns>
-		virtual Archtype LateReadOnlyRequest() { return Archtype(); }
+		virtual Archetype LateReadOnlyRequest() { return Archetype(); }
 	};
 }
 

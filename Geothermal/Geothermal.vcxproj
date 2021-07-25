@@ -189,6 +189,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="ComponentPoolBase.h" />
+    <ClInclude Include="ComponentTypeHelpers.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeviceResources.h" />

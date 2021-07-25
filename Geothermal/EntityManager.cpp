@@ -1,12 +1,23 @@
 #include "pch.h"
 #include "EntityManager.h"
 
-ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archtype entityType)
+ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype entityType)
 {
+	// enxtend entity id with entity count
+	EntityID newEntity = m_EntityCount++;
+
+	// TODO: extract all types in the archetype
+	
+
+	// TODO: request new components and label them with the new entity
+
+
+	// TODO: add archetype to list
+	
 	return EntityID();
 }
 
-void ECS::EntityManager::NewEntity(ECS::Archtype entityType, int amount)
+void ECS::EntityManager::NewEntity(ECS::Archetype entityType, int amount)
 {
 }
 
