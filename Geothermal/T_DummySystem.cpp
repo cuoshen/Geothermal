@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "T_DummySystem.h"
 #include "T_DummyComponent.h"
+#include "ComponentTypeHelpers.h"
 
 void ECS_Debug::T_DummySystem::Update()
 {
@@ -10,7 +11,7 @@ void ECS_Debug::T_DummySystem::Update()
 ECS::Archtype ECS_Debug::T_DummySystem::ReadWriteRequest()
 {
 	ECS::Archtype a;
-	a.Add(ECS::ComponentPool<T_DummyComponent>::GetInstance());
+	a.Add(ECS::TypeOf<ECS_Debug::T_DummyComponent>());
 	return a;
 }
 
