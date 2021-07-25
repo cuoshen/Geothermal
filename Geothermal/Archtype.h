@@ -12,14 +12,10 @@ namespace ECS
 	class Archtype
 	{
 	private: /* fields */
-		int m_TypeCombination;
+		int m_TypeCombination = 1;
+		int m_BiggestType = -1;
 	
-	public: /* methods */
-		/// <summary>
-		/// The default constructor that does nothing.
-		/// </summary>
-		Archtype() : m_TypeCombination(1) {}
-		
+	public: /* methods */		
 		/// <summary>
 		/// The js-like handler to add a new type into archtype.
 		/// The intended usage is like:

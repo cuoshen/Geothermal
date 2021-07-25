@@ -13,6 +13,12 @@ namespace ECS
 		// include the ID if not already in there
 		m_TypeCombination = (m_TypeCombination % newTypeID == 0) ? m_TypeCombination * newTypeID : m_TypeCombination;
 
+		// update the biggest type
+		if (m_BiggestType < newTypeID)
+		{
+			m_BiggestType = newTypeID;
+		}
+
 		return this;
 	}
 
