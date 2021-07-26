@@ -13,12 +13,12 @@ namespace ECS
 		const int newTypeID = newTypePool->GetType();
 
 		// include the ID if not already in there
-		m_TypeCombination = (m_TypeCombination % newTypeID == 0) ? m_TypeCombination * newTypeID : m_TypeCombination;
+		typeCombination = (typeCombination % newTypeID == 0) ? typeCombination * newTypeID : typeCombination;
 
 		// update the biggest type
-		if (m_BiggestType < newTypeID)
+		if (biggestType < newTypeID)
 		{
-			m_BiggestType = newTypeID;
+			biggestType = newTypeID;
 		}
 
 		return this;
@@ -27,8 +27,8 @@ namespace ECS
 	bool Archetype::Overlaps(const Archetype& other) const
 	{
 		// decompose the 2 testers' type number
-		const int myTypes = m_TypeCombination;
-		const int othersTypes = other.m_TypeCombination;
+		const int myTypes = typeCombination;
+		const int othersTypes = other.typeCombination;
 
 		// set the termination point
 		const int maxPossibleCommonFactor = min(myTypes, othersTypes);

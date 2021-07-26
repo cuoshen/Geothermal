@@ -2,7 +2,6 @@
 
 #include <exception>
 #include <vector>
-#include "ComponentPoolBase.h"
 
 namespace ECS 
 {
@@ -15,8 +14,8 @@ namespace ECS
 	class Archetype
 	{
 	private: /* fields */
-		int m_TypeCombination = 1;
-		int m_BiggestType = -1;
+		int typeCombination = 1;
+		int biggestType = -1;
 	
 	public: /* methods */		
 		/// <summary>
@@ -32,22 +31,18 @@ namespace ECS
 		/// <summary>
 		/// Returns if this archtype has all the types in the other archtype.
 		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		bool Contains(const Archetype& other) const { return m_TypeCombination % other.m_TypeCombination == 0; };
+		bool Contains(const Archetype& other) const { return typeCombination % other.typeCombination == 0; };
 
 		/// <summary>
 		/// Similar to Contains(), tests if this is contained by the other archtype completely.
 		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
 		bool IsContainedBy(const Archetype& other) const { return other.Contains(*this); }
 
 		/// <summary>
 		/// Decides if the 2 giving archtypes have any types in common.
 		/// </summary>
 		/// <param name="other">the other archtype to test with</param>
-		/// <returns>bool: if there's at least one overlapping type</returns>
+		/// <returns>if there's at least one overlapping type</returns>
 		bool Overlaps(const Archetype& other) const;
 	};
 }

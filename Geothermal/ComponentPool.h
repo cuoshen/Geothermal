@@ -26,12 +26,12 @@ namespace ECS
 		{
 			static MemGuard guard;
 			// initialize if not already
-			if (m_instance == nullptr)
+			if (instance == nullptr)
 			{
-				m_instance = new ComponentPool<C>();
+				instance = new ComponentPool<C>();
 			}
 
-			return m_instance;
+			return instance;
 		}
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace ECS
 
 		int GetType() const override
 		{
-			return m_type;
+			return componentType;
 		}
 
 	private: /* fields */
@@ -62,7 +62,7 @@ namespace ECS
 		/// <summary>
 		/// The singleton instance pointer.
 		/// </summary>
-		inline static ComponentPool<C>* m_instance;
+		inline static ComponentPool<C>* instance;
 
 		/// <summary>
 		/// Storage of components.
@@ -70,7 +70,7 @@ namespace ECS
 		/// <typeparam name="C">component type</typeparam>
 		std::vector<C> m_storage;
 
-		int m_type;
+		int componentType;
 
 		/* methods */
 		
@@ -81,13 +81,14 @@ namespace ECS
 		ComponentPool<C>()
 		{
 			// check if the requested type derives from RuntimeComponent
-			static_assert(std::is_base_of<RuntimeComponent, C>::value, "Component pool can only be used for subclasses of ECS::RuntimeComponent!");
+			static_assert(std::is_base_of<RuntimeComponent, C>::value, 
+				"Component pool can only be used for subclasses of ECS::RuntimeComponent!");
 
 			// initialize the buffer to 1000 components
 			m_storage = std::vector<C>(1000);
 
 			// request type id
-			m_type = ComponentPoolBase::RequestTypeID(this);
+			componentType = ComponentPoolBase::RequestTypeID(this);
 		}
 
 		class MemGuard
@@ -95,8 +96,8 @@ namespace ECS
 		public:
 			~MemGuard()
 			{
-				delete m_instance;
-				m_instance = nullptr;
+				delete instance;
+				instance = nullptr;
 			}
 		};
 	};

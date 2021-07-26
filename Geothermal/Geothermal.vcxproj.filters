@@ -90,9 +90,6 @@
     <ClCompile Include="T_DummyComponent.cpp">
       <Filter>ECS\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentPool.cpp">
-      <Filter>ECS\Metaclasses</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentPoolBase.cpp">
       <Filter>ECS\Metaclasses</Filter>
     </ClCompile>
@@ -239,11 +236,9 @@
     <ClInclude Include="EntityComponentSystem.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="RuntimeSystemLinear.h" />
     <ClInclude Include="ComponentTypeHelpers.h">
       <Filter>ECS\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="RuntimeSystemLinear.h">
-      <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

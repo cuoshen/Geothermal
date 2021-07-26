@@ -28,7 +28,7 @@ namespace ECS
 		/// <summary>
 		/// Currently how many entities are there.
 		/// </summary>
-		int m_EntityCount = 0;
+		int entityCount = 0;
 
 		/// <summary>
 		/// A list representing each entity.
@@ -78,10 +78,10 @@ namespace ECS
 		/// <summary>
 		/// The entity ID this object points to.
 		/// </summary>
-		EntityID m_ID;
+		EntityID id;
 
 	public: /* methods */
-		EntityToken(EntityID id) : m_ID(id) {}
+		EntityToken(EntityID id) : id(id) {}
 		
 		/// <summary>
 		/// Set component data for this entity.

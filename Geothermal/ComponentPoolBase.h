@@ -17,17 +17,17 @@ namespace ECS {
 		/// <summary>
 		/// How many types are there currently.
 		/// </summary>
-		static int m_TypesCount;
+		static int typesCount;
 
 		/// <summary>
 		/// map: ID -> Type
 		/// </summary>
-		static std::unordered_map<int, ComponentPoolBase*> m_IdToPool;
+		static std::unordered_map<int, ComponentPoolBase*> idToPool;
 
 		/// <summary>
 		/// map: Type -> ID
 		/// </summary>
-		static std::unordered_map<ComponentPoolBase*, int> m_PoolToId;
+		static std::unordered_map<ComponentPoolBase*, int> poolToID;
 
 		/// <summary>
 		/// The maximum number of types that can be requested.

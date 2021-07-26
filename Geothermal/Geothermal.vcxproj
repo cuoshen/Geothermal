@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClCompile Include="Archtype.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="ComponentPoolBase.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />

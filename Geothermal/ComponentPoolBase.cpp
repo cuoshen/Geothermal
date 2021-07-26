@@ -5,9 +5,9 @@
 using namespace ECS;
 
 /* initialize static members */
-int ComponentPoolBase::m_TypesCount = 0;
-std::unordered_map<int, ComponentPoolBase*> ComponentPoolBase::m_IdToPool = std::unordered_map<int, ComponentPoolBase*>();
-std::unordered_map<ComponentPoolBase*, int> ComponentPoolBase::m_PoolToId = std::unordered_map<ComponentPoolBase*, int>();
+int ComponentPoolBase::typesCount = 0;
+std::unordered_map<int, ComponentPoolBase*> ComponentPoolBase::idToPool = std::unordered_map<int, ComponentPoolBase*>();
+std::unordered_map<ComponentPoolBase*, int> ComponentPoolBase::poolToID = std::unordered_map<ComponentPoolBase*, int>();
 int ComponentPoolBase::MAX_TYPES = 1000;
 
 // I removed this since there's no chance a user uses more than 100 components
@@ -33,9 +33,9 @@ int GetNthPrime(int n)
 
 ECS::ComponentPoolBase* ECS::ComponentPoolBase::GetPool(int typeNum)
 {
-	if (m_IdToPool.count(typeNum) >= 1)
+	if (idToPool.count(typeNum) >= 1)
 	{
-		return m_IdToPool[typeNum];
+		return idToPool[typeNum];
 	}
 	else
 	{
@@ -46,16 +46,16 @@ ECS::ComponentPoolBase* ECS::ComponentPoolBase::GetPool(int typeNum)
 // give each request a prime number instead of consecutive integers.
 int ECS::ComponentPoolBase::RequestTypeID(ComponentPoolBase* newPool)
 {
-	if (m_PoolToId.count(newPool) >= 1) 
+	if (poolToID.count(newPool) >= 1) 
 	{
-		return m_PoolToId[newPool];
+		return poolToID[newPool];
 	}
 	else 
 	{
-		m_IdToPool.insert({ GetNthPrime(m_TypesCount), newPool });
-		m_PoolToId.insert({ newPool, GetNthPrime(m_TypesCount) });
-		m_TypesCount++;
-		return GetNthPrime(m_TypesCount);
+		idToPool.insert({ GetNthPrime(typesCount), newPool });
+		poolToID.insert({ newPool, GetNthPrime(typesCount) });
+		typesCount++;
+		return GetNthPrime(typesCount);
 	}
 }
 

@@ -5,7 +5,7 @@
 ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype* entityType)
 {
 	// enxtend entity id with entity count
-	EntityID newEntity = m_EntityCount++;
+	EntityID newEntity = entityCount++;
 
 	// TODO: extract all types in the archetype
 	
