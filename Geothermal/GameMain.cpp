@@ -5,9 +5,6 @@
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
 #include "Mesh.h"
-#include "ConstantBuffer.h"
-#include "SamplerState.h"
-#include "Texture2D.h"
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;
@@ -16,6 +13,7 @@ using namespace Meshes;
 #endif
 
 using namespace std;
+using namespace DirectX;
 
 GameMain* GameMain::instance;
 
@@ -44,7 +42,7 @@ void GameMain::Initialize(shared_ptr<DeviceResources> deviceResources)
 	GameMain::instance = new GameMain(deviceResources);
 
 #ifdef DEBUG_SCENE
-	GameMain::instance->LoadDebugMesh();
+	GameMain::instance->InitializeDebugResource();
 	GameMain::instance->InstantiateDebugScene();
 #endif
 }
@@ -72,7 +70,7 @@ UINT GameMain::HandleMessage(MSG msg)
 }
 
 /// <summary>
-/// Runs the main game of Update-Render until quit
+/// Runs the main game loop of Update-Render until quit
 /// </summary>
 /// <returns>Exit state</returns>
 WPARAM GameMain::Run()
@@ -95,6 +93,8 @@ WPARAM GameMain::Run()
 	return msg.wParam;
 }
 
+//#define SELF_ROTATE
+
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
 /// </summary>
@@ -108,15 +108,17 @@ void GameMain::Update()
 	{
 		gameObject->Update();
 
-#ifdef DEBUG_SCENE
-		// Self-rotate
-		XMVECTOR position = gameObject->GetTransform()->WorldPosition();
-		gameObject->GetTransform()->ApplyTransform
-		(
-			XMMatrixTranslationFromVector(-position) * 
-			XMMatrixRotationY(deltaTime) * 
-			XMMatrixTranslationFromVector(position)
-		);
+#ifdef SELF_ROTATE
+		if (gameObject != ground)
+		{
+			XMVECTOR position = gameObject->GetTransform()->WorldPosition();
+			gameObject->GetTransform()->ApplyTransform
+			(
+				XMMatrixTranslationFromVector(-position) *
+				XMMatrixRotationY(deltaTime) *
+				XMMatrixTranslationFromVector(position)
+			);
+		}
 #endif
 	}
 
@@ -135,29 +137,42 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX initialTransform = XMMatrixRotationX(XM_PI) * XMMatrixTranslation(0.0f, 0.0f, 4.0f) ;
-	AddDebugGameObject(initialTransform);
+	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
+	for (int i = -1; i <= 1; i++)
+	{
+		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 6.0f, 0.0f, 0.0f);
+		AddDebugGameObject(initialTransform);
+	}
+	AddGround(center);
 }
 
-void GameMain::LoadDebugMesh()
+void GameMain::InitializeDebugResource()
 {
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		//loader.LoadObj2Mesh(L"Assets\\stanford_dragon.obj", L"Assets\\stanford_dragon.mtl", debugMesh, deviceResources);
-		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\building.obj", L"Assets\\building.mtl", debugMesh, deviceResources);
+		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
-	shadingParameters = PhongAttributes
+
+	debugPlane = new Mesh();
+	ModelLoader planeLoader;
+	loaded =
+		planeLoader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
+	assert(loaded);
+
+	PhongAttributes shadingParameters = PhongAttributes
 	{
-		{0.0f, 0.0f, 0.06f, 0.0f},	// Ambient
-		{0.1f, 0.1f, 0.1f, 1.0f},		// Base color
-		0.5f,										// Diffuse
-		0.5f,										// Specular
-		20.0f,										// Smoothness
-		0.0f											// Padding
+		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
+		{0.4f, 0.4f, 0.4f, 1.0f},												// Base color
+		0.5f,																				// Diffuse
+		0.5f,																				// Specular
+		10.0f,																				// Smoothness
+		USE_SHADOW_MAP		// Texture flags
 	};
-	PixelConstantBuffer<PhongAttributes> unlitProperties(deviceResources, shadingParameters, 2u);
-	unlitProperties.Bind();
+
+	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
+	properties.Bind();
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
@@ -165,12 +180,12 @@ void GameMain::LoadDebugMesh()
 	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
-	deviceResources->D3DDeviceContext()->PSSetShaderResources(0, 1, &albedoSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(0, 1, &albedoSRVAddress);
 
 	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", DDS);
 	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
-	deviceResources->D3DDeviceContext()->PSSetShaderResources(1, 1, &normalSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(1, 1, &normalSRVAddress);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
@@ -182,6 +197,19 @@ void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 
+	debugGameObjects.push_back(product);
+}
+
+void GameMain::AddGround(XMMATRIX initialTransform)
+{
+	GameObjectFactory factory;
+	factory.MakeNewProduct();
+	factory.BuildTransform(initialTransform);
+	factory.BuildRenderer(*debugPlane, deviceResources); // Use the debug mesh
+	factory.SetObjectID(0x01);
+	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
+
+	ground = product.get();
 	debugGameObjects.push_back(product);
 }
 

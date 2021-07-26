@@ -1,6 +1,6 @@
 #pragma once
+#include "GraphicResources.h"
 #include "Mesh.h"
-#include "DeviceResources.h"
 
 namespace Geothermal::Graphics::Meshes
 {

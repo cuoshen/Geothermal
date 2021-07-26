@@ -12,8 +12,12 @@ Texture2D::Texture2D
 	hstring const& filename, TEXTURE_FILE_TYPE fileType
 ):
 	deviceResources(deviceResources),
-	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), 
-	format(DXGI_FORMAT_R8G8B8A8_SNORM)
+	texture(nullptr), 
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
+	format(DXGI_FORMAT_R8G8B8A8_SNORM),
+	// If we create a texture from file, usually, we don't want to override the content
+	// thus we use it only as a shader resource
+	bindFlags(D3D11_BIND_SHADER_RESOURCE)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 
@@ -26,12 +30,13 @@ Texture2D::Texture2D
 		(
 			CreateDDSTextureFromFile
 			(
-				deviceResources->D3DDevice(),
+				deviceResources->Device(),
 				filename.c_str(),
 				resource.put(),
 				nullptr
 			)
 		);
+
 		D3D11_RESOURCE_DIMENSION resourceType = 
 			D3D11_RESOURCE_DIMENSION_UNKNOWN;
 		resource->GetType(&resourceType);
@@ -78,28 +83,22 @@ Texture2D::Texture2D
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, vector<char> data,
-	DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel
+	DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel, UINT bindFlags
 ):
 	deviceResources(deviceResources),
-	texture(nullptr), shaderResourceView(nullptr), renderTargetView(nullptr), format(format)
+	texture(nullptr), 
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
+	format(format),
+	bindFlags(bindFlags)
 {
-	CreateTextureFromMemory(data, width, height, bitsPerPixel);
+	assert(IsValidBindFlags(bindFlags));
+
+	CreateTextureFromMemory(data, width, height, bitsPerPixel, bindFlags);
 }
 
-void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT height, UINT bitsPerPixel)
+void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT height, UINT bitsPerPixel, UINT bindFlags)
 {
-	D3D11_TEXTURE2D_DESC description = { 0 };
-	description.Width = width;
-	description.Height = height;
-	description.MipLevels = 1;
-	description.ArraySize = 1;
-	description.Format = format;
-	description.SampleDesc.Count = 1;
-	description.SampleDesc.Quality = 0;
-	description.Usage = D3D11_USAGE_DEFAULT;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	description.CPUAccessFlags = 0;
-	description.MiscFlags = 0;
+	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height, bindFlags);
 
 	// Take quotient
 	size_t rowPitch = (width * bitsPerPixel + 7) / 8;
@@ -111,13 +110,32 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT heig
 	initialData.SysMemSlicePitch = static_cast<UINT>(imageSize);
 
 	check_hresult(
-		deviceResources->D3DDevice()->CreateTexture2D(&description, &initialData, texture.put())
+		deviceResources->Device()->CreateTexture2D(&description, &initialData, texture.put())
+	);
+}
+
+Texture2D::Texture2D
+(
+	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, UINT width, UINT height, UINT bindFlags
+) :
+	deviceResources(deviceResources),
+	texture(nullptr), 
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr), 
+	format(format),
+	bindFlags(bindFlags)
+{
+	assert(IsValidBindFlags(bindFlags));
+
+	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height, bindFlags);
+
+	check_hresult(
+		deviceResources->Device()->CreateTexture2D(&description, nullptr, texture.put())
 	);
 }
 
 com_ptr<ID3D11ShaderResourceView> Texture2D::UseAsShaderResource()
 {
-	if (shaderResourceView == nullptr)
+	if ((shaderResourceView == nullptr) && (bindFlags & D3D11_BIND_SHADER_RESOURCE))
 	{
 		CreateShaderResourceView();
 	}
@@ -126,22 +144,34 @@ com_ptr<ID3D11ShaderResourceView> Texture2D::UseAsShaderResource()
 
 com_ptr<ID3D11RenderTargetView> Texture2D::UseAsRenderTarget()
 {
-	if (renderTargetView == nullptr)
+	if ((renderTargetView == nullptr) && (bindFlags & D3D11_BIND_RENDER_TARGET))
 	{
 		CreateRenderTargetView();
 	}
 	return renderTargetView;
 }
 
+com_ptr<ID3D11DepthStencilView> Texture2D::UseAsDepthStencil()
+{
+	if ((depthStencilView == nullptr) && (bindFlags & D3D11_BIND_DEPTH_STENCIL))
+	{
+		CreateDepthStencilView();
+	}
+	return depthStencilView;
+}
+
 void Texture2D::CreateShaderResourceView()
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDescription = {};
-	SRVDescription.Format = format;
+	if (format == DXGI_FORMAT_R32_TYPELESS)
+	{
+		SRVDescription.Format = DXGI_FORMAT_R32_FLOAT;
+	}
 	SRVDescription.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	SRVDescription.Texture2D.MipLevels = 1;
 
 	check_hresult(
-		deviceResources->D3DDevice()->CreateShaderResourceView(texture.get(), nullptr, shaderResourceView.put())
+		deviceResources->Device()->CreateShaderResourceView(texture.get(), &SRVDescription, shaderResourceView.put())
 	);
 }
 
@@ -152,6 +182,63 @@ void Texture2D::CreateRenderTargetView()
 	RTVDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	
 	check_hresult(
-		deviceResources->D3DDevice()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
+		deviceResources->Device()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
 	);
+}
+
+void Texture2D::CreateDepthStencilView()
+{
+	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+
+	DXGI_FORMAT depthFormat;
+	switch (format)
+	{
+	case(DXGI_FORMAT_R32_TYPELESS):
+		depthFormat = DXGI_FORMAT_D32_FLOAT;
+		break;
+	case(DXGI_FORMAT_R24G8_TYPELESS):
+		depthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		break;
+	default:
+		throw runtime_error("incompatible format for depth stencil view creation");
+		break;
+	}
+	depthStencilViewDesc.Format = depthFormat;
+
+	winrt::check_hresult(
+		deviceResources->Device()->CreateDepthStencilView(
+			texture.get(),
+			&depthStencilViewDesc,
+			depthStencilView.put()
+		)
+	);
+}
+
+D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UINT height, UINT bindFlags)
+{
+	D3D11_TEXTURE2D_DESC description = { 0 };
+	description.Width = width;
+	description.Height = height;
+	description.MipLevels = 0;
+	description.ArraySize = 1;
+	description.Format = format;
+	description.SampleDesc.Count = 1;
+	description.SampleDesc.Quality = 0;
+	description.Usage = D3D11_USAGE_DEFAULT;
+	description.BindFlags = bindFlags;
+	description.CPUAccessFlags = 0;
+	description.MiscFlags = 0;
+
+	return description;
+}
+
+bool Texture2D::IsValidBindFlags(UINT bindFlags)
+{
+	bool isShaderResource = bindFlags & D3D11_BIND_SHADER_RESOURCE;
+	bool isRenderTarget = bindFlags & D3D11_BIND_RENDER_TARGET;
+	bool isDepthStencil = bindFlags & D3D11_BIND_DEPTH_STENCIL;
+
+	// We cannot use the same texture as render target view AND depth stencil view, thus the xor
+	// We want to use the texture for SOMETHING of value, thus we should have at least 1 valid bindflag
+	return (isRenderTarget != isDepthStencil) && (isShaderResource || isRenderTarget || isDepthStencil);
 }

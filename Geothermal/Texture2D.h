@@ -1,6 +1,5 @@
 #pragma once
 #include "DeviceResources.h"
-#include "pch.h"
 
 namespace Geothermal::Graphics
 {
@@ -30,21 +29,41 @@ namespace Geothermal::Graphics
 		/// <summary>
 		/// For non-DDS image file loaded into the memory, we need to pass in metadata
 		/// </summary>
+		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources, std::vector<char> data, 
+			DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel, UINT bindFlags);
+
+		/// <summary>
+		/// Build one from scratch
+		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
-			std::vector<char> data, DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel);
+			DXGI_FORMAT format, UINT width, UINT height, UINT bindFlags);
 
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
+		winrt::com_ptr<ID3D11DepthStencilView> UseAsDepthStencil();
 	private:
-		void CreateTextureFromMemory(std::vector<char> data, UINT width, UINT height, UINT bitsPerPixel);
+		void CreateTextureFromMemory
+		(
+			std::vector<char> data, UINT width, UINT height, UINT bitsPerPixel, UINT bingFlags
+		);
 		void CreateShaderResourceView();
 		void CreateRenderTargetView();
+		void CreateDepthStencilView();
+
+		D3D11_TEXTURE2D_DESC DefaultDescriptionFromParameters
+		(
+			UINT width, UINT height, UINT bindFlags
+		);
+
+		bool IsValidBindFlags(UINT bindFlags);
 
 		std::shared_ptr<DeviceResources> deviceResources;
 
 		winrt::com_ptr<ID3D11Texture2D> texture;
 		DXGI_FORMAT format;
+		UINT bindFlags;
 		winrt::com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 		winrt::com_ptr<ID3D11RenderTargetView> renderTargetView;
+		winrt::com_ptr<ID3D11DepthStencilView> depthStencilView;
 	};
 }

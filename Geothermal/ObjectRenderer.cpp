@@ -19,11 +19,11 @@ void ObjectRenderer::Render(XMMATRIX object2World)
 	// Issue draw call
 	if (mesh.vertices->IsIndexed())
 	{
-		deviceResources->D3DDeviceContext()->DrawIndexed(mesh.vertices->GetIndexCount(), 0u, 0u);
+		deviceResources->Context()->DrawIndexed(mesh.vertices->GetIndexCount(), 0u, 0u);
 	}
 	else
 	{
-		deviceResources->D3DDeviceContext()->Draw(mesh.vertices->GetVertexCount(), 0u);
+		deviceResources->Context()->Draw(mesh.vertices->GetVertexCount(), 0u);
 	}
 }
 

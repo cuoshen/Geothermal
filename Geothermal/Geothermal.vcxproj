@@ -178,6 +178,7 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="ViewPoint.cpp" />
     <ClCompile Include="T_DummyComponent.cpp" />
     <ClCompile Include="T_DummySystem.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -219,11 +220,13 @@
     <ClInclude Include="RuntimeComponent.h" />
     <ClInclude Include="RuntimeSystem.h" />
     <ClInclude Include="RuntimeSystemLinear.h" />
+    <ClInclude Include="GraphicResources.h" />
     <ClInclude Include="SamplerState.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCache.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="ShadingAttributes.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
@@ -232,17 +235,10 @@
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Vertices.h" />
+    <ClInclude Include="ViewPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ForwardLit.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="TexturedForwardLit.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -281,8 +277,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Common.hlsli" />
+    <None Include="Lighting.hlsli" />
     <None Include="imgui.ini" />
     <None Include="packages.config" />
+    <None Include="SlotConfig.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt" />

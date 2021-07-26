@@ -1,0 +1,170 @@
+# Blender MTL File: 'Sample_Building.blend'
+# Material Count: 14
+
+newmtl KB3D_NEC_AsphaltHexagonRoof
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_AsphaltHexagonRoof_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_AsphaltHexagonRoof_metallic.png
+
+newmtl KB3D_NEC_BannerA
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_BannerA_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_BannerA_metallic.png
+
+newmtl KB3D_NEC_ConcreteA
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_ConcreteA_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_ConcreteA_metallic.png
+
+newmtl KB3D_NEC_ConcreteB
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_ConcreteB_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_ConcreteB_metallic.png
+
+newmtl KB3D_NEC_GalvanizedSteel
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_GalvanizedSteel_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_GalvanizedSteel_metallic.png
+
+newmtl KB3D_NEC_GlassBlack
+Ns 323.999994
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl KB3D_NEC_Letters
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_Letters_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_Letters_metallic.png
+
+newmtl KB3D_NEC_LightsA
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_LightsA_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_LightsA_metallic.png
+map_Ke C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_LightsA_emissive.png
+
+newmtl KB3D_NEC_MetalAccent
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_MetalAccent_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_MetalAccent_metallic.png
+
+newmtl KB3D_NEC_MetalGrating
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_MetalGrating_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_MetalGrating_metallic.png
+map_d C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_MetalGrating_opacity.png
+
+newmtl KB3D_NEC_OxidizedSteel
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_OxidizedSteel_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_OxidizedSteel_metallic.png
+
+newmtl KB3D_NEC_PaintedMetal
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_PaintedMetal_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_PaintedMetal_metallic.png
+
+newmtl KB3D_NEC_SatinSteel
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_SatinSteel_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_SatinSteel_metallic.png
+
+newmtl KB3D_NEC_SpeedwayTiles
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_SpeedwayTiles_normal.png
+map_Kd C:\\Local\\Rendering\\SampleModels\\city\\KB3DTextures\\KB3D_NEC_SpeedwayTiles_metallic.png

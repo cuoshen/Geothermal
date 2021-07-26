@@ -3,6 +3,13 @@
 
 namespace Geothermal::Graphics::Structures
 {
+	enum TEXTURE_FLAGS
+	{
+		USE_ALBEDO_MAP = 0x01,
+		USE_NORMAL_MAP = 0x02,
+		USE_SHADOW_MAP = 0x04
+	};
+
 	struct PhongAttributes
 	{
 		DirectX::XMFLOAT4 Ambient;
@@ -10,6 +17,48 @@ namespace Geothermal::Graphics::Structures
 		float Diffuse;
 		float Specular;
 		float Smoothness;
-		float Padding;	// Constant buffer size must be a multiple of 16 bytes, add empty padding
+		// In order to keep us aligned 
+		// we combine UseAlbedoMap and UserNormalMap into the same field
+		//	&0x01 bit for albedo, &0x02 bit for normal
+		int TextureFlags;
+	};
+
+	struct DirectionalLight
+	{
+		DirectX::XMFLOAT4		Color;
+		DirectX::XMFLOAT3		Direction;
+		float								Padding0;
+	};
+
+	struct Light
+	{
+		DirectX::XMFLOAT4		Color;
+		DirectX::XMFLOAT4		Position;
+		float								Radius;
+		float								Attenuation;
+		int									Type;
+		float								Padding0;
+	};
+
+	#define MAX_POINT_LIGHTS_IN_SCENE 32
+
+	/// <summary>
+	/// Pack all lighting information into this buffer
+	/// then upload to GPU
+	/// </summary>
+	struct LightBuffer
+	{
+		/// <summary>
+		/// Initialize with no additional lights
+		/// </summary>
+		LightBuffer(DirectionalLight main)
+		{
+			MainLight = main;
+			LightActivation.x = 0;
+			memset(AdditionalLights, 0, sizeof(Light) * MAX_POINT_LIGHTS_IN_SCENE);
+		}
+		DirectionalLight			MainLight;
+		Light								AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
+		DirectX::XMUINT4		LightActivation;
 	};
 }

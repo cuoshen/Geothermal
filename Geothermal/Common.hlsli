@@ -1,17 +1,24 @@
 #ifndef GEOTHERMAL_SHADING_COMMON
 #define GEOTHERMAL_SHADING_COMMON
 
+#include "SlotConfig.hlsli"
+
 // Each model is responsible for supplying its own transform
-cbuffer TransformBuffer : register(b0)
+cbuffer TransformBuffer : register(TRANSFORM_BUFFER_SLOT)
 {
 	matrix Model2WorldTransform;
 };
 
 // Camera supplies the world 2 clip transform as well as its position
-cbuffer CameraParameters : register(b1)
+cbuffer ViewParameters : register(VIEW_PARAMETERS_SLOT)
 {
 	matrix World2ClipTransform;
 	float3 CameraWorldPosition;
+};
+
+cbuffer ShadowCasterParameters : register(SHADOW_TRANSFORM_SLOT)
+{
+	matrix World2Light;
 };
 
 struct Varyings
@@ -21,6 +28,7 @@ struct Varyings
 	float2 texcoord						:	TEXCOORD;
 	float3 normal							:	NORMAL;
 	float3 tangent							:	TANGENT;
+	float4 lightSpacePosition		:	LIGHT_SPACE_POSITION;
 };
 
 struct VertexColoredVaryings
@@ -31,27 +39,6 @@ struct VertexColoredVaryings
 	float3 normal							:	NORMAL;
 };
 
-float Lambert(float3 normal, float3 lightDirection, float diffuseStrength)
-{
-	float diffuse = max(
-		0.0f,
-		dot(normal, lightDirection)
-	) * diffuseStrength;
-	return diffuse;
-}
-
-float BlinnPhong(float3 normal, float3 worldPosition, float3 lightDirection, float diffuseStrength, float specularStrength, float smoothness)
-{
-	float3 viewDirection = normalize(CameraWorldPosition - worldPosition);
-	float3 halfway = normalize(lightDirection + viewDirection);
-
-	float diffuse = Lambert(normal, lightDirection, diffuseStrength);
-
-	float specular = pow(
-			max(0.0f, dot(normal, halfway)), smoothness
-	) * specularStrength;
-
-	return diffuse + specular;
-}
+#include "Lighting.hlsli"
 
 #endif

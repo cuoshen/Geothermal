@@ -10,18 +10,16 @@ using namespace std;
 
 Camera* Camera::main;
 
-Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> deviceResources):
+Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources):
 	GameObject(),
-	aspectRatio(aspectRatio), nearZ(nearZ), farZ(farZ), pitch(0.0f), yaw(0.0f), parametersBufferVS(nullptr)
+	ViewPoint(deviceResources, aspectRatio, nearZ, farZ),
+	pitch(0.0f), yaw(0.0f)
 {
-	perspective = XMMatrixPerspectiveFovLH(XM_PIDIV4, aspectRatio, nearZ, farZ);
 	// The first camera created automatically becomes the main camera
 	if (main == nullptr)
 	{
 		main = this;
 	}
-	parametersBufferVS = make_unique<VertexConstantBuffer<CameraParameters>>(deviceResources, 1u);
-	parametersBufferPS = make_unique<PixelConstantBuffer<CameraParameters>>(deviceResources, 1u);
 }
 
 Camera::~Camera()
@@ -70,11 +68,11 @@ void Camera::HandleMovement()
 
 	if (input->GetKeyDown(VK_SPACE))
 	{
-		transform->ApplyTransform(XMMatrixTranslationFromVector(0.1f * up));
+		transform->ApplyTransform(XMMatrixTranslationFromVector(0.5f * up));
 	}
 	else if (input->GetKeyDown(VK_CONTROL))
 	{
-		transform->ApplyTransform(XMMatrixTranslationFromVector(-0.1f * up));
+		transform->ApplyTransform(XMMatrixTranslationFromVector(-0.5f * up));
 	}
 }
 
@@ -104,23 +102,22 @@ void Camera::SetMainToThis()
 	}
 }
 
-XMMATRIX Camera::GetWorld2ClipMatrix()
+XMMATRIX Camera::World2View()
 {
 	XMVECTOR eye = transform->WorldPosition();
 	XMVECTOR eyeDirection = transform->Front();
 	eyeDirection = XMVector4Transform(eyeDirection, XMMatrixRotationX(pitch) * XMMatrixRotationY(yaw));
-	XMMATRIX world2clip = XMMatrixLookToLH(eye, eyeDirection, transform->Up());
-	world2clip *= perspective;
+	return XMMatrixLookToLH(eye, eyeDirection, transform->Up());
+}
+
+XMMATRIX Camera::World2Clip()
+{
+	XMMATRIX world2clip = World2View();
+	world2clip *= Perspective();
 	return world2clip;
 }
 
 void Camera::BindCamera2Pipeline()
 {
-	 XMStoreFloat3(&(parameters.CameraWorldPosition), transform->WorldPosition());
-	 parameters.World2ClipTransform = XMMatrixTranspose(GetWorld2ClipMatrix());
-
-	 parametersBufferVS->Update(parameters);
-	 parametersBufferPS->Update(parameters);
-	 parametersBufferVS->Bind();
-	 parametersBufferPS->Bind();
+	 Bind(World2View());
 }

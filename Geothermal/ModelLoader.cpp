@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModelLoader.h"
 #include "Mesh.h"
-#include "VertexBuffer.h"
+#include "GraphicResources.h"
 #include "FileIO.h"
 
 using namespace DirectX;
@@ -102,11 +102,16 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 				VertexPNTT vertex;
 				ConstructVertex(&vertex, index, attrib);
 				triangle[v] = vertex;
-				vertices.push_back(vertex);
+				//vertices.push_back(vertex);
 			}
 
 			// Compute tangent
 			ComputeTangent(triangle, finishedTriangle);
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				vertices.push_back(finishedTriangle[i]);
+			}
 
 			index_offset += 3;
 			delete[] triangle;

@@ -1,6 +1,7 @@
 #pragma once
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 #include "Camera.h"
+#include "ViewPoint.h"
 
 namespace Geothermal::Graphics
 {
@@ -18,12 +19,39 @@ namespace Geothermal::Graphics
 		/// Render the whole scene in a single forward pass with the main camera
 		/// </summary>
 		void Render();
+		Structures::DirectionalLight& MainLight() { return mainLight; }
 	private:
 		void StartGUIFrame();
 		void DrawGUI();
 		void ResetCamera();
 
-		std::shared_ptr<DeviceResources> deviceResources;
+		/// <summary>
+		/// Get a shadow map by rendering from the main light
+		/// </summary>
+		void ShadowPass();
+		/// <summary>
+		/// Draw every drawable geometry in a single forward pass
+		/// </summary>
+		void SimpleForwardPass();
+
+		Structures::DirectionalLight mainLight;
+
+		// TODO: Refactor into dedicated shadow caster class
+		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
+		const XMFLOAT3 mainLightShadowCastingOrigin = {0.0f, 10.0f, 0.0f};
+		ShadowMap mainShadowMap;
+		D3D11_VIEWPORT shadowViewPort;
+		ViewPoint shadowCaster;
+		XMMATRIX world2light;
+		void UpdateWorld2Light();
+
+		void UploadShadowResources();
+		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > parametersBufferVS;
+
+		Structures::LightBuffer lights;
+		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;
 		std::unique_ptr<Camera> camera;
+
+		std::shared_ptr<DeviceResources> deviceResources;
 	};
 }

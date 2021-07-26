@@ -99,6 +99,9 @@
     <ClCompile Include="RuntimeSystemLinear.cpp">
       <Filter>ECS\Basic Classes</Filter>
     </ClCompile>
+    <ClCompile Include="ViewPoint.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -240,6 +243,15 @@
     <ClInclude Include="ComponentTypeHelpers.h">
       <Filter>ECS\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewPoint.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicResources.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -295,16 +307,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ForwardLit.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Unlit.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="LitVertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="TexturedForwardLit.hlsl">
+    <FxCompile Include="ForwardLit.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="ColoredVertexShader.hlsl">
@@ -317,6 +326,12 @@
     </None>
     <None Include="packages.config" />
     <None Include="imgui.ini" />
+    <None Include="Lighting.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="SlotConfig.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui_LICENSE.txt">
