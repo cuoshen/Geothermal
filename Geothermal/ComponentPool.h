@@ -5,6 +5,7 @@
 #include <vector>
 #include "T_DummyComponent.h"
 #include "ComponentPoolBase.h"
+#include "EntityManager.h"
 
 namespace ECS 
 {
@@ -17,6 +18,8 @@ namespace ECS
 	template <class C>
 	class ComponentPool final : public ComponentPoolBase
 	{
+		friend class EntityToken;
+	
 	private: /* fields */
 		/// <summary>
 		/// The singleton instance pointer.
@@ -58,6 +61,8 @@ namespace ECS
 		/// I'm making a potentially erroneous move here: all component pools request their types on creation.
 		/// </summary>
 		ComponentPool<C>();
+
+		bool SetComponentData(EntityID entity, C newData);
 	};
 
 	template <class C>

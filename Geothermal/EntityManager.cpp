@@ -1,32 +1,23 @@
 #include "pch.h"
 #include "EntityManager.h"
+#include "ComponentPool.h"
 
-ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype entityType)
+// EntityManager ////////////////
+
+
+// EntityToken //////////////////
+template<class C>
+ECS::EntityToken* ECS::EntityToken::SetComponentData(C newData)
 {
-	// enxtend entity id with entity count
-	EntityID newEntity = m_EntityCount++;
-
-	// TODO: extract all types in the archetype
+	// attempt to set data
+	if (ECS::ComponentPool<C>::GetInstance()->SetComponentData(m_ID, newData))
+	{
+		// TODO: if you need to do anything, add it here
+	}
+	else
+	{
+		// TODO: same as above
+	}
 	
-
-	// TODO: request new components and label them with the new entity
-
-
-	// TODO: add archetype to list
-	
-	return EntityID();
+	return nullptr;
 }
-
-void ECS::EntityManager::NewEntity(ECS::Archetype entityType, int amount)
-{
-}
-
-void ECS::EntityManager::RemoveEntity(EntityID removee)
-{
-}
-
-ECS::EntityID ECS::EntityManager::GetEntity(RuntimeComponent* source)
-{
-	return EntityID();
-}
-
