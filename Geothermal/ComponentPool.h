@@ -5,6 +5,7 @@
 #include <vector>
 #include "T_DummyComponent.h"
 #include "ComponentPoolBase.h"
+#include "EntityManager.h"
 
 namespace ECS 
 {

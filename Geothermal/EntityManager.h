@@ -22,6 +22,8 @@ namespace ECS
 	/// </summary>
 	class EntityManager
 	{
+		friend class EntityToken;
+
 	private: /* fields */
 		/// <summary>
 		/// Currently how many entities are there.
@@ -60,9 +62,37 @@ namespace ECS
 		/// </summary>
 		/// <param name="removee">entity of this component</param>
 		/// <returns></returns>
-		EntityID GetEntity(RuntimeComponent* source);
-		
+		EntityID GetEntity(RuntimeComponent* source);		
 	};
 
+
+	/// <summary>
+	/// Temporary type that stores information about a certain entity, 
+	/// providing some shorthand methods to operate this entity.
+	/// The best way to use it is to always treat it as local variable,
+	/// don't store it for later use as entity reference may change every frame.
+	/// </summary>
+	class EntityToken
+	{
+	private: /* fields */
+		/// <summary>
+		/// The entity ID this object points to.
+		/// </summary>
+		EntityID m_ID;
+
+	public: /* methods */
+		EntityToken(EntityID id) : m_ID(id) {}
+		
+		/// <summary>
+		/// Set component data for this entity.
+		/// If this entity doesn't have the given component, it does nothing.
+		/// This is an almost useless proxy to forbid access of user to the actual entity id.
+		/// </summary>
+		/// <typeparam name="C">a component type that this entity has</typeparam>
+		/// <param name="newData">the data to set (it'll be copied to destination</param>
+		/// <returns>EntityToken*: a pointer to self</returns>
+		template <class C>
+		EntityToken* SetComponentData(C newData);
+	};
 }
 

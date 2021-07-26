@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EntityManager.h"
+#include "ComponentPool.h"
 
 ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype* entityType)
 {

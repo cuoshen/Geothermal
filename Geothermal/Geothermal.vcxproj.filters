@@ -239,9 +239,11 @@
     <ClInclude Include="EntityComponentSystem.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="RuntimeSystemLinear.h" />
     <ClInclude Include="ComponentTypeHelpers.h">
       <Filter>ECS\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeSystemLinear.h">
+      <Filter>ECS\Basic Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

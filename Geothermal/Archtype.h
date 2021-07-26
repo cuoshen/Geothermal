@@ -2,6 +2,7 @@
 
 #include <exception>
 #include <vector>
+#include "ComponentPoolBase.h"
 
 namespace ECS 
 {
