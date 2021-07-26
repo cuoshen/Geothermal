@@ -1,6 +1,8 @@
-#include <math.h>
 #include "pch.h"
+
+#include <math.h>
 #include "Archtype.h"
+#include "ComponentPoolBase.h"
 #include "Primes.h"
 
 namespace ECS 

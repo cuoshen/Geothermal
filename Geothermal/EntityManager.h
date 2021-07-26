@@ -7,8 +7,11 @@
 
 // TODO: it seems this whole class can be made static
 
-namespace ECS {
+namespace ECS 
+{
 	using EntityID = int;
+
+	class Archetype;
 
 	/// <summary>
 	/// the world where all entities reside in
@@ -28,7 +31,7 @@ namespace ECS {
 		/// <summary>
 		/// A list representing each entity.
 		/// </summary>
-		std::vector<Archetype> entityArctypes;
+		std::vector<Archetype*> entityArctypes;
 
 	public: /* methods */
 		/// <summary>
@@ -36,7 +39,7 @@ namespace ECS {
 		/// </summary>
 		/// <param name="entityType">the archtype for this new entity</param>
 		/// <returns>the ID of new entity</returns>
-		EntityID NewEntity(ECS::Archetype entityType);
+		EntityID NewEntity(Archetype* entityType);
 
 		/// <summary>
 		/// batch create new entities of the same type
@@ -44,7 +47,7 @@ namespace ECS {
 		/// </summary>
 		/// <param name="entityType">type of new entities</param>
 		/// <param name="amount">amount of entities to create in this batch</param>
-		void NewEntity(ECS::Archetype entityType, int amount);
+		void NewEntity(Archetype* entityType, int amount);
 
 		/// <summary>
 		/// remove the given entity (and its components)

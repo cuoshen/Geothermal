@@ -1,10 +1,12 @@
 #pragma once
+
 #include <exception>
-#include "ComponentPoolBase.h"
 #include <vector>
 
 namespace ECS 
 {
+	class ComponentPoolBase;
+
 	/// <summary>
 	/// we need a way to combine a vector of component types into uniquely identified archtypes
 	/// for the desired usage, we would also value fast creation and deletion of these

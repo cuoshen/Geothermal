@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EntityManager.h"
 
-ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype entityType)
+ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype* entityType)
 {
 	// enxtend entity id with entity count
 	EntityID newEntity = m_EntityCount++;
@@ -17,7 +17,7 @@ ECS::EntityID ECS::EntityManager::NewEntity(ECS::Archetype entityType)
 	return EntityID();
 }
 
-void ECS::EntityManager::NewEntity(ECS::Archetype entityType, int amount)
+void ECS::EntityManager::NewEntity(ECS::Archetype* entityType, int amount)
 {
 }
 

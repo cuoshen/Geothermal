@@ -17,11 +17,51 @@ namespace ECS
 	template <class C>
 	class ComponentPool final : public ComponentPoolBase
 	{
+	public: /* methods */
+		/// <summary>
+		/// The singleton instance accessor.
+		/// </summary>
+		static ComponentPool<C>* GetInstance()
+		{
+			static MemGuard guard;
+			// initialize if not already
+			if (m_instance == nullptr)
+			{
+				m_instance = new ComponentPool<C>();
+			}
+
+			return m_instance;
+		}
+
+		/// <summary>
+		/// allocate and return a new, initialized component of this type
+		/// </summary>
+		/// <returns></returns>
+		C* NewComponent()
+		{
+			return nullptr;
+		}
+
+		/// <summary>
+		/// remove the given component
+		/// </summary>
+		/// <param name="removee">component to be removed</param>
+		void DeleteComponent(C* removee)
+		{
+
+		}
+
+		int GetType() const override
+		{
+			return m_type;
+		}
+
 	private: /* fields */
+
 		/// <summary>
 		/// The singleton instance pointer.
 		/// </summary>
-		static ComponentPool<C>* m_instance;
+		inline static ComponentPool<C>* m_instance;
 
 		/// <summary>
 		/// Storage of components.
@@ -30,37 +70,34 @@ namespace ECS
 		std::vector<C> m_storage;
 
 		int m_type;
-	
-	public: /* methods */
-		/// <summary>
-		/// The singleton instance accessor.
-		/// </summary>
-		/// <returns></returns>
-		static ComponentPool<C>* GetInstance();
 
-		/// <summary>
-		/// allocate and return a new, initialized component of this type
-		/// </summary>
-		/// <returns></returns>
-		C* NewComponent();
-
-		/// <summary>
-		/// remove the given component
-		/// </summary>
-		/// <param name="removee">component to be removed</param>
-		void DeleteComponent(C* removee);
-
-		int GetType() const override;
-
-	private: /* methods */
+		/* methods */
+		
 		/// <summary>
 		/// The singleton constructor.
 		/// I'm making a potentially erroneous move here: all component pools request their types on creation.
 		/// </summary>
-		ComponentPool<C>();
-	};
+		ComponentPool<C>()
+		{
+			// check if the requested type derives from RuntimeComponent
+			static_assert(std::is_base_of<RuntimeComponent, C>::value, "Component pool can only be used for subclasses of ECS::RuntimeComponent!");
 
-	template <class C>
-	ComponentPool<C>* ComponentPool<C>::m_instance = nullptr;
+			// initialize the buffer to 1000 components
+			m_storage = std::vector<C>(1000);
+
+			// request type id
+			m_type = ComponentPoolBase::RequestTypeID(this);
+		}
+
+		class MemGuard
+		{
+		public:
+			~MemGuard()
+			{
+				delete m_instance;
+				m_instance = nullptr;
+			}
+		};
+	};
 }
 
