@@ -12,8 +12,9 @@ namespace Geothermal::Graphics::Materials
 	class Material
 	{
 	public:
-		Material(std::string vertexShaderName, std::string pixelShaderName);
+		Material(std::string vertexShaderName, std::string pixelShaderName, bool precompileOnLoad);
 	protected:
-		std::shared_ptr<ShaderCache> cache;
+		std::string vertexShaderName;
+		std::string pixelShaderName;
 	};
 }
