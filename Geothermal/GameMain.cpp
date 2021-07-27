@@ -161,7 +161,7 @@ void GameMain::InitializeDebugResource()
 		planeLoader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
-	PhongAttributes shadingParameters = PhongAttributes
+	ShadingAttributes shadingParameters = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
 		{0.4f, 0.4f, 0.4f, 1.0f},												// Base color
@@ -171,7 +171,7 @@ void GameMain::InitializeDebugResource()
 		USE_SHADOW_MAP		// Texture flags
 	};
 
-	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
+	PixelConstantBuffer<ShadingAttributes> properties(deviceResources, shadingParameters, 2u);
 	properties.Bind();
 
 	SamplerState samplerState(deviceResources);

@@ -29,6 +29,11 @@ void Material::BindShadersAndParameters()
 {
 	ShaderCache::Instance().PixelShader(pixelShaderName)->Bind();
 	ShaderCache::Instance().VertexShader(vertexShaderName)->Bind();
+
+	for (auto parameterBuffer : parameters)
+	{
+		parameterBuffer.Bind();
+	}
 }
 
 void Material::BindTextures()

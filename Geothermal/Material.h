@@ -1,6 +1,8 @@
 #pragma once
 
+#include <vector>
 #include <string>
+#include "GraphicResources.h"
 
 namespace Geothermal::Graphics::Materials
 {
@@ -27,5 +29,6 @@ namespace Geothermal::Graphics::Materials
 	protected:
 		std::string vertexShaderName;
 		std::string pixelShaderName;
+		std::vector<Bindables::ConstantBuffer<Structures::ShadingAttributes>> parameters;
 	};
 }

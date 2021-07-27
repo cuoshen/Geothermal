@@ -10,7 +10,7 @@ namespace Geothermal::Graphics::Structures
 		USE_SHADOW_MAP = 0x04
 	};
 
-	struct PhongAttributes
+	struct ShadingAttributes
 	{
 		DirectX::XMFLOAT4 Ambient;
 		DirectX::XMFLOAT4 BaseColor;
