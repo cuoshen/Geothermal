@@ -13,7 +13,8 @@ namespace Geothermal::Graphics
 		static ShaderCache& Instance();
 
 		/// <summary>
-		/// Returns a vertex shader if it is already in the registry, otherwise try to compile it from DirectX Bytecode in cso file
+		/// Returns a vertex shader if it is already in the registry, 
+		/// otherwise try to compile it from DirectX Bytecode in cso file
 		/// </summary>
 		Bindables::VertexShader* VertexShader
 		(
@@ -21,7 +22,14 @@ namespace Geothermal::Graphics
 		);
 
 		/// <summary>
-		/// Returns a pixel shader if it is already in the registry, otherwise try to compile it from DirectX Bytecode in cso file
+		/// Returns a vertex shader if it is already in the registry,
+		/// DO NOT RECOMPILE, return nullptr on cache miss
+		/// </summary>
+		Bindables::VertexShader* VertexShader(std::string name);
+
+		/// <summary>
+		/// Returns a pixel shader if it is already in the registry, 
+		/// otherwise try to compile it from DirectX Bytecode in cso file
 		/// </summary>
 		Bindables::PixelShader* PixelShader(std::string name);
 

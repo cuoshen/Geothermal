@@ -1,6 +1,5 @@
 #pragma once
-#include "Shaders.h"
-#include "ShaderCache.h"
+
 #include <string>
 
 namespace Geothermal::Graphics::Materials
@@ -12,7 +11,19 @@ namespace Geothermal::Graphics::Materials
 	class Material
 	{
 	public:
-		Material(std::string vertexShaderName, std::string pixelShaderName, bool precompileOnLoad);
+		Material
+		(
+			std::string vertexShaderName, std::string pixelShaderName, bool precompileOnLoad, 
+			D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+		);
+
+		/// <summary>
+		/// Bind the entire material, that is, ALL shaders, parameters and textures
+		/// </summary>
+		void Bind();
+		void BindShadersAndParameters();
+		void BindTextures();
+
 	protected:
 		std::string vertexShaderName;
 		std::string pixelShaderName;
