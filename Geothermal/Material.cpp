@@ -38,4 +38,9 @@ void Material::BindShadersAndParameters()
 
 void Material::BindTextures()
 {
+	for (shared_ptr<Texture2D> texture : textures)
+	{
+		ID3D11ShaderResourceView* textureAsSRV = texture->UseAsShaderResource().get();
+
+	}
 }
