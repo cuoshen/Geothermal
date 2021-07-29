@@ -42,8 +42,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 // Load unlit shader for debug purposes
 void CoreRenderPipeline::LoadAllShaders()
 {
-	using namespace Materials;
-	Material material(L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
+	Materials::Material material(L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
 	material.BindShadersAndParameters();
 }
 
