@@ -20,31 +20,31 @@ namespace Geothermal::Graphics
 		/// </summary>
 		Bindables::VertexShader* VertexShader
 		(
-			std::string name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+			std::wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
 
 		/// <summary>
 		/// Returns a vertex shader if it is already in the registry,
 		/// DO NOT RECOMPILE, return nullptr on cache miss
 		/// </summary>
-		Bindables::VertexShader* VertexShader(std::string name);
+		Bindables::VertexShader* VertexShader(std::wstring name);
 
 		/// <summary>
 		/// Returns a pixel shader if it is already in the registry, 
 		/// otherwise try to compile it from DirectX Bytecode in cso file
 		/// </summary>
-		Bindables::PixelShader* PixelShader(std::string name);
+		Bindables::PixelShader* PixelShader(std::wstring name);
 
 	private:
 		Bindables::VertexShader* CompileVertexShader
 		(
-			std::string name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+			std::wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
-		Bindables::PixelShader* CompilePixelShader(std::string name);
+		Bindables::PixelShader* CompilePixelShader(std::wstring name);
 
 		// ShaderCache own all the shaders, thus the unique_ptr in vector
 
-		std::unordered_map<std::string, std::unique_ptr<Bindables::VertexShader>> vertexShaderCache;
-		std::unordered_map<std::string, std::unique_ptr<Bindables::PixelShader>> pixelShaderCache;
+		std::unordered_map<std::wstring, std::unique_ptr<Bindables::VertexShader>> vertexShaderCache;
+		std::unordered_map<std::wstring, std::unique_ptr<Bindables::PixelShader>> pixelShaderCache;
 	};
 }

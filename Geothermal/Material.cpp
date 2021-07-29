@@ -10,7 +10,7 @@ using namespace std;
 
 Material::Material
 (
-	string vertexShaderName, string pixelShaderName,
+	wstring vertexShaderName, wstring pixelShaderName,
 	 D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 ):
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)

@@ -15,7 +15,7 @@ namespace Geothermal::Graphics::Materials
 	public:
 		Material
 		(
-			std::string vertexShaderName, std::string pixelShaderName,
+			std::wstring vertexShaderName, std::wstring pixelShaderName,
 			D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
 

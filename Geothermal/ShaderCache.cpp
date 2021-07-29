@@ -13,7 +13,7 @@ ShaderCache& ShaderCache::Instance()
 
 VertexShader* ShaderCache::VertexShader
 (
-	string name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+	wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 )
 {
 	auto result = vertexShaderCache.find(name);
@@ -25,13 +25,18 @@ VertexShader* ShaderCache::VertexShader
 	return result->second.get();
 }
 
-VertexShader* ShaderCache::VertexShader(std::string name)
+VertexShader* ShaderCache::VertexShader(std::wstring name)
 {
 	auto result = vertexShaderCache.find(name);
-	return result->second.get();
+	if (result != vertexShaderCache.end())
+	{
+		return result->second.get();
+	}
+	// Return nullptr on cache miss
+	return nullptr;
 }
 
-PixelShader* ShaderCache::PixelShader(string name)
+PixelShader* ShaderCache::PixelShader(wstring name)
 {
 	auto result = pixelShaderCache.find(name);
 	if (result == pixelShaderCache.end())
@@ -44,13 +49,13 @@ PixelShader* ShaderCache::PixelShader(string name)
 
 VertexShader* ShaderCache::CompileVertexShader
 (
-	string name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+	wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 )
 {
 
 }
 
-PixelShader* ShaderCache::CompilePixelShader(string name)
+PixelShader* ShaderCache::CompilePixelShader(wstring name)
 {
 
 }
