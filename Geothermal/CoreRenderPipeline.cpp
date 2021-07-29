@@ -2,6 +2,8 @@
 #include <d3dcompiler.h>
 #include "CoreRenderPipeline.h"
 #include "GraphicResources.h"
+#include "ShaderCache.h"
+#include "Material.h"
 #include "GameMain.h"
 #include "Scene.h"
 #include "imgui.h"
@@ -24,6 +26,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
 	parametersBufferVS(deviceResources, 5u)
 {
+	ShaderCache::Initialize(deviceResources);
 	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
@@ -37,13 +40,11 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 }
 
 // Load unlit shader for debug purposes
-// TODO: refactor into (Shader Cache + Material) system in support of custom shader
 void CoreRenderPipeline::LoadAllShaders()
 {
-	PixelShader forwardLitPixelShader(deviceResources, L"ForwardLit.cso");
-	VertexShader litVertexShader(deviceResources, L"LitVertexShader.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
-	forwardLitPixelShader.Bind();
-	litVertexShader.Bind();
+	using namespace Materials;
+	Material material(L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
+	material.BindShadersAndParameters();
 }
 
 void CoreRenderPipeline::StartGUIFrame()

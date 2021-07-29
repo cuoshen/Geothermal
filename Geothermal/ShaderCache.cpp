@@ -83,5 +83,18 @@ Bindables::VertexShader* ShaderCache::CompileVertexShader
 
 Bindables::PixelShader* ShaderCache::CompilePixelShader(wstring name)
 {
+	unique_ptr<Bindables::PixelShader> compiledPixelShader =
+		make_unique<Bindables::PixelShader>(deviceResources, name);
+	Bindables::PixelShader* product = compiledPixelShader.get();
 
+	pixelShaderCache.insert
+	(
+		std::make_pair
+		(
+			name,
+			std::move(compiledPixelShader)
+		)
+	);
+
+	return product;
 }
