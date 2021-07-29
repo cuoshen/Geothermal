@@ -5,13 +5,21 @@ using namespace Geothermal::Graphics;
 using namespace Bindables;
 using namespace std;
 
-ShaderCache& ShaderCache::Instance()
+ShaderCache* ShaderCache::instance;
+
+void ShaderCache::Initialize(shared_ptr<DeviceResources> const& deviceResources)
 {
-	static ShaderCache instance;
-	return instance;
+	assert(ShaderCache::instance == nullptr);
+	ShaderCache::instance = new ShaderCache(deviceResources);
 }
 
-VertexShader* ShaderCache::VertexShader
+ShaderCache* ShaderCache::Instance()
+{
+	assert(ShaderCache::instance != nullptr);
+	return ShaderCache::instance;
+}
+
+Bindables::VertexShader* ShaderCache::VertexShader
 (
 	wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 )
@@ -25,7 +33,7 @@ VertexShader* ShaderCache::VertexShader
 	return result->second.get();
 }
 
-VertexShader* ShaderCache::VertexShader(std::wstring name)
+Bindables::VertexShader* ShaderCache::VertexShader(std::wstring name)
 {
 	auto result = vertexShaderCache.find(name);
 	if (result != vertexShaderCache.end())
@@ -36,7 +44,7 @@ VertexShader* ShaderCache::VertexShader(std::wstring name)
 	return nullptr;
 }
 
-PixelShader* ShaderCache::PixelShader(wstring name)
+Bindables::PixelShader* ShaderCache::PixelShader(wstring name)
 {
 	auto result = pixelShaderCache.find(name);
 	if (result == pixelShaderCache.end())
@@ -47,15 +55,33 @@ PixelShader* ShaderCache::PixelShader(wstring name)
 	return result->second.get();
 }
 
-VertexShader* ShaderCache::CompileVertexShader
+ShaderCache::ShaderCache(shared_ptr<DeviceResources> const& deviceResources):
+	deviceResources(deviceResources)
+{
+}
+
+Bindables::VertexShader* ShaderCache::CompileVertexShader
 (
 	wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 )
 {
+	unique_ptr<Bindables::VertexShader> compiledVertexShader = 
+		make_unique<Bindables::VertexShader>(deviceResources, name, inputSignatures, inputElementCount);
+	Bindables::VertexShader* product = compiledVertexShader.get();
 
+	vertexShaderCache.insert
+	(
+		std::make_pair
+		(
+			name,
+			std::move(compiledVertexShader)
+		)
+	);
+
+	return product;
 }
 
-PixelShader* ShaderCache::CompilePixelShader(wstring name)
+Bindables::PixelShader* ShaderCache::CompilePixelShader(wstring name)
 {
 
 }

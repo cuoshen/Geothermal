@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include "Shaders.h"
+#include "GraphicResources.h"
 
 namespace Geothermal::Graphics
 {
@@ -12,7 +12,8 @@ namespace Geothermal::Graphics
 	class ShaderCache
 	{
 	public:
-		static ShaderCache& Instance();
+		static void Initialize(std::shared_ptr<DeviceResources> const& deviceResources);
+		static ShaderCache* Instance();
 
 		/// <summary>
 		/// Returns a vertex shader if it is already in the registry, 
@@ -36,6 +37,11 @@ namespace Geothermal::Graphics
 		Bindables::PixelShader* PixelShader(std::wstring name);
 
 	private:
+		static ShaderCache* instance;
+
+		ShaderCache(std::shared_ptr<DeviceResources> const& deviceResources);
+		std::shared_ptr<DeviceResources> deviceResources;
+
 		Bindables::VertexShader* CompileVertexShader
 		(
 			std::wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount

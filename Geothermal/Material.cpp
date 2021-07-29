@@ -26,8 +26,8 @@ void Material::Bind()
 
 void Material::BindShadersAndParameters()
 {
-	ShaderCache::Instance().PixelShader(pixelShaderName)->Bind();
-	ShaderCache::Instance().VertexShader(vertexShaderName)->Bind();
+	ShaderCache::Instance()->PixelShader(pixelShaderName)->Bind();
+	ShaderCache::Instance()->VertexShader(vertexShaderName)->Bind();
 
 	for (auto parameterBuffer : parameters)
 	{
@@ -40,6 +40,5 @@ void Material::BindTextures()
 	for (shared_ptr<Texture2D> texture : textures)
 	{
 		ID3D11ShaderResourceView* textureAsSRV = texture->UseAsShaderResource().get();
-
 	}
 }
