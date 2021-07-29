@@ -15,7 +15,7 @@ namespace Geothermal::Graphics::Materials
 	public:
 		Material
 		(
-			std::string vertexShaderName, std::string pixelShaderName, bool precompileOnLoad, 
+			std::string vertexShaderName, std::string pixelShaderName,
 			D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
 
@@ -29,7 +29,7 @@ namespace Geothermal::Graphics::Materials
 	protected:
 		std::string vertexShaderName;
 		std::string pixelShaderName;
-		std::vector<Bindables::ConstantBuffer<Structures::ShadingAttributes>> parameters;
+		std::vector<Bindables::ConstantBuffer<Structures::ShadingAttributes>*> parameters;
 		std::vector<std::shared_ptr<Texture2D>> textures;
 	};
 }

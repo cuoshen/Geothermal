@@ -22,7 +22,13 @@ VertexShader* ShaderCache::VertexShader
 		return CompileVertexShader(name, inputSignatures, inputElementCount);
 	}
 
-	return &result->second;
+	return result->second.get();
+}
+
+VertexShader* ShaderCache::VertexShader(std::string name)
+{
+	auto result = vertexShaderCache.find(name);
+	return result->second.get();
 }
 
 PixelShader* ShaderCache::PixelShader(string name)
@@ -33,7 +39,7 @@ PixelShader* ShaderCache::PixelShader(string name)
 		return CompilePixelShader(name);
 	}
 
-	return &result->second;
+	return result->second.get();
 }
 
 VertexShader* ShaderCache::CompileVertexShader

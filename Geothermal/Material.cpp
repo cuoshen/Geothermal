@@ -3,20 +3,19 @@
 #include "ShaderCache.h"
 #include "Material.h"
 
-using namespace Geothermal::Graphics::Materials;
+using namespace Geothermal::Graphics;
+using namespace Materials;
+using namespace Bindables;
 using namespace std;
 
 Material::Material
 (
-	string vertexShaderName, string pixelShaderName, bool precompileOnLoad,
-	D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+	string vertexShaderName, string pixelShaderName,
+	 D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 ):
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)
 {
-	if (precompileOnLoad)
-	{
-		// Have the shader cache compile both shaders
-	}
+	// Compile shaders on load
 }
 
 void Material::Bind()
@@ -32,7 +31,7 @@ void Material::BindShadersAndParameters()
 
 	for (auto parameterBuffer : parameters)
 	{
-		parameterBuffer.Bind();
+		parameterBuffer->Bind();
 	}
 }
 

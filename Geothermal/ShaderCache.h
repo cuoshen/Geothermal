@@ -5,7 +5,9 @@
 namespace Geothermal::Graphics
 {
 	/// <summary>
-	/// A shader cache that compiles the 
+	/// A shader cache that compiles and stores all the shader in the application
+	/// For now we reference shader via a uniform resource locator string 
+	/// which is simply the name of the shader
 	/// </summary>
 	class ShaderCache
 	{
@@ -40,7 +42,9 @@ namespace Geothermal::Graphics
 		);
 		Bindables::PixelShader* CompilePixelShader(std::string name);
 
-		std::unordered_map<std::string, Bindables::VertexShader> vertexShaderCache;
-		std::unordered_map<std::string, Bindables::PixelShader> pixelShaderCache;
+		// ShaderCache own all the shaders, thus the unique_ptr in vector
+
+		std::unordered_map<std::string, std::unique_ptr<Bindables::VertexShader>> vertexShaderCache;
+		std::unordered_map<std::string, std::unique_ptr<Bindables::PixelShader>> pixelShaderCache;
 	};
 }
