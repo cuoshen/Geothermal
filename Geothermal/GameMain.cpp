@@ -20,6 +20,10 @@ GameMain* GameMain::instance;
 GameMain::GameMain(shared_ptr<DeviceResources> deviceResources) :
 	windowClosed(false), deltaTime(0.0f), time(0.0f), timer(nullptr), input(nullptr)
 {
+	UINT hardwareSupportedThreadNumber = thread::hardware_concurrency();
+	wstring threadsInfo = to_wstring(hardwareSupportedThreadNumber) + wstring(L" concurrent threads are supported on this device.\n");
+	OutputDebugString(threadsInfo.c_str());
+
 	if (deviceResources)
 	{
 		this->deviceResources = deviceResources;
@@ -61,8 +65,6 @@ UINT GameMain::HandleMessage(MSG msg)
 
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
-
-	OutputDebugString(L"update called \n");
 
 	GameMain::Instance()->GetInput()->RegisterInput(&msg);
 
