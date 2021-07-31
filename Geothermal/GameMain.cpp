@@ -142,7 +142,7 @@ void GameMain::InstantiateDebugScene()
 	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
 	for (int i = -1; i <= 1; i++)
 	{
-		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 6.0f, 0.0f, 0.0f);
+		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 8.0f, 0.0f, 0.0f);
 		AddDebugGameObject(initialTransform);
 	}
 	AddGround(center);
@@ -153,7 +153,7 @@ void GameMain::InitializeDebugResource()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		loader.LoadObj2Mesh(L"Assets\\building.obj", L"Assets\\building.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
 		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
