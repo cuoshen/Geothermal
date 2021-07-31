@@ -16,8 +16,8 @@ Material::Material
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)
 {
 	// Precompile shaders
-	(void)ShaderCache::Instance()->PixelShader(pixelShaderName);
-	(void)ShaderCache::Instance()->VertexShader(vertexShaderName, inputSignatures, inputElementCount);
+	ShaderCache::Instance()->CompilePixelShader(pixelShaderName);
+	ShaderCache::Instance()->CompileVertexShader(vertexShaderName, inputSignatures, inputElementCount);
 }
 
 void Material::Bind()

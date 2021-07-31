@@ -36,17 +36,17 @@ namespace Geothermal::Graphics
 		/// </summary>
 		Bindables::PixelShader* PixelShader(std::wstring name);
 
-	private:
-		static ShaderCache* instance;
-
-		ShaderCache(std::shared_ptr<DeviceResources> const& deviceResources);
-		std::shared_ptr<DeviceResources> deviceResources;
-
 		Bindables::VertexShader* CompileVertexShader
 		(
 			std::wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
 		Bindables::PixelShader* CompilePixelShader(std::wstring name);
+
+	private:
+		static ShaderCache* instance;
+
+		ShaderCache(std::shared_ptr<DeviceResources> const& deviceResources);
+		std::shared_ptr<DeviceResources> deviceResources;
 
 		// ShaderCache own all the shaders, thus the unique_ptr in vector
 
