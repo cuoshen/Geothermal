@@ -13,6 +13,10 @@ namespace Geothermal::Graphics::Materials
 	class Material
 	{
 	public:
+		/// <summary>
+		/// Initialize material in a minimalistic fashion: get both shaders, worry about parameters later
+		/// </summary>
+		/// <param name="inputSignatures">A description of per-vertex information fed to vertex shader</param>
 		Material
 		(
 			std::wstring vertexShaderName, std::wstring pixelShaderName,
