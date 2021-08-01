@@ -23,15 +23,9 @@ namespace Geothermal::Graphics::Materials
 			D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
 
-		void AddParameterSet()
-		{
+		void AddParameterSet();
 
-		}
-
-		void AddTexture()
-		{
-
-		}
+		void AddTexture(std::shared_ptr<Texture2D> texture);
 
 		/// <summary>
 		/// Bind the entire material, that is, ALL shaders, parameters and textures

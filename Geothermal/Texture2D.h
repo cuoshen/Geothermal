@@ -5,7 +5,7 @@ namespace Geothermal::Graphics
 {
 	// TODO: find a subnamespace to put this module
 
-	enum TEXTURE_FILE_TYPE
+	enum class TEXTURE_FILE_TYPE
 	{
 		DDS,
 		PNG

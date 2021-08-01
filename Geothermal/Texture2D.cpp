@@ -21,7 +21,7 @@ Texture2D::Texture2D
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 
-	if (fileType == DDS)
+	if (fileType == TEXTURE_FILE_TYPE::DDS)
 	{
 		// Use DDSTextureLoader
 
