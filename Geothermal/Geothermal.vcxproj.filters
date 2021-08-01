@@ -193,6 +193,9 @@
     <ClInclude Include="GraphicResources.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="GeothermalTypes.h">
+      <Filter>Ultilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

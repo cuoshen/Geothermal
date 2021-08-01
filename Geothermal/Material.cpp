@@ -6,6 +6,7 @@
 using namespace Geothermal::Graphics;
 using namespace Materials;
 using namespace Bindables;
+using namespace Structures;
 using namespace std;
 
 Material::Material
@@ -18,6 +19,16 @@ Material::Material
 	// Precompile shaders
 	(void)ShaderCache::Instance()->PixelShader(pixelShaderName);
 	(void)ShaderCache::Instance()->VertexShader(vertexShaderName, inputSignatures, inputElementCount);
+}
+
+void Material::AddParameterSet(shared_ptr<ConstantBuffer<ShadingAttributes>> parameterSet)
+{
+	parameters.push_back(parameterSet);
+}
+
+void Material::AddTexture(shared_ptr<Texture2D> texture)
+{
+	textures.push_back(texture);
 }
 
 void Material::Bind()

@@ -15,3 +15,5 @@
 #include <winrt\base.h>
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"windowsapp.lib")
+
+#include "GeothermalTypes.h"

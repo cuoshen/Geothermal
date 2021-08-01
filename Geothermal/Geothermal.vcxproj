@@ -185,6 +185,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="GeothermalTypes.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_dx11.h" />

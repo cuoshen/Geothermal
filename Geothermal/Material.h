@@ -23,7 +23,7 @@ namespace Geothermal::Graphics::Materials
 			D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 		);
 
-		void AddParameterSet();
+		void AddParameterSet(std::shared_ptr<Bindables::ConstantBuffer<Structures::ShadingAttributes>> parameterSet);
 
 		void AddTexture(std::shared_ptr<Texture2D> texture);
 
@@ -37,7 +37,15 @@ namespace Geothermal::Graphics::Materials
 	protected:
 		std::wstring vertexShaderName;
 		std::wstring pixelShaderName;
-		std::vector<Bindables::ConstantBuffer<Structures::ShadingAttributes>*> parameters;
+		std::vector
+			< 
+			std::shared_ptr
+				<
+					Bindables::ConstantBuffer<Structures::ShadingAttributes>
+				>
+			> 
+			parameters;
+
 		std::vector<std::shared_ptr<Texture2D>> textures;
 	};
 }
