@@ -14,7 +14,6 @@ namespace Geothermal::Graphics
 	public:
 		CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources);
 
-		void LoadAllShaders();
 		/// <summary>
 		/// Render the whole scene in a single forward pass with the main camera
 		/// </summary>

@@ -31,9 +31,9 @@ namespace Geothermal::Graphics::Materials
 		/// <summary>
 		/// Bind the entire material, that is, ALL shaders, parameters and textures
 		/// </summary>
-		void Bind();
-		void BindShadersAndParameters();
-		void BindTextures();
+		void Bind(std::shared_ptr<DeviceResources> const& deviceResources);
+		void BindShadersAndParameters(std::shared_ptr<DeviceResources> const& deviceResources);
+		void BindTextures(std::shared_ptr<DeviceResources> const& deviceResources);
 
 	protected:
 		std::wstring vertexShaderName;

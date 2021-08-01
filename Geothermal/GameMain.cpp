@@ -5,14 +5,17 @@
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
 #include "Mesh.h"
+#include "Material.h"
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;
 using namespace Structures;
 using namespace Meshes;
+using namespace Materials;
 #endif
 
 using namespace std;
+using namespace winrt;
 using namespace DirectX;
 
 GameMain* GameMain::instance;
@@ -153,8 +156,8 @@ void GameMain::InitializeDebugResource()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
-		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		//loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	debugPlane = new Mesh();
@@ -163,6 +166,14 @@ void GameMain::InitializeDebugResource()
 		planeLoader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
+	// For now we want to put everything into a single test material
+	// TODO: remove this and support per-object material instead
+	Materials::Material testMaterial
+	(
+		L"LitVertexShader.cso", L"ForwardLit.cso", 
+		VertexPNTTLayout, (uint)size(VertexPNTTLayout)
+	);
+
 	ShadingAttributes shadingParameters = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
@@ -170,24 +181,25 @@ void GameMain::InitializeDebugResource()
 		0.5f,																				// Diffuse
 		0.5f,																				// Specular
 		10.0f,																				// Smoothness
-		USE_SHADOW_MAP		// Texture flags
+		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
 	};
 
-	PixelConstantBuffer<ShadingAttributes> properties(deviceResources, shadingParameters, 2u);
-	properties.Bind();
+	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties = 
+		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters, 2u);
+	testMaterial.AddParameterSet(properties);
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
-	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
-	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
-	deviceResources->Context()->PSSetShaderResources(debugAlbedoTexture.Slot(), 1, &albedoSRVAddress);
+	shared_ptr<Texture2D> debugAlbedoTexture =
+		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
+	testMaterial.AddTexture(debugAlbedoTexture);
 
-	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
-	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
-	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
-	deviceResources->Context()->PSSetShaderResources(debugNormalTexture.Slot(), 1, &normalSRVAddress);
+	shared_ptr<Texture2D> debugNormalTexture =
+		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
+	testMaterial.AddTexture(debugNormalTexture);
+
+	testMaterial.Bind(deviceResources);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)

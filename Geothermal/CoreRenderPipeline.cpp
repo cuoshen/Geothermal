@@ -27,7 +27,6 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	parametersBufferVS(deviceResources, 5u)
 {
 	ShaderCache::Initialize(deviceResources);
-	LoadAllShaders();
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	shadowViewPort = CD3D11_VIEWPORT(
@@ -37,13 +36,6 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 		shadowMapDimensions.y
 	);
 	OutputDebugString(L"Core Renderer ready \n");
-}
-
-// Load unlit shader for debug purposes
-void CoreRenderPipeline::LoadAllShaders()
-{
-	Materials::Material material(L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (UINT)size(VertexPNTTLayout));
-	material.BindShadersAndParameters();
 }
 
 void CoreRenderPipeline::StartGUIFrame()

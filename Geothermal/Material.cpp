@@ -8,6 +8,7 @@ using namespace Materials;
 using namespace Bindables;
 using namespace Structures;
 using namespace std;
+using namespace winrt;
 
 Material::Material
 (
@@ -31,13 +32,13 @@ void Material::AddTexture(shared_ptr<Texture2D> texture)
 	textures.push_back(texture);
 }
 
-void Material::Bind()
+void Material::Bind(shared_ptr<DeviceResources> const& deviceResources)
 {
-	BindShadersAndParameters();
-	BindTextures();
+	BindShadersAndParameters(deviceResources);
+	BindTextures(deviceResources);
 }
 
-void Material::BindShadersAndParameters()
+void Material::BindShadersAndParameters(shared_ptr<DeviceResources> const& deviceResources)
 {
 	ShaderCache::Instance()->PixelShader(pixelShaderName)->Bind();
 	ShaderCache::Instance()->VertexShader(vertexShaderName)->Bind();
@@ -48,10 +49,11 @@ void Material::BindShadersAndParameters()
 	}
 }
 
-void Material::BindTextures()
+void Material::BindTextures(shared_ptr<DeviceResources> const& deviceResources)
 {
 	for (shared_ptr<Texture2D> texture : textures)
 	{
-
+		ID3D11ShaderResourceView* srv = texture->UseAsShaderResource().get();
+		deviceResources->Context()->PSSetShaderResources(texture->Slot(), 1, &srv);
 	}
 }
