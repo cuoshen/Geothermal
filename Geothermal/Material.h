@@ -39,12 +39,12 @@ namespace Geothermal::Graphics::Materials
 		std::wstring vertexShaderName;
 		std::wstring pixelShaderName;
 		std::vector
-			< 
+			<
 			std::shared_ptr
-				<
-					Bindables::ConstantBuffer<Structures::ShadingAttributes>
-				>
-			> 
+			<
+			Bindables::ConstantBuffer<Structures::ShadingAttributes>
+			>
+			>
 			parameters;
 
 		std::vector<std::shared_ptr<Texture2D>> textures;

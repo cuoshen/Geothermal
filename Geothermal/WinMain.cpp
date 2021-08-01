@@ -84,7 +84,7 @@ int CALLBACK WinMain
 	std::shared_ptr<Geothermal::Graphics::DeviceResources> deviceResources =
 		std::make_shared<Geothermal::Graphics::DeviceResources>();
 	deviceResources->SetWindow(windowHandle, width, height);
-	
+
 	GameMain::Initialize(deviceResources);
 	SetupGUI(windowHandle, deviceResources);
 	// Run the game

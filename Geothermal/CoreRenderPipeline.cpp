@@ -16,9 +16,9 @@ using namespace Structures;
 using namespace std;
 using namespace DirectX;
 
-CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources):
-	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr), 
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f} ),
+CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
+	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
 	mainShadowMap
 	(
 		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
@@ -67,7 +67,7 @@ void CoreRenderPipeline::DrawGUI()
 		ResetCamera();
 	}
 	ImGui::End();
-	
+
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }

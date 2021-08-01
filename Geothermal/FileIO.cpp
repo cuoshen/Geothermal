@@ -36,11 +36,11 @@ string FileIO::ReadData(winrt::hstring const& filename)
 
 	FILE_STANDARD_INFO fileInfo = { 0 };
 	if (!GetFileInformationByHandleEx(
-			file.get(),
-			FileStandardInfo,
-			&fileInfo,
-			sizeof(fileInfo)
-		))
+		file.get(),
+		FileStandardInfo,
+		&fileInfo,
+		sizeof(fileInfo)
+	))
 	{
 		winrt::throw_hresult(E_FAIL);
 	}

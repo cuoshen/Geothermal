@@ -15,118 +15,118 @@
 using namespace Geothermal;
 
 GameTimer::GameTimer() :
-    m_active(false)
+	m_active(false)
 {
-    LARGE_INTEGER frequency;
-    if (!QueryPerformanceFrequency(&frequency))
-    {
-        winrt::throw_hresult(E_FAIL);
-    }
-    m_secondsPerCount = 1.0f / static_cast<float>(frequency.QuadPart);
+	LARGE_INTEGER frequency;
+	if (!QueryPerformanceFrequency(&frequency))
+	{
+		winrt::throw_hresult(E_FAIL);
+	}
+	m_secondsPerCount = 1.0f / static_cast<float>(frequency.QuadPart);
 
-    Reset();
+	Reset();
 }
 
 // Returns the total time elapsed since Reset() was called, NOT counting any
 // time when the clock is stopped.
 float GameTimer::PlayingTime()
 {
-    if (m_active)
-    {
-        // The distance m_currentTime - m_baseTime includes paused time,
-        // which we do not want to count. To correct this, we can subtract
-        // the paused time from m_currentTime:
-        return static_cast<float>(((m_currentTime.QuadPart - m_pausedTime.QuadPart) - m_baseTime.QuadPart) * m_secondsPerCount);
-    }
-    else
-    {
-        // The clock is currently not running so don't count the time since
-        // the clock was stopped
-        return static_cast<float>(((m_stopTime.QuadPart - m_pausedTime.QuadPart) - m_baseTime.QuadPart) * m_secondsPerCount);
-    }
+	if (m_active)
+	{
+		// The distance m_currentTime - m_baseTime includes paused time,
+		// which we do not want to count. To correct this, we can subtract
+		// the paused time from m_currentTime:
+		return static_cast<float>(((m_currentTime.QuadPart - m_pausedTime.QuadPart) - m_baseTime.QuadPart) * m_secondsPerCount);
+	}
+	else
+	{
+		// The clock is currently not running so don't count the time since
+		// the clock was stopped
+		return static_cast<float>(((m_stopTime.QuadPart - m_pausedTime.QuadPart) - m_baseTime.QuadPart) * m_secondsPerCount);
+	}
 }
 
 
 void GameTimer::PlayingTime(float time)
 {
-    // Reset the internal state to reflect a PlayingTime of 'time'
-    // Offset the baseTime by this 'time'.
-    m_active = false;
-    m_stopTime = m_currentTime;
-    m_pausedTime.QuadPart = 0;
+	// Reset the internal state to reflect a PlayingTime of 'time'
+	// Offset the baseTime by this 'time'.
+	m_active = false;
+	m_stopTime = m_currentTime;
+	m_pausedTime.QuadPart = 0;
 
-    m_baseTime.QuadPart = m_stopTime.QuadPart - static_cast<__int64>(time / m_secondsPerCount);
+	m_baseTime.QuadPart = m_stopTime.QuadPart - static_cast<__int64>(time / m_secondsPerCount);
 }
 
 
 float GameTimer::DeltaTime()
 {
-    return m_deltaTime;
+	return m_deltaTime;
 }
 
 void GameTimer::Reset()
 {
-    LARGE_INTEGER currentTime;
-    if (!QueryPerformanceCounter(&currentTime))
-    {
-        winrt::throw_hresult(E_FAIL);
-    }
-    m_baseTime = currentTime;
-    m_previousTime = currentTime;
-    m_stopTime = currentTime;
-    m_currentTime = currentTime;
-    m_pausedTime.QuadPart = 0;
-    m_active = false;
+	LARGE_INTEGER currentTime;
+	if (!QueryPerformanceCounter(&currentTime))
+	{
+		winrt::throw_hresult(E_FAIL);
+	}
+	m_baseTime = currentTime;
+	m_previousTime = currentTime;
+	m_stopTime = currentTime;
+	m_currentTime = currentTime;
+	m_pausedTime.QuadPart = 0;
+	m_active = false;
 }
 
 void GameTimer::Start()
 {
-    LARGE_INTEGER startTime;
-    if (!QueryPerformanceCounter(&startTime))
-    {
-        winrt::throw_hresult(E_FAIL);
-    }
-    if (!m_active)
-    {
-        // Accumulate the time elapsed between stop and start pairs.
-        m_pausedTime.QuadPart += (startTime.QuadPart - m_stopTime.QuadPart);
+	LARGE_INTEGER startTime;
+	if (!QueryPerformanceCounter(&startTime))
+	{
+		winrt::throw_hresult(E_FAIL);
+	}
+	if (!m_active)
+	{
+		// Accumulate the time elapsed between stop and start pairs.
+		m_pausedTime.QuadPart += (startTime.QuadPart - m_stopTime.QuadPart);
 
-        m_previousTime = startTime;
-        m_stopTime.QuadPart = 0;
-        m_active = true;
-    }
+		m_previousTime = startTime;
+		m_stopTime.QuadPart = 0;
+		m_active = true;
+	}
 }
 
 void GameTimer::Stop()
 {
-    if (m_active)
-    {
-        // Set the stop time to the time of the last update.
-        m_stopTime = m_currentTime;
-        m_active = false;
-    }
+	if (m_active)
+	{
+		// Set the stop time to the time of the last update.
+		m_stopTime = m_currentTime;
+		m_active = false;
+	}
 }
 
 void GameTimer::Update()
 {
-    if (!m_active)
-    {
-        m_deltaTime = 0.0;
-        return;
-    }
+	if (!m_active)
+	{
+		m_deltaTime = 0.0;
+		return;
+	}
 
-    LARGE_INTEGER currentTime;
-    if (!QueryPerformanceCounter(&currentTime))
-    {
-        winrt::throw_hresult(E_FAIL);
-    }
-    m_currentTime = currentTime;
+	LARGE_INTEGER currentTime;
+	if (!QueryPerformanceCounter(&currentTime))
+	{
+		winrt::throw_hresult(E_FAIL);
+	}
+	m_currentTime = currentTime;
 
-    m_deltaTime = (m_currentTime.QuadPart - m_previousTime.QuadPart) * m_secondsPerCount;
-    m_previousTime = m_currentTime;
+	m_deltaTime = (m_currentTime.QuadPart - m_previousTime.QuadPart) * m_secondsPerCount;
+	m_previousTime = m_currentTime;
 
-    if (m_deltaTime < 0.0)
-    {
-        m_deltaTime = 0.0;
-    }
+	if (m_deltaTime < 0.0)
+	{
+		m_deltaTime = 0.0;
+	}
 }

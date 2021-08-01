@@ -5,7 +5,7 @@ namespace Geothermal::Graphics::Meshes
 {
 	struct Mesh
 	{
-		Mesh():
+		Mesh() :
 			vertices(nullptr)
 		{
 		}

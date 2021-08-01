@@ -37,7 +37,7 @@ namespace Geothermal::Graphics
 
 		// TODO: Refactor into dedicated shadow caster class
 		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
-		const XMFLOAT3 mainLightShadowCastingOrigin = {0.0f, 10.0f, 0.0f};
+		const XMFLOAT3 mainLightShadowCastingOrigin = { 0.0f, 10.0f, 0.0f };
 		ShadowMap mainShadowMap;
 		D3D11_VIEWPORT shadowViewPort;
 		ViewPoint shadowCaster;

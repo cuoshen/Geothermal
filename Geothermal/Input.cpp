@@ -87,7 +87,7 @@ void Input::OnKeyUp(WPARAM wParam, LPARAM lParam)
 void Input::OnMouseMoved(WPARAM wParam, LPARAM lParam)
 {
 	DirectX::XMINT2 newMousePosition = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-	
+
 	mouseMovement.x = static_cast<float>(newMousePosition.x - mousePosition.x);
 	mouseMovement.y = static_cast<float>(newMousePosition.y - mousePosition.y);
 

@@ -13,8 +13,8 @@ using namespace winrt;
 Material::Material
 (
 	wstring vertexShaderName, wstring pixelShaderName,
-	 D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
-):
+	D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
+) :
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)
 {
 	// Precompile shaders

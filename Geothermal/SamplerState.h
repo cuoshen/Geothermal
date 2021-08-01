@@ -7,7 +7,7 @@ namespace Geothermal::Graphics::Bindables
 	class SamplerState : public Bindable
 	{
 	public:
-		SamplerState(std::shared_ptr<DeviceResources> const& deviceResources):
+		SamplerState(std::shared_ptr<DeviceResources> const& deviceResources) :
 			Bindable(deviceResources), samplerState(nullptr)
 		{
 			D3D11_SAMPLER_DESC samplerDescription = {};

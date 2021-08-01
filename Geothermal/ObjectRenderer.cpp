@@ -6,7 +6,7 @@ using namespace Meshes;
 using namespace DirectX;
 using namespace std;
 
-ObjectRenderer::ObjectRenderer(Mesh mesh, shared_ptr<DeviceResources> const& deviceResources):
+ObjectRenderer::ObjectRenderer(Mesh mesh, shared_ptr<DeviceResources> const& deviceResources) :
 	mesh(), object2WorldTransformBuffer(deviceResources, 0u), deviceResources(deviceResources)
 {
 	this->mesh.vertices = mesh.vertices;

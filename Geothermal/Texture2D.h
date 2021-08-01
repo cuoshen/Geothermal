@@ -30,7 +30,7 @@ namespace Geothermal::Graphics
 		/// <summary>
 		/// For non-DDS image file loaded into the memory, we need to pass in metadata
 		/// </summary>
-		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources, std::vector<char> data, 
+		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources, std::vector<char> data,
 			DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot);
 
 		/// <summary>

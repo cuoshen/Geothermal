@@ -12,7 +12,7 @@ using namespace Structures;
 using namespace Bindables;
 using namespace std;
 
-ModelLoader::ModelLoader():
+ModelLoader::ModelLoader() :
 	reader(), reader_config()
 {
 	reader_config.vertex_color = false;
@@ -21,8 +21,8 @@ ModelLoader::ModelLoader():
 bool ModelLoader::LoadObj2Mesh
 (
 	winrt::hstring const& objFileName,
-	winrt::hstring const& mtlFileName, 
-	Mesh* mesh, 
+	winrt::hstring const& mtlFileName,
+	Mesh* mesh,
 	shared_ptr<DeviceResources> const& deviceResources
 )
 {
@@ -125,7 +125,7 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
 {
 	size_t startingIndex = 3 * size_t(index.vertex_index);
-	vertex->position = 
+	vertex->position =
 	{
 		attrib.vertices[startingIndex + 0],
 		attrib.vertices[startingIndex + 1],
@@ -134,8 +134,8 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	if (index.normal_index >= 0)
 	{
 		startingIndex = 3 * size_t(index.normal_index);
-		vertex->normal = 
-		{ 
+		vertex->normal =
+		{
 			attrib.normals[startingIndex + 0],
 			attrib.normals[startingIndex + 1],
 			attrib.normals[startingIndex + 2],
@@ -144,8 +144,8 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	if (index.texcoord_index >= 0)
 	{
 		startingIndex = 2 * size_t(index.texcoord_index);
-		vertex->textureCoordinate = 
-		{ 
+		vertex->textureCoordinate =
+		{
 			attrib.texcoords[startingIndex + 0],
 			attrib.texcoords[startingIndex + 1],
 		};
@@ -160,11 +160,11 @@ void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 	XMFLOAT3& p1 = triangle[1].position;
 	XMFLOAT3& p2 = triangle[2].position;
 
-	XMFLOAT3 edge0 = 
-	{ 
+	XMFLOAT3 edge0 =
+	{
 		p1.x - p0.x,
 		p1.y - p0.y,
-		p1.z - p0.z 
+		p1.z - p0.z
 	};
 	XMFLOAT3 edge1 =
 	{
@@ -179,7 +179,7 @@ void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 	float dv1 = { triangle[2].textureCoordinate.y - triangle[0].textureCoordinate.y };
 
 	float determinantReciprocal = 1.0f / (du0 * dv1 - du1 * dv0);
-	XMFLOAT3 tangent = 
+	XMFLOAT3 tangent =
 	{
 		determinantReciprocal * (dv1 * edge0.x - dv0 * edge1.x),
 		determinantReciprocal * (dv1 * edge0.y - dv0 * edge1.y),

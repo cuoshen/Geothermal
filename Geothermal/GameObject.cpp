@@ -8,7 +8,7 @@ using namespace Meshes;
 using namespace std;
 using namespace DirectX;
 
-GameObject::GameObject():
+GameObject::GameObject() :
 	id(0), isActive(true), transform(nullptr), renderer(nullptr)
 {
 	transform = make_unique<Transform>();
@@ -31,7 +31,7 @@ void GameObject::Render() const
 	}
 }
 
-GameObjectFactory::GameObjectFactory():
+GameObjectFactory::GameObjectFactory() :
 	product(nullptr), registered(false)
 {
 }

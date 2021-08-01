@@ -12,7 +12,7 @@ namespace Geothermal::Graphics::Bindables
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
 			std::wstring filename
-		):
+		) :
 			Bindable(deviceResources)
 		{
 			// Use a blob to read compiled shaders

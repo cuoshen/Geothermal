@@ -9,11 +9,11 @@ using namespace Graphics;
 
 Texture2D::Texture2D
 (
-	shared_ptr<DeviceResources> const& deviceResources, 
+	shared_ptr<DeviceResources> const& deviceResources,
 	hstring const& filename, TEXTURE_FILE_TYPE fileType, uint slot
-):
+) :
 	deviceResources(deviceResources),
-	texture(nullptr), 
+	texture(nullptr),
 	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(DXGI_FORMAT_R8G8B8A8_SNORM),
 	// If we create a texture from file, usually, we don't want to override the content
@@ -39,7 +39,7 @@ Texture2D::Texture2D
 			)
 		);
 
-		D3D11_RESOURCE_DIMENSION resourceType = 
+		D3D11_RESOURCE_DIMENSION resourceType =
 			D3D11_RESOURCE_DIMENSION_UNKNOWN;
 		resource->GetType(&resourceType);
 		assert(resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D);
@@ -67,10 +67,10 @@ Texture2D::Texture2D
 	check_hresult(
 		factory->CreateDecoderFromFilename
 		(
-			filename.c_str(), 
-			0, 
-			GENERIC_READ, 
-			WICDecodeMetadataCacheOnDemand, 
+			filename.c_str(),
+			0,
+			GENERIC_READ,
+			WICDecodeMetadataCacheOnDemand,
 			decoder.put()
 		)
 	);
@@ -86,9 +86,9 @@ Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, vector<char> data,
 	DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot
-):
+) :
 	deviceResources(deviceResources),
-	texture(nullptr), 
+	texture(nullptr),
 	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(format),
 	bindFlags(bindFlags),
@@ -119,12 +119,12 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, uint width, uint heig
 
 Texture2D::Texture2D
 (
-	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, 
+	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format,
 	uint width, uint height, uint bindFlags, uint slot
 ) :
 	deviceResources(deviceResources),
-	texture(nullptr), 
-	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr), 
+	texture(nullptr),
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(format),
 	bindFlags(bindFlags),
 	slot(slot)
@@ -190,7 +190,7 @@ void Texture2D::CreateRenderTargetView()
 	D3D11_RENDER_TARGET_VIEW_DESC RTVDescription = {};
 	RTVDescription.Format = format;
 	RTVDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	
+
 	check_hresult(
 		deviceResources->Device()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
 	);

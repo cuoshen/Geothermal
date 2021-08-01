@@ -39,7 +39,7 @@ namespace Geothermal
 		void ConstructVertex
 		(
 			Geothermal::Graphics::Structures::VertexPNTT* vertex,
-			tinyobj::index_t index, 
+			tinyobj::index_t index,
 			const tinyobj::attrib_t& attrib
 		);
 		/// <summary>

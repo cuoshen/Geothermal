@@ -55,7 +55,7 @@ Bindables::PixelShader* ShaderCache::PixelShader(wstring name)
 	return result->second.get();
 }
 
-ShaderCache::ShaderCache(shared_ptr<DeviceResources> const& deviceResources):
+ShaderCache::ShaderCache(shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources)
 {
 }
@@ -65,7 +65,7 @@ Bindables::VertexShader* ShaderCache::CompileVertexShader
 	wstring name, D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
 )
 {
-	unique_ptr<Bindables::VertexShader> compiledVertexShader = 
+	unique_ptr<Bindables::VertexShader> compiledVertexShader =
 		make_unique<Bindables::VertexShader>(deviceResources, name, inputSignatures, inputElementCount);
 	Bindables::VertexShader* product = compiledVertexShader.get();
 

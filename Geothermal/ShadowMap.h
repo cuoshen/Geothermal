@@ -16,10 +16,10 @@ namespace Geothermal::Graphics
 		/// <summary>
 		/// Geothermal uses a D32 depth map for shadows
 		/// </summary>
-		ShadowMap(std::shared_ptr<DeviceResources> const& deviceResources, UINT width, UINT height):
+		ShadowMap(std::shared_ptr<DeviceResources> const& deviceResources, UINT width, UINT height) :
 			Texture2D
 			(
-				deviceResources, DXGI_FORMAT_R32_TYPELESS, width, height, 
+				deviceResources, DXGI_FORMAT_R32_TYPELESS, width, height,
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, shadowMapSlot
 			)
 		{

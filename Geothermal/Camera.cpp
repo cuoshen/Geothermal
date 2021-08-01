@@ -10,7 +10,7 @@ using namespace std;
 
 Camera* Camera::main;
 
-Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources):
+Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources) :
 	GameObject(),
 	ViewPoint(deviceResources, aspectRatio, nearZ, farZ),
 	pitch(0.0f), yaw(0.0f)
@@ -59,7 +59,7 @@ void Camera::HandleMovement()
 
 	if (input->GetKey('A'))
 	{
-		transform->ApplyTransform(XMMatrixTranslationFromVector(ds*left));
+		transform->ApplyTransform(XMMatrixTranslationFromVector(ds * left));
 	}
 	else if (input->GetKey('D'))
 	{
@@ -119,5 +119,5 @@ XMMATRIX Camera::World2Clip()
 
 void Camera::BindCamera2Pipeline()
 {
-	 Bind(World2View());
+	Bind(World2View());
 }

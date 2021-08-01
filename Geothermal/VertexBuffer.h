@@ -18,7 +18,7 @@ namespace Geothermal::Graphics::Bindables
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
 			std::vector<V> const& vertices
-		):
+		) :
 			Bindable(deviceResources),
 			vertexBuffer(nullptr), stride(sizeof(V)), offset(0), vertexCount(vertices.size())
 		{
@@ -45,7 +45,7 @@ namespace Geothermal::Graphics::Bindables
 			deviceResources->Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
-		virtual bool IsIndexed() 
+		virtual bool IsIndexed()
 		{
 			return false;
 		}
@@ -72,9 +72,9 @@ namespace Geothermal::Graphics::Bindables
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
 			std::vector<V> const& vertices
-		):
-			VertexBuffer<V>(deviceResources, vertices), 
-			isIndexed(false), indexBuffer(nullptr),  indexCount(0)
+		) :
+			VertexBuffer<V>(deviceResources, vertices),
+			isIndexed(false), indexBuffer(nullptr), indexCount(0)
 		{
 		}
 
@@ -87,8 +87,8 @@ namespace Geothermal::Graphics::Bindables
 			const std::vector<V> vertices,
 			const std::vector<UINT> indices
 		) :
-			VertexBuffer<V>(deviceResources, vertices), 
-			isIndexed(true), indexBuffer(nullptr),  indexCount(indices.size())
+			VertexBuffer<V>(deviceResources, vertices),
+			isIndexed(true), indexBuffer(nullptr), indexCount(indices.size())
 		{
 			// Initialize index buffer
 			D3D11_BUFFER_DESC indexBufferDescription = { 0 };

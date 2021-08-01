@@ -10,7 +10,7 @@ namespace Geothermal::Graphics::Bindables
 	class Bindable
 	{
 	public:
-		Bindable(std::shared_ptr<DeviceResources> const& deviceResources): deviceResources(deviceResources)
+		Bindable(std::shared_ptr<DeviceResources> const& deviceResources) : deviceResources(deviceResources)
 		{
 		}
 

@@ -142,7 +142,7 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
+	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f);
 	for (int i = -1; i <= 1; i++)
 	{
 		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 8.0f, 0.0f, 0.0f);
@@ -170,7 +170,7 @@ void GameMain::InitializeDebugResource()
 	// TODO: remove this and support per-object material instead
 	Materials::Material testMaterial
 	(
-		L"LitVertexShader.cso", L"ForwardLit.cso", 
+		L"LitVertexShader.cso", L"ForwardLit.cso",
 		VertexPNTTLayout, (uint)size(VertexPNTTLayout)
 	);
 
@@ -184,7 +184,7 @@ void GameMain::InitializeDebugResource()
 		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
 	};
 
-	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties = 
+	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties =
 		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters, 2u);
 	testMaterial.AddParameterSet(properties);
 
