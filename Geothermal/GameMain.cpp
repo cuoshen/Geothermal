@@ -170,7 +170,7 @@ void GameMain::InitializeDebugResource()
 		0.5f,																				// Diffuse
 		0.5f,																				// Specular
 		10.0f,																				// Smoothness
-		USE_SHADOW_MAP		// Texture flags
+		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
 	};
 
 	PixelConstantBuffer<ShadingAttributes> properties(deviceResources, shadingParameters, 2u);
@@ -179,15 +179,15 @@ void GameMain::InitializeDebugResource()
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS);
+	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
 	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
-	deviceResources->Context()->PSSetShaderResources(0, 1, &albedoSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(debugAlbedoTexture.Slot(), 1, &albedoSRVAddress);
 
-	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS);
+	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
 	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
 	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
-	deviceResources->Context()->PSSetShaderResources(1, 1, &normalSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(debugNormalTexture.Slot(), 1, &normalSRVAddress);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)

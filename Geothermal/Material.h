@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include "GeothermalTypes.h"
 #include "GraphicResources.h"
 
 namespace Geothermal::Graphics::Materials
@@ -20,7 +21,7 @@ namespace Geothermal::Graphics::Materials
 		Material
 		(
 			std::wstring vertexShaderName, std::wstring pixelShaderName,
-			D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+			D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
 		);
 
 		void AddParameterSet(std::shared_ptr<Bindables::ConstantBuffer<Structures::ShadingAttributes>> parameterSet);

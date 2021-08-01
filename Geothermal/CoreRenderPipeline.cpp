@@ -102,7 +102,7 @@ void CoreRenderPipeline::UploadShadowResources()
 	// Upload shadow map to GPU
 	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap.UseAsShaderResource();
 	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
-	deviceResources->Context()->PSSetShaderResources(2, 1, &shadowMapSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(mainShadowMap.Slot(), 1, &shadowMapSRVAddress);
 	// Upload shadow parameters to GPU
 	parametersBufferVS.Update(XMMatrixTranspose(world2light * shadowCaster.Perspective()));
 	parametersBufferVS.Bind();
