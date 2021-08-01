@@ -4,12 +4,13 @@
 using namespace std;
 using namespace winrt;
 using namespace DirectX;
-using namespace Geothermal::Graphics;
+using namespace Geothermal;
+using namespace Graphics;
 
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, 
-	hstring const& filename, TEXTURE_FILE_TYPE fileType
+	hstring const& filename, TEXTURE_FILE_TYPE fileType, uint slot
 ):
 	deviceResources(deviceResources),
 	texture(nullptr), 
@@ -17,7 +18,8 @@ Texture2D::Texture2D
 	format(DXGI_FORMAT_R8G8B8A8_SNORM),
 	// If we create a texture from file, usually, we don't want to override the content
 	// thus we use it only as a shader resource
-	bindFlags(D3D11_BIND_SHADER_RESOURCE)
+	bindFlags(D3D11_BIND_SHADER_RESOURCE),
+	slot(slot)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 
@@ -83,13 +85,14 @@ Texture2D::Texture2D
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, vector<char> data,
-	DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags
+	DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot
 ):
 	deviceResources(deviceResources),
 	texture(nullptr), 
 	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(format),
-	bindFlags(bindFlags)
+	bindFlags(bindFlags),
+	slot(slot)
 {
 	assert(IsValidBindFlags(bindFlags));
 
@@ -116,13 +119,15 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, uint width, uint heig
 
 Texture2D::Texture2D
 (
-	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, uint width, uint height, uint bindFlags
+	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, 
+	uint width, uint height, uint bindFlags, uint slot
 ) :
 	deviceResources(deviceResources),
 	texture(nullptr), 
 	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr), 
 	format(format),
-	bindFlags(bindFlags)
+	bindFlags(bindFlags),
+	slot(slot)
 {
 	assert(IsValidBindFlags(bindFlags));
 
@@ -158,6 +163,11 @@ com_ptr<ID3D11DepthStencilView> Texture2D::UseAsDepthStencil()
 		CreateDepthStencilView();
 	}
 	return depthStencilView;
+}
+
+uint Texture2D::Slot()
+{
+	return slot;
 }
 
 void Texture2D::CreateShaderResourceView()

@@ -12,7 +12,7 @@ using namespace std;
 Material::Material
 (
 	wstring vertexShaderName, wstring pixelShaderName,
-	 D3D11_INPUT_ELEMENT_DESC* inputSignatures, UINT inputElementCount
+	 D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
 ):
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)
 {
@@ -52,6 +52,6 @@ void Material::BindTextures()
 {
 	for (shared_ptr<Texture2D> texture : textures)
 	{
-		ID3D11ShaderResourceView* textureAsSRV = texture->UseAsShaderResource().get();
+
 	}
 }

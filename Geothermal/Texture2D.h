@@ -25,25 +25,27 @@ namespace Geothermal::Graphics
 		/// Create texture from a file of a supported type
 		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
-			winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType);
+			winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType, uint slot);
 
 		/// <summary>
 		/// For non-DDS image file loaded into the memory, we need to pass in metadata
 		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources, std::vector<char> data, 
-			DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags);
+			DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot);
 
 		/// <summary>
 		/// Build one from scratch in given dimensions
 		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
-			DXGI_FORMAT format, uint width, uint height, uint bindFlags);
+			DXGI_FORMAT format, uint width, uint height, uint bindFlags, uint slot);
 
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
 		winrt::com_ptr<ID3D11DepthStencilView> UseAsDepthStencil();
 
-	private:
+		uint Slot();
+
+	protected:
 		void CreateTextureFromMemory
 		(
 			std::vector<char> data, uint width, uint height, uint bitsPerPixel, uint bingFlags
@@ -64,6 +66,7 @@ namespace Geothermal::Graphics
 		winrt::com_ptr<ID3D11Texture2D> texture;
 		DXGI_FORMAT format;
 		uint bindFlags;
+		uint slot;
 		winrt::com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 		winrt::com_ptr<ID3D11RenderTargetView> renderTargetView;
 		winrt::com_ptr<ID3D11DepthStencilView> depthStencilView;
