@@ -3,7 +3,10 @@
 #include <vector>
 #include <string>
 #include "GeothermalTypes.h"
-#include "GraphicResources.h"
+#include "DeviceResources.h"
+#include "Texture2D.h"
+#include "ConstantBuffer.h"
+#include "ShadingAttributes.h"
 
 namespace Geothermal::Graphics::Materials
 {

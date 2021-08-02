@@ -17,3 +17,6 @@
 // Structure definitions
 #include "Vertices.h"
 #include "ShadingAttributes.h"
+
+// Materials
+#include "Material.h"

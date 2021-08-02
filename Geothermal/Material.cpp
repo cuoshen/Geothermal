@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Material.h"
 #include "Shaders.h"
 #include "ShaderCache.h"
-#include "Material.h"
 
 using namespace Geothermal::Graphics;
 using namespace Materials;
