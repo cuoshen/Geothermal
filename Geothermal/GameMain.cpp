@@ -168,14 +168,12 @@ void GameMain::InitializeDebugResource()
 
 	// For now we want to put everything into a single test material
 	// TODO: remove this and support per-object material instead
-	shared_ptr<Material> testMaterial = make_shared<Material>
-		(
-			deviceResources,
-			L"LitVertexShader.cso", L"ForwardLit.cso",
-			VertexPNTTLayout, (uint)size(VertexPNTTLayout)
-			);
+	materials[0] =
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+	materials[1] =
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
 
-	ShadingAttributes shadingParameters = ShadingAttributes
+	ShadingAttributes shadingParameters0 = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
 		{0.4f, 0.4f, 0.4f, 1.0f},												// Base color
@@ -185,22 +183,40 @@ void GameMain::InitializeDebugResource()
 		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
 	};
 
-	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties =
-		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters, 2u);
-	testMaterial->AddParameterSet(properties);
+	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties0 =
+		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters0, 2u);
+	materials[0]->AddParameterSet(properties0);
+
+	ShadingAttributes shadingParameters1 = ShadingAttributes
+	{
+		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
+		{0.5f, 0.3f, 0.3f, 1.0f},												// Base color
+		0.5f,																				// Diffuse
+		0.5f,																				// Specular
+		3.0f,																				// Smoothness
+		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
+	};
+
+	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties1 =
+		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters1, 2u);
+	materials[1]->AddParameterSet(properties1);
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	shared_ptr<Texture2D> debugAlbedoTexture =
+	shared_ptr<Texture2D> debugAlbedoTexture0 =
 		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
-	testMaterial->AddTexture(debugAlbedoTexture);
+	materials[0]->AddTexture(debugAlbedoTexture0);
+	shared_ptr<Texture2D> debugAlbedoTexture1 =
+		make_shared<Texture2D>(deviceResources, L"Assets\\paint_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
+	materials[1]->AddTexture(debugAlbedoTexture1);
 
-	shared_ptr<Texture2D> debugNormalTexture =
+	shared_ptr<Texture2D> debugNormalTexture0 =
 		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
-	testMaterial->AddTexture(debugNormalTexture);
-
-	materials[0] = testMaterial;
+	materials[0]->AddTexture(debugNormalTexture0);
+	shared_ptr<Texture2D> debugNormalTexture1 =
+		make_shared<Texture2D>(deviceResources, L"Assets\\paint_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
+	materials[1]->AddTexture(debugNormalTexture1);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
@@ -220,7 +236,7 @@ void GameMain::AddGround(XMMATRIX initialTransform)
 	GameObjectFactory factory;
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
-	factory.BuildRenderer(deviceResources, *debugPlane, nullptr); // Use the debug mesh
+	factory.BuildRenderer(deviceResources, *debugPlane, materials[1]); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 
