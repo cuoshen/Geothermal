@@ -170,6 +170,7 @@ void GameMain::InitializeDebugResource()
 	// TODO: remove this and support per-object material instead
 	Materials::Material testMaterial
 	(
+		deviceResources,
 		L"LitVertexShader.cso", L"ForwardLit.cso",
 		VertexPNTTLayout, (uint)size(VertexPNTTLayout)
 	);
@@ -199,7 +200,7 @@ void GameMain::InitializeDebugResource()
 		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
 	testMaterial.AddTexture(debugNormalTexture);
 
-	testMaterial.Bind(deviceResources);
+	testMaterial.Bind();
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)

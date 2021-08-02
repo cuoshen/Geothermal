@@ -43,7 +43,10 @@ namespace Geothermal::Graphics
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
 		winrt::com_ptr<ID3D11DepthStencilView> UseAsDepthStencil();
 
-		uint Slot();
+		uint Slot() const
+		{
+			return slot;
+		}
 
 	protected:
 		void CreateTextureFromMemory

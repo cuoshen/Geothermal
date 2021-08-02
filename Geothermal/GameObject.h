@@ -28,7 +28,7 @@ namespace Geothermal
 		/// </summary>
 		virtual void Render() const;
 
-		bool IsActive() { return isActive; }
+		bool IsActive() const { return isActive; }
 		Transform* GetTransform() const { return transform.get(); }
 	protected:
 		UINT64 id;	// 64-bit unsigned integer ID which uniquely identify the game object

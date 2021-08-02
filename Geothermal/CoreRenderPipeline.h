@@ -18,7 +18,9 @@ namespace Geothermal::Graphics
 		/// Render the whole scene in a single forward pass with the main camera
 		/// </summary>
 		void Render();
-		Structures::DirectionalLight& MainLight() { return mainLight; }
+
+		const Structures::DirectionalLight& MainLight() { return mainLight; }
+
 	private:
 		void StartGUIFrame();
 		void DrawGUI();

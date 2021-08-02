@@ -12,9 +12,11 @@ using namespace winrt;
 
 Material::Material
 (
+	std::shared_ptr<DeviceResources> const& deviceResources,
 	wstring vertexShaderName, wstring pixelShaderName,
 	D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
 ) :
+	deviceResources(deviceResources),
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)
 {
 	// Precompile shaders
@@ -32,13 +34,13 @@ void Material::AddTexture(shared_ptr<Texture2D> texture)
 	textures.push_back(texture);
 }
 
-void Material::Bind(shared_ptr<DeviceResources> const& deviceResources)
+void Material::Bind()
 {
-	BindShadersAndParameters(deviceResources);
-	BindTextures(deviceResources);
+	BindShadersAndParameters();
+	BindTextures();
 }
 
-void Material::BindShadersAndParameters(shared_ptr<DeviceResources> const& deviceResources)
+void Material::BindShadersAndParameters()
 {
 	ShaderCache::Instance()->PixelShader(pixelShaderName)->Bind();
 	ShaderCache::Instance()->VertexShader(vertexShaderName)->Bind();
@@ -49,7 +51,7 @@ void Material::BindShadersAndParameters(shared_ptr<DeviceResources> const& devic
 	}
 }
 
-void Material::BindTextures(shared_ptr<DeviceResources> const& deviceResources)
+void Material::BindTextures()
 {
 	for (shared_ptr<Texture2D> texture : textures)
 	{

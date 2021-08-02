@@ -19,8 +19,8 @@ namespace Geothermal::Graphics
 		ID3D11DeviceContext3* Context() const { return d3dContext.get(); }
 		IDXGISwapChain1* SwapChain() const { return swapChain.get(); }
 		float AspectRatio() const { return (float)outputSize.x / (float)outputSize.y; }
-		ID3D11RenderTargetView* BackBufferTargetView() { return backBufferTargetView.get(); }
-		ID3D11DepthStencilView* DepthStencilView() { return depthStencilView.get(); }
+		ID3D11RenderTargetView* BackBufferTargetView() const { return backBufferTargetView.get(); }
+		ID3D11DepthStencilView* DepthStencilView() const { return depthStencilView.get(); }
 
 		/// <summary>
 		/// Clear back buffer to constant ClearColor

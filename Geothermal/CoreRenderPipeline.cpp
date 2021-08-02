@@ -38,6 +38,20 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	OutputDebugString(L"Core Renderer ready \n");
 }
 
+void CoreRenderPipeline::Render()
+{
+	StartGUIFrame();
+
+	camera->Update();
+
+	ShadowPass();
+	SimpleForwardPass();
+
+	// Draw GUI on top of the game
+	DrawGUI();
+	deviceResources->Present();
+}
+
 void CoreRenderPipeline::StartGUIFrame()
 {
 	ImGui_ImplDX11_NewFrame();
@@ -138,18 +152,4 @@ void CoreRenderPipeline::SimpleForwardPass()
 	{
 		gameObject->Render();
 	}
-}
-
-void CoreRenderPipeline::Render()
-{
-	StartGUIFrame();
-
-	camera->Update();
-
-	ShadowPass();
-	SimpleForwardPass();
-
-	// Draw GUI on top of the game
-	DrawGUI();
-	deviceResources->Present();
 }

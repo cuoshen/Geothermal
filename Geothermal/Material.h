@@ -20,6 +20,7 @@ namespace Geothermal::Graphics::Materials
 		/// <param name="inputSignatures">A description of per-vertex information fed to vertex shader</param>
 		Material
 		(
+			std::shared_ptr<DeviceResources> const& deviceResources,
 			std::wstring vertexShaderName, std::wstring pixelShaderName,
 			D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
 		);
@@ -31,9 +32,9 @@ namespace Geothermal::Graphics::Materials
 		/// <summary>
 		/// Bind the entire material, that is, ALL shaders, parameters and textures
 		/// </summary>
-		void Bind(std::shared_ptr<DeviceResources> const& deviceResources);
-		void BindShadersAndParameters(std::shared_ptr<DeviceResources> const& deviceResources);
-		void BindTextures(std::shared_ptr<DeviceResources> const& deviceResources);
+		void Bind();
+		void BindShadersAndParameters();
+		void BindTextures();
 
 	protected:
 		std::wstring vertexShaderName;
@@ -48,5 +49,6 @@ namespace Geothermal::Graphics::Materials
 			parameters;
 
 		std::vector<std::shared_ptr<Texture2D>> textures;
+		std::shared_ptr<DeviceResources> deviceResources;
 	};
 }

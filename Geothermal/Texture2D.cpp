@@ -165,11 +165,6 @@ com_ptr<ID3D11DepthStencilView> Texture2D::UseAsDepthStencil()
 	return depthStencilView;
 }
 
-uint Texture2D::Slot()
-{
-	return slot;
-}
-
 void Texture2D::CreateShaderResourceView()
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDescription = {};
