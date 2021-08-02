@@ -6,8 +6,13 @@ using namespace Meshes;
 using namespace DirectX;
 using namespace std;
 
-ObjectRenderer::ObjectRenderer(Mesh mesh, shared_ptr<DeviceResources> const& deviceResources) :
-	mesh(), object2WorldTransformBuffer(deviceResources, 0u), deviceResources(deviceResources)
+ObjectRenderer::ObjectRenderer
+(
+	std::shared_ptr<DeviceResources> const& deviceResources,
+	Meshes::Mesh mesh, std::unique_ptr<Materials::Material> material
+) :
+	mesh(), object2WorldTransformBuffer(deviceResources, 0u),
+	deviceResources(deviceResources), material(std::move(material))
 {
 	this->mesh.vertices = mesh.vertices;
 }
@@ -31,4 +36,9 @@ void ObjectRenderer::BindAllResources()
 {
 	mesh.vertices->Bind();
 	object2WorldTransformBuffer.Bind();
+
+	if (material != nullptr)
+	{
+		material->Bind();
+	}
 }

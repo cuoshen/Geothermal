@@ -49,7 +49,7 @@ void GameObjectFactory::BuildTransform(DirectX::XMMATRIX initialTransform)
 
 void GameObjectFactory::BuildRenderer(Mesh mesh, shared_ptr<DeviceResources> deviceResources)
 {
-	product->renderer = make_unique<ObjectRenderer>(mesh, deviceResources);
+	product->renderer = make_unique<ObjectRenderer>(deviceResources, mesh, nullptr);
 }
 
 void GameObjectFactory::SetObjectID(UINT64 id)
