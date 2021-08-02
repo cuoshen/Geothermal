@@ -51,11 +51,11 @@ void GameObjectFactory::BuildTransform(DirectX::XMMATRIX initialTransform)
 void GameObjectFactory::BuildRenderer
 (
 	shared_ptr<DeviceResources> deviceResources,
-	Mesh mesh, unique_ptr<Material> material
+	Mesh mesh, shared_ptr<Material> material
 )
 {
 	product->renderer =
-		make_unique<ObjectRenderer>(deviceResources, mesh, std::move(material));
+		make_unique<ObjectRenderer>(deviceResources, mesh, material);
 }
 
 void GameObjectFactory::SetObjectID(UINT64 id)

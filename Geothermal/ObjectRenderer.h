@@ -26,7 +26,7 @@ namespace Geothermal::Graphics
 		ObjectRenderer
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			Meshes::Mesh mesh, std::unique_ptr<Materials::Material> material
+			Meshes::Mesh mesh, std::shared_ptr<Materials::Material> material
 		);
 		void Render(DirectX::XMMATRIX object2World);
 		void BindAllResources();
@@ -38,6 +38,6 @@ namespace Geothermal::Graphics
 		/// A matrix that transforms the vertex position from object space to model space
 		/// </summary>
 		Bindables::VertexConstantBuffer<DirectX::XMMATRIX> object2WorldTransformBuffer;
-		std::unique_ptr<Materials::Material> material;
+		std::shared_ptr<Materials::Material> material;
 	};
 }

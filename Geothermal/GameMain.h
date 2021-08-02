@@ -47,7 +47,7 @@ namespace Geothermal
 
 #ifdef DEBUG_SCENE
 		std::vector<std::shared_ptr<GameObject>> debugGameObjects;
-		std::unique_ptr<Graphics::Materials::Material> materials[2];
+		std::shared_ptr<Graphics::Materials::Material> materials[2];
 		void InstantiateDebugScene();
 
 		Graphics::Meshes::Mesh* debugMesh;

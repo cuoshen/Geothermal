@@ -168,12 +168,12 @@ void GameMain::InitializeDebugResource()
 
 	// For now we want to put everything into a single test material
 	// TODO: remove this and support per-object material instead
-	Materials::Material testMaterial
-	(
-		deviceResources,
-		L"LitVertexShader.cso", L"ForwardLit.cso",
-		VertexPNTTLayout, (uint)size(VertexPNTTLayout)
-	);
+	shared_ptr<Material> testMaterial = make_shared<Material>
+		(
+			deviceResources,
+			L"LitVertexShader.cso", L"ForwardLit.cso",
+			VertexPNTTLayout, (uint)size(VertexPNTTLayout)
+			);
 
 	ShadingAttributes shadingParameters = ShadingAttributes
 	{
@@ -187,20 +187,20 @@ void GameMain::InitializeDebugResource()
 
 	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties =
 		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters, 2u);
-	testMaterial.AddParameterSet(properties);
+	testMaterial->AddParameterSet(properties);
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
 	shared_ptr<Texture2D> debugAlbedoTexture =
 		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
-	testMaterial.AddTexture(debugAlbedoTexture);
+	testMaterial->AddTexture(debugAlbedoTexture);
 
 	shared_ptr<Texture2D> debugNormalTexture =
 		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
-	testMaterial.AddTexture(debugNormalTexture);
+	testMaterial->AddTexture(debugNormalTexture);
 
-	testMaterial.Bind();
+	materials[0] = testMaterial;
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
@@ -208,7 +208,7 @@ void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 	GameObjectFactory factory;
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
-	factory.BuildRenderer(deviceResources, *debugMesh, nullptr); // Use the debug mesh
+	factory.BuildRenderer(deviceResources, *debugMesh, materials[0]); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 

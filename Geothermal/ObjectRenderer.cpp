@@ -9,10 +9,10 @@ using namespace std;
 ObjectRenderer::ObjectRenderer
 (
 	std::shared_ptr<DeviceResources> const& deviceResources,
-	Meshes::Mesh mesh, std::unique_ptr<Materials::Material> material
+	Meshes::Mesh mesh, std::shared_ptr<Materials::Material> material
 ) :
 	mesh(), object2WorldTransformBuffer(deviceResources, 0u),
-	deviceResources(deviceResources), material(std::move(material))
+	deviceResources(deviceResources), material(material)
 {
 	this->mesh.vertices = mesh.vertices;
 }
