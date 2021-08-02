@@ -208,7 +208,7 @@ void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 	GameObjectFactory factory;
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
-	factory.BuildRenderer(*debugMesh, deviceResources); // Use the debug mesh
+	factory.BuildRenderer(deviceResources, *debugMesh, nullptr); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 
@@ -220,7 +220,7 @@ void GameMain::AddGround(XMMATRIX initialTransform)
 	GameObjectFactory factory;
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
-	factory.BuildRenderer(*debugPlane, deviceResources); // Use the debug mesh
+	factory.BuildRenderer(deviceResources, *debugPlane, nullptr); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 

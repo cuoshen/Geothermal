@@ -5,6 +5,7 @@
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Meshes;
+using namespace Materials;
 using namespace std;
 using namespace DirectX;
 
@@ -47,9 +48,14 @@ void GameObjectFactory::BuildTransform(DirectX::XMMATRIX initialTransform)
 	product->transform = make_unique<Transform>(initialTransform);
 }
 
-void GameObjectFactory::BuildRenderer(Mesh mesh, shared_ptr<DeviceResources> deviceResources)
+void GameObjectFactory::BuildRenderer
+(
+	shared_ptr<DeviceResources> deviceResources,
+	Mesh mesh, unique_ptr<Material> material
+)
 {
-	product->renderer = make_unique<ObjectRenderer>(deviceResources, mesh, nullptr);
+	product->renderer =
+		make_unique<ObjectRenderer>(deviceResources, mesh, std::move(material));
 }
 
 void GameObjectFactory::SetObjectID(UINT64 id)

@@ -5,7 +5,8 @@
 #include <algorithm>
 
 using namespace Geothermal;
-using namespace Graphics::Bindables;
+using namespace Graphics;
+using namespace Bindables;
 using namespace std;
 
 Camera* Camera::main;

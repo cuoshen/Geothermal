@@ -11,51 +11,53 @@
 #include "Mesh.h"
 #endif
 
-using namespace Geothermal;
-using namespace Geothermal::Graphics;
-
-/// <summary>
+namespace Geothermal
+{
+	/// <summary>
 /// Main gameplay loop
 /// Singleton class that must be explicitly initialized once
 /// </summary>
-class GameMain
-{
-public:
-	static GameMain* Instance();
-	static void Initialize(std::shared_ptr<DeviceResources> deviceResources);
+	class GameMain
+	{
+	public:
+		static GameMain* Instance();
+		static void Initialize(std::shared_ptr<Graphics::DeviceResources> deviceResources);
 
-	WPARAM Run();
-	void Update();
-	void LateUpdate();
-	void Close() { windowClosed = true; }
+		WPARAM Run();
+		void Update();
+		void LateUpdate();
+		void Close() { windowClosed = true; }
 
-	float DeltaTime() const { return deltaTime; }
-	float Time() const { return time; }
-	Geothermal::Input* GetInput() const { return input.get(); }
-private:
-	GameMain(std::shared_ptr<DeviceResources> deviceResources);
-	static GameMain* instance;
+		float DeltaTime() const { return deltaTime; }
+		float Time() const { return time; }
+		Input* GetInput() const { return input.get(); }
+	private:
+		GameMain(std::shared_ptr<Graphics::DeviceResources> deviceResources);
+		static GameMain* instance;
 
-	UINT HandleMessage(MSG msg);
+		UINT HandleMessage(MSG msg);
 
-	bool windowClosed;
-	std::unique_ptr<GameTimer> timer;
-	float time;
-	float deltaTime;
-	std::unique_ptr<Geothermal::Input> input;
-	std::shared_ptr<DeviceResources> deviceResources;
-	std::unique_ptr<CoreRenderPipeline> coreRenderer;
+		bool windowClosed;
+		std::unique_ptr<GameTimer> timer;
+		float time;
+		float deltaTime;
+		std::unique_ptr<Input> input;
+		std::shared_ptr<Graphics::DeviceResources> deviceResources;
+		std::unique_ptr<Graphics::CoreRenderPipeline> coreRenderer;
 
 #ifdef DEBUG_SCENE
-	std::vector<std::shared_ptr<GameObject>> debugGameObjects;
-	void InstantiateDebugScene();
+		std::vector<std::shared_ptr<GameObject>> debugGameObjects;
+		std::unique_ptr<Graphics::Materials::Material> materials[2];
+		void InstantiateDebugScene();
 
-	Meshes::Mesh* debugMesh;
-	Meshes::Mesh* debugPlane;
-	GameObject* ground;
-	void InitializeDebugResource();
+		Graphics::Meshes::Mesh* debugMesh;
+		Graphics::Meshes::Mesh* debugPlane;
+		GameObject* ground;
+		void InitializeDebugResource();
 
-	void AddDebugGameObject(XMMATRIX initialTransform);
-	void AddGround(XMMATRIX initialTransform);
+		void AddDebugGameObject(XMMATRIX initialTransform);
+		void AddGround(XMMATRIX initialTransform);
 #endif
-};
+	};
+}
+

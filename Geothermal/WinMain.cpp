@@ -35,7 +35,11 @@ void RegisterWindowsClass(LPCWSTR className, HINSTANCE hInstance)
 	RegisterClassEx(&wc);
 }
 
-void SetupGUI(HWND windowHandle, std::shared_ptr<DeviceResources> const& deviceResources)
+void SetupGUI
+(
+	HWND windowHandle,
+	std::shared_ptr<Geothermal::Graphics::DeviceResources> const& deviceResources
+)
 {
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -85,10 +89,10 @@ int CALLBACK WinMain
 		std::make_shared<Geothermal::Graphics::DeviceResources>();
 	deviceResources->SetWindow(windowHandle, width, height);
 
-	GameMain::Initialize(deviceResources);
+	Geothermal::GameMain::Initialize(deviceResources);
 	SetupGUI(windowHandle, deviceResources);
 	// Run the game
-	WPARAM exitResult = GameMain::Instance()->Run();
+	WPARAM exitResult = Geothermal::GameMain::Instance()->Run();
 
 	CleanupGUI();
 

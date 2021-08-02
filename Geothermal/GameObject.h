@@ -44,7 +44,11 @@ namespace Geothermal
 
 		void MakeNewProduct();
 		void BuildTransform(DirectX::XMMATRIX initialTransform);
-		void BuildRenderer(Graphics::Meshes::Mesh mesh, std::shared_ptr<Graphics::DeviceResources> deviceResources);
+		void BuildRenderer
+		(
+			std::shared_ptr<Graphics::DeviceResources> deviceResources,
+			Graphics::Meshes::Mesh mesh, std::unique_ptr<Graphics::Materials::Material> material
+		);
 		void SetObjectID(UINT64 id);
 
 		/// <summary>
