@@ -38,8 +38,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	);
 
 	// Initialize our linear render graph here
-	// a linear render graph is a list of functions, at each frame, the functions stored in the 
-	// render graph, also known as pass, execute one by one.
+	// a linear render graph is a list of functions or passes, that performs a specific render operation
 
 	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::ShadowPass, this));
 	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::SimpleForwardPass, this));
@@ -54,6 +53,7 @@ void CoreRenderPipeline::Render()
 
 	camera->Update();
 
+	// at each frame, the functions stored in the render graph, also known as passes, execute one by one.
 	for (auto renderPass : linearRenderGraph)
 	{
 		renderPass();
