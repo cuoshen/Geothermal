@@ -42,7 +42,7 @@ namespace Geothermal::Graphics
 		/// </summary>
 		void PostProcessingPass();
 
-		std::unique_ptr<Texture2D> hdrRenderTarget;
+		std::unique_ptr<Texture2D> hdrSceneRenderTarget;
 		std::unique_ptr<DirectX::BasicPostProcess> basicPostProcess;
 
 		Structures::DirectionalLight mainLight;

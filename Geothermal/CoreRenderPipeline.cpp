@@ -21,7 +21,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u),
-	mainShadowMap(nullptr), basicPostProcess(nullptr), hdrRenderTarget(nullptr)
+	mainShadowMap(nullptr), basicPostProcess(nullptr), hdrSceneRenderTarget(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -36,7 +36,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	mainShadowMap =
 		make_unique<ShadowMap>(deviceResources, shadowMapDimensions.x, shadowMapDimensions.y);
 
-	hdrRenderTarget = make_unique<Texture2D>
+	hdrSceneRenderTarget = make_unique<Texture2D>
 		(
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
@@ -45,7 +45,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
 
 	// Initialize our linear render graph here
-	// a linear render graph is a list of functions or passes, that performs a specific render operation
+	// a linear render graph is a list of functions or passes, each performs a specific render operation
 
 	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::ShadowPass, this));
 	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::SimpleForwardPass, this));
@@ -158,14 +158,14 @@ void CoreRenderPipeline::SimpleForwardPass()
 	deviceResources->ResetDefaultPipelineStates();
 	deviceResources->Context()->ClearRenderTargetView
 	(
-		hdrRenderTarget->UseAsRenderTarget().get(), deviceResources->ClearColor
+		hdrSceneRenderTarget->UseAsRenderTarget().get(), deviceResources->ClearColor
 	);
 	deviceResources->Context()->ClearDepthStencilView
 	(
 		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
-	ID3D11RenderTargetView* target = hdrRenderTarget->UseAsRenderTarget().get();
+	ID3D11RenderTargetView* target = hdrSceneRenderTarget->UseAsRenderTarget().get();
 	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
@@ -189,7 +189,7 @@ void CoreRenderPipeline::PostProcessingPass()
 	deviceResources->ClearFrame();
 	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
 	deviceResources->SetTargets(1, &target, nullptr);
-	basicPostProcess->SetEffect(BasicPostProcess::Monochrome);
-	basicPostProcess->SetSourceTexture(hdrRenderTarget->UseAsShaderResource().get());
+	basicPostProcess->SetEffect(BasicPostProcess::Copy);
+	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
 	basicPostProcess->Process(deviceResources->Context());
 }
