@@ -150,8 +150,10 @@ void CoreRenderPipeline::ShadowPass()
 
 void CoreRenderPipeline::SimpleForwardPass()
 {
-	deviceResources->SetTargetsToBackBuffer();	// Always set target to current back buffer before drawing
 	deviceResources->ClearFrame();		// Clear the view before we start drawing
+	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
+	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
+	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());	// Always set target to current back buffer before drawing
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
