@@ -42,10 +42,16 @@ namespace Geothermal::Graphics
 		/// </summary>
 		void PostProcessingPass();
 
-		std::unique_ptr<Texture2D> hdrSceneRenderTarget;
+		void ApplyBloom();
+
+		std::unique_ptr<Texture2D> hdrSceneRenderTarget[2];
+		std::unique_ptr<Texture2D> bloomTextures[2];
 		std::unique_ptr<DirectX::BasicPostProcess> basicPostProcess;
+		std::unique_ptr<DirectX::DualPostProcess> dualPostProcess;
 		std::unique_ptr<DirectX::ToneMapPostProcess> toneMapper;
 		float exposure;
+		float bloomSize;
+		float bloomBrightness;
 
 		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class

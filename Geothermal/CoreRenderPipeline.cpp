@@ -19,9 +19,9 @@ using namespace DirectX;
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
-	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
+	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(5.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
-	mainShadowMap(nullptr), basicPostProcess(nullptr), hdrSceneRenderTarget(nullptr)
+	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -36,13 +36,25 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	mainShadowMap =
 		make_unique<ShadowMap>(deviceResources, shadowMapDimensions.x, shadowMapDimensions.y);
 
-	hdrSceneRenderTarget = make_unique<Texture2D>
+	
+	for (int i = 0; i < 2; i++)
+	{
+		hdrSceneRenderTarget[i] = make_unique<Texture2D>
+		(
+		deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
+		deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+		);
+		bloomTextures[i] = make_unique<Texture2D>
 		(
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
 		);
+	}
+	
 	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
+	dualPostProcess = make_unique<DualPostProcess>(deviceResources->Device());
 	toneMapper = make_unique<ToneMapPostProcess>(deviceResources->Device());
 
 	// Initialize our linear render graph here
@@ -101,6 +113,7 @@ void CoreRenderPipeline::DrawGUI()
 		ResetCamera();
 	}
 	ImGui::DragFloat("Exposure", &exposure, 0.1f);
+	ImGui::DragFloat("Bloom Size", &bloomSize, 0.1f);
 	ImGui::End();
 
 	ImGui::Render();
@@ -160,14 +173,14 @@ void CoreRenderPipeline::SimpleForwardPass()
 	deviceResources->ResetDefaultPipelineStates();
 	deviceResources->Context()->ClearRenderTargetView
 	(
-		hdrSceneRenderTarget->UseAsRenderTarget().get(), deviceResources->ClearColor
+		hdrSceneRenderTarget[0]->UseAsRenderTarget().get(), deviceResources->ClearColor
 	);
 	deviceResources->Context()->ClearDepthStencilView
 	(
 		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
-	ID3D11RenderTargetView* target = hdrSceneRenderTarget->UseAsRenderTarget().get();
+	ID3D11RenderTargetView* target = hdrSceneRenderTarget[0]->UseAsRenderTarget().get();
 	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
@@ -188,17 +201,64 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::PostProcessingPass()
 {
+	ApplyBloom();
+
+	// Clear back buffer and target it in OutputMerger
 	deviceResources->ClearFrame();
 	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
 	deviceResources->SetTargets(1, &target, nullptr);
 
-	/*basicPostProcess->SetEffect(BasicPostProcess::Copy);
-	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
-	basicPostProcess->Process(deviceResources->Context());*/
-
 	toneMapper->SetOperator(ToneMapPostProcess::Reinhard);
-	toneMapper->SetHDRSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
+	toneMapper->SetHDRSourceTexture(hdrSceneRenderTarget[1]->UseAsShaderResource().get());
 	toneMapper->SetExposure(exposure);
 	toneMapper->SetTransferFunction(ToneMapPostProcess::Linear);
 	toneMapper->Process(deviceResources->Context());
+}
+
+void CoreRenderPipeline::ApplyBloom()
+{
+	// Clear both bloom targets
+	for (int i = 0; i < 2; i++)
+	{
+		deviceResources->Context()->ClearRenderTargetView
+		(
+			bloomTextures[1]->UseAsRenderTarget().get(), deviceResources->ClearColor
+		);
+	}
+	
+	ID3D11RenderTargetView* target = bloomTextures[0]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
+	basicPostProcess->SetBloomExtractParameter(1.0f);
+	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
+
+	// Send blur to the other bloom texture
+	target = bloomTextures[1]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
+	basicPostProcess->SetBloomBlurParameters(true, bloomSize, bloomBrightness);
+	basicPostProcess->SetSourceTexture(bloomTextures[0]->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
+
+	// And then back
+	target = bloomTextures[0]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
+	basicPostProcess->SetBloomBlurParameters(true, bloomSize, bloomBrightness);
+	basicPostProcess->SetSourceTexture(bloomTextures[1]->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
+
+	// Finally combine to scene render buffer
+	target = hdrSceneRenderTarget[1]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
+	dualPostProcess->SetBloomCombineParameters(1.0f, 1.0f, 1.0f, 1.0f);
+	dualPostProcess->SetSourceTexture(bloomTextures[0]->UseAsShaderResource().get());
+	dualPostProcess->SetSourceTexture2(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
+	dualPostProcess->Process(deviceResources->Context());
 }
