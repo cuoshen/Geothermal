@@ -176,9 +176,9 @@ void GameMain::InitializeDebugResource()
 	ShadingAttributes shadingParameters0 = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
-		{0.4f, 0.4f, 0.4f, 1.0f},												// Base color
-		0.5f,																				// Diffuse
-		0.5f,																				// Specular
+		{0.8f, 0.8f, 0.8f, 1.0f},												// Base color
+		2.0f,																				// Diffuse
+		2.0f,																				// Specular
 		10.0f,																				// Smoothness
 		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
 	};
