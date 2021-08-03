@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "GraphicResources.h"
 #include "Camera.h"
 #include "ViewPoint.h"
@@ -34,6 +35,12 @@ namespace Geothermal::Graphics
 		/// Draw every drawable geometry in a single forward pass
 		/// </summary>
 		void SimpleForwardPass();
+		/// <summary>
+		/// Remap HDR tone to SDR display, apply bloom and other effects accordingly
+		/// </summary>
+		void PostProcessingPass();
+
+		std::list<std::function<void()>> linearRenderGraph;
 
 		Structures::DirectionalLight mainLight;
 

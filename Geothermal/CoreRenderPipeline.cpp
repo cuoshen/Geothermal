@@ -27,6 +27,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	parametersBufferVS(deviceResources, 5u)
 {
 	ShaderCache::Initialize(deviceResources);
+
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	shadowViewPort = CD3D11_VIEWPORT(
@@ -35,6 +36,15 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 		shadowMapDimensions.x,
 		shadowMapDimensions.y
 	);
+
+	// Initialize our linear render graph here
+	// a linear render graph is a list of functions, at each frame, the functions stored in the 
+	// render graph, also known as pass, execute one by one.
+
+	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::ShadowPass, this));
+	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::SimpleForwardPass, this));
+	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::PostProcessingPass, this));
+
 	OutputDebugString(L"Core Renderer ready \n");
 }
 
@@ -44,8 +54,10 @@ void CoreRenderPipeline::Render()
 
 	camera->Update();
 
-	ShadowPass();
-	SimpleForwardPass();
+	for (auto renderPass : linearRenderGraph)
+	{
+		renderPass();
+	}
 
 	// Draw GUI on top of the game
 	DrawGUI();
@@ -152,4 +164,8 @@ void CoreRenderPipeline::SimpleForwardPass()
 	{
 		gameObject->Render();
 	}
+}
+
+void CoreRenderPipeline::PostProcessingPass()
+{
 }
