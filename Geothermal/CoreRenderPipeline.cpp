@@ -156,10 +156,13 @@ void CoreRenderPipeline::ShadowPass()
 void CoreRenderPipeline::SimpleForwardPass()
 {
 	deviceResources->ResetDefaultPipelineStates();
-	deviceResources->ClearFrame();		// Clear the view before we start drawing
 	deviceResources->Context()->ClearRenderTargetView
 	(
 		hdrRenderTarget->UseAsRenderTarget().get(), deviceResources->ClearColor
+	);
+	deviceResources->Context()->ClearDepthStencilView
+	(
+		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 	ID3D11RenderTargetView* target = hdrRenderTarget->UseAsRenderTarget().get();
@@ -183,6 +186,7 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::PostProcessingPass()
 {
+	deviceResources->ClearFrame();
 	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
 	deviceResources->SetTargets(1, &target, nullptr);
 	basicPostProcess->SetEffect(BasicPostProcess::Monochrome);
