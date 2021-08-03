@@ -44,6 +44,7 @@ namespace Geothermal::Graphics
 
 		std::unique_ptr<Texture2D> hdrSceneRenderTarget;
 		std::unique_ptr<DirectX::BasicPostProcess> basicPostProcess;
+		std::unique_ptr<DirectX::ToneMapPostProcess> toneMapper;
 
 		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class

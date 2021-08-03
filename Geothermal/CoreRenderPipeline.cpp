@@ -20,7 +20,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
-	ShadowCasterParametersBuffer(deviceResources, 5u),
+	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr),
 	mainShadowMap(nullptr), basicPostProcess(nullptr), hdrSceneRenderTarget(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
@@ -43,6 +43,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
 		);
 	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
+	toneMapper = make_unique<ToneMapPostProcess>(deviceResources->Device());
 
 	// Initialize our linear render graph here
 	// a linear render graph is a list of functions or passes, each performs a specific render operation
@@ -189,7 +190,13 @@ void CoreRenderPipeline::PostProcessingPass()
 	deviceResources->ClearFrame();
 	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
 	deviceResources->SetTargets(1, &target, nullptr);
-	basicPostProcess->SetEffect(BasicPostProcess::Copy);
+
+	/*basicPostProcess->SetEffect(BasicPostProcess::Copy);
 	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
-	basicPostProcess->Process(deviceResources->Context());
+	basicPostProcess->Process(deviceResources->Context());*/
+
+	toneMapper->SetOperator(ToneMapPostProcess::None);
+	toneMapper->SetHDRSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
+	toneMapper->SetTransferFunction(ToneMapPostProcess::Linear);
+	toneMapper->Process(deviceResources->Context());
 }
