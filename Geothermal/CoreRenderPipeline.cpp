@@ -20,7 +20,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
-	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr),
+	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
 	mainShadowMap(nullptr), basicPostProcess(nullptr), hdrSceneRenderTarget(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
@@ -100,6 +100,7 @@ void CoreRenderPipeline::DrawGUI()
 	{
 		ResetCamera();
 	}
+	ImGui::DragFloat("Exposure", &exposure, 0.1f);
 	ImGui::End();
 
 	ImGui::Render();
@@ -195,8 +196,9 @@ void CoreRenderPipeline::PostProcessingPass()
 	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
 	basicPostProcess->Process(deviceResources->Context());*/
 
-	toneMapper->SetOperator(ToneMapPostProcess::None);
+	toneMapper->SetOperator(ToneMapPostProcess::Reinhard);
 	toneMapper->SetHDRSourceTexture(hdrSceneRenderTarget->UseAsShaderResource().get());
+	toneMapper->SetExposure(exposure);
 	toneMapper->SetTransferFunction(ToneMapPostProcess::Linear);
 	toneMapper->Process(deviceResources->Context());
 }
