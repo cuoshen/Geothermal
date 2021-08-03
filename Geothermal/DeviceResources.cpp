@@ -10,7 +10,7 @@ using namespace DirectX;
 using namespace winrt;
 
 DeviceResources::DeviceResources() :
-	d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0)
+	d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0), states(nullptr)
 {
 	CreateDeviceResources();
 	OutputDebugString(L"DeviceResources created \n");
@@ -53,6 +53,7 @@ void DeviceResources::CreateDeviceResources()
 
 	d3dDevice = device;
 	d3dContext = context.as<ID3D11DeviceContext3>();
+	states = std::make_unique<CommonStates>(d3dDevice.get());
 }
 
 // Parse out window dimensions and create swap chain accordingly
@@ -198,6 +199,13 @@ void DeviceResources::ClearFrame()
 {
 	d3dContext->ClearRenderTargetView(backBufferTargetView.get(), ClearColor);
 	d3dContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void DeviceResources::ResetDefaultPipelineStates()
+{
+	d3dContext->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
+	d3dContext->OMSetDepthStencilState(states->DepthDefault(), 0);
+	d3dContext->RSSetState(states->CullCounterClockwise());
 }
 
 void DeviceResources::SetTargets

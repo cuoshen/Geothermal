@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CommonStates.h"
+
 namespace Geothermal::Graphics
 {
 	/// <summary>
@@ -25,9 +27,15 @@ namespace Geothermal::Graphics
 		const DirectX::XMUINT2& OutputSize() const { return outputSize; }
 
 		/// <summary>
-		/// Clear back buffer to constant ClearColor
+		/// Clear back buffer to constant ClearColor.
+		/// Clear depth stencil buffer to far Z = 1.
 		/// </summary>
 		void ClearFrame();
+
+		/// <summary>
+		/// Reset BlendState, DepthStencilState and RasterizerState
+		/// </summary>
+		void ResetDefaultPipelineStates();
 
 		/// <summary>
 		/// Set the output of OM stage to targets
@@ -59,5 +67,7 @@ namespace Geothermal::Graphics
 		/// x stands for width, y stands for height
 		/// </summary>
 		DirectX::XMUINT2 outputSize;
+
+		std::unique_ptr<DirectX::CommonStates> states;
 	};
 }

@@ -135,6 +135,7 @@ void CoreRenderPipeline::UploadShadowResources()
 
 void CoreRenderPipeline::ShadowPass()
 {
+	deviceResources->ResetDefaultPipelineStates();
 	deviceResources->Context()->ClearDepthStencilView
 	(
 		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
@@ -154,13 +155,14 @@ void CoreRenderPipeline::ShadowPass()
 
 void CoreRenderPipeline::SimpleForwardPass()
 {
+	deviceResources->ResetDefaultPipelineStates();
 	deviceResources->ClearFrame();		// Clear the view before we start drawing
 	deviceResources->Context()->ClearRenderTargetView
 	(
 		hdrRenderTarget->UseAsRenderTarget().get(), deviceResources->ClearColor
 	);
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
-	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
+	ID3D11RenderTargetView* target = hdrRenderTarget->UseAsRenderTarget().get();
 	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
@@ -181,4 +183,9 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::PostProcessingPass()
 {
+	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
+	deviceResources->SetTargets(1, &target, nullptr);
+	basicPostProcess->SetEffect(BasicPostProcess::Monochrome);
+	basicPostProcess->SetSourceTexture(hdrRenderTarget->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
 }
