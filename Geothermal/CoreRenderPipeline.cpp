@@ -24,7 +24,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
 	),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
-	parametersBufferVS(deviceResources, 5u)
+	ShadowCasterParametersBuffer(deviceResources, 5u),
+	basicPostProcess(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -36,6 +37,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 		shadowMapDimensions.x,
 		shadowMapDimensions.y
 	);
+
+	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
 
 	// Initialize our linear render graph here
 	// a linear render graph is a list of functions or passes, that performs a specific render operation
@@ -122,8 +125,8 @@ void CoreRenderPipeline::UploadShadowResources()
 	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
 	deviceResources->Context()->PSSetShaderResources(mainShadowMap.Slot(), 1, &shadowMapSRVAddress);
 	// Upload shadow parameters to GPU
-	parametersBufferVS.Update(XMMatrixTranspose(world2light * shadowCaster.Perspective()));
-	parametersBufferVS.Bind();
+	ShadowCasterParametersBuffer.Update(XMMatrixTranspose(world2light * shadowCaster.Perspective()));
+	ShadowCasterParametersBuffer.Bind();
 }
 
 void CoreRenderPipeline::ShadowPass()

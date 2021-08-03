@@ -3,6 +3,7 @@
 #include "GraphicResources.h"
 #include "Camera.h"
 #include "ViewPoint.h"
+#include "PostProcess.h"
 
 namespace Geothermal::Graphics
 {
@@ -27,6 +28,7 @@ namespace Geothermal::Graphics
 		void DrawGUI();
 		void ResetCamera();
 
+		std::list<std::function<void()>> linearRenderGraph;
 		/// <summary>
 		/// Get a shadow map by rendering from the main light
 		/// </summary>
@@ -40,10 +42,9 @@ namespace Geothermal::Graphics
 		/// </summary>
 		void PostProcessingPass();
 
-		std::list<std::function<void()>> linearRenderGraph;
+		std::unique_ptr<DirectX::BasicPostProcess> basicPostProcess;
 
 		Structures::DirectionalLight mainLight;
-
 		// TODO: Refactor into dedicated shadow caster class
 		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
 		const XMFLOAT3 mainLightShadowCastingOrigin = { 0.0f, 10.0f, 0.0f };
@@ -52,9 +53,8 @@ namespace Geothermal::Graphics
 		ViewPoint shadowCaster;
 		XMMATRIX world2light;
 		void UpdateWorld2Light();
-
 		void UploadShadowResources();
-		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > parametersBufferVS;
+		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > ShadowCasterParametersBuffer;
 
 		Structures::LightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;
