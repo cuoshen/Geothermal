@@ -51,6 +51,7 @@ namespace Geothermal::Graphics
 		std::unique_ptr<DirectX::ToneMapPostProcess> toneMapper;
 		float exposure;
 		float bloomSize;
+		float bloomThreshold;
 		float bloomBrightness;
 
 		Structures::DirectionalLight mainLight;

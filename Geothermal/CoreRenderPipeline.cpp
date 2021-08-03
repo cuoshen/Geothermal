@@ -18,8 +18,8 @@ using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
-	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(5.0f),
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), bloomThreshold(1.0f),
+	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(3.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
 	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr)
 {
@@ -114,6 +114,7 @@ void CoreRenderPipeline::DrawGUI()
 	}
 	ImGui::DragFloat("Exposure", &exposure, 0.1f);
 	ImGui::DragFloat("Bloom Size", &bloomSize, 0.1f);
+	ImGui::DragFloat("Bloom Threshold", &bloomThreshold, 0.001f);
 	ImGui::End();
 
 	ImGui::Render();
@@ -230,7 +231,7 @@ void CoreRenderPipeline::ApplyBloom()
 	deviceResources->SetTargets(1, &target, nullptr);
 
 	basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
-	basicPostProcess->SetBloomExtractParameter(1.0f);
+	basicPostProcess->SetBloomExtractParameter(bloomThreshold);
 	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
 	basicPostProcess->Process(deviceResources->Context());
 
@@ -248,7 +249,7 @@ void CoreRenderPipeline::ApplyBloom()
 	deviceResources->SetTargets(1, &target, nullptr);
 
 	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
-	basicPostProcess->SetBloomBlurParameters(true, bloomSize, bloomBrightness);
+	basicPostProcess->SetBloomBlurParameters(false, bloomSize, bloomBrightness);
 	basicPostProcess->SetSourceTexture(bloomTextures[1]->UseAsShaderResource().get());
 	basicPostProcess->Process(deviceResources->Context());
 
@@ -258,7 +259,7 @@ void CoreRenderPipeline::ApplyBloom()
 
 	dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
 	dualPostProcess->SetBloomCombineParameters(1.0f, 1.0f, 1.0f, 1.0f);
-	dualPostProcess->SetSourceTexture(bloomTextures[0]->UseAsShaderResource().get());
-	dualPostProcess->SetSourceTexture2(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
+	dualPostProcess->SetSourceTexture(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
+	dualPostProcess->SetSourceTexture2(bloomTextures[0]->UseAsShaderResource().get());
 	dualPostProcess->Process(deviceResources->Context());
 }

@@ -190,7 +190,7 @@ void GameMain::InitializeDebugResource()
 	ShadingAttributes shadingParameters1 = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
-		{0.5f, 0.3f, 0.3f, 1.0f},												// Base color
+		{0.3f, 0.3f, 0.3f, 1.0f},												// Base color
 		0.5f,																				// Diffuse
 		0.5f,																				// Specular
 		3.0f,																				// Smoothness
