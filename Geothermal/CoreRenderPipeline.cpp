@@ -19,13 +19,9 @@ using namespace DirectX;
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
-	mainShadowMap
-	(
-		deviceResources, shadowMapDimensions.x, shadowMapDimensions.y
-	),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u),
-	basicPostProcess(nullptr)
+	mainShadowMap(nullptr), basicPostProcess(nullptr), hdrRenderTarget(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -37,7 +33,15 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 		shadowMapDimensions.x,
 		shadowMapDimensions.y
 	);
+	mainShadowMap =
+		make_unique<ShadowMap>(deviceResources, shadowMapDimensions.x, shadowMapDimensions.y);
 
+	hdrRenderTarget = make_unique<Texture2D>
+		(
+			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
+			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+		);
 	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
 
 	// Initialize our linear render graph here
@@ -121,9 +125,9 @@ void CoreRenderPipeline::UpdateWorld2Light()
 void CoreRenderPipeline::UploadShadowResources()
 {
 	// Upload shadow map to GPU
-	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap.UseAsShaderResource();
+	winrt::com_ptr<ID3D11ShaderResourceView> shadowMapSRV = mainShadowMap->UseAsShaderResource();
 	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
-	deviceResources->Context()->PSSetShaderResources(mainShadowMap.Slot(), 1, &shadowMapSRVAddress);
+	deviceResources->Context()->PSSetShaderResources(mainShadowMap->Slot(), 1, &shadowMapSRVAddress);
 	// Upload shadow parameters to GPU
 	ShadowCasterParametersBuffer.Update(XMMatrixTranspose(world2light * shadowCaster.Perspective()));
 	ShadowCasterParametersBuffer.Bind();
@@ -133,10 +137,10 @@ void CoreRenderPipeline::ShadowPass()
 {
 	deviceResources->Context()->ClearDepthStencilView
 	(
-		mainShadowMap.UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
+		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
 	deviceResources->Context()->RSSetViewports(1, &shadowViewPort);
-	deviceResources->SetTargets(0, nullptr, mainShadowMap.UseAsDepthStencil().get());
+	deviceResources->SetTargets(0, nullptr, mainShadowMap->UseAsDepthStencil().get());
 
 	// Render from the perspective of the main light
 	UpdateWorld2Light();
@@ -151,9 +155,13 @@ void CoreRenderPipeline::ShadowPass()
 void CoreRenderPipeline::SimpleForwardPass()
 {
 	deviceResources->ClearFrame();		// Clear the view before we start drawing
+	deviceResources->Context()->ClearRenderTargetView
+	(
+		hdrRenderTarget->UseAsRenderTarget().get(), deviceResources->ClearColor
+	);
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
-	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());	// Always set target to current back buffer before drawing
+	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
