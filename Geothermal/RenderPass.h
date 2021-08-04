@@ -1,9 +1,13 @@
 #pragma once
-#include "DeviceResources.h"
+#include "GraphicResources.h"
 #include "GameObject.h"
 
-namespace Geothermal::Graphics
+namespace Geothermal::Graphics::Passes
 {
+	/// <summary>
+	/// Abstract class for a render pass which is a functional object 
+	/// which can be executed in the pipeline
+	/// </summary>
 	class RenderPass
 	{
 	public:
@@ -11,9 +15,8 @@ namespace Geothermal::Graphics
 		RenderPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			std::vector<ID3D11ShaderResourceView*> const& source,
-			std::vector<GameObject*> const& renderables,
-			std::vector<ID3D11RenderTargetView*> const& sink
+			std::vector<Texture2D*> const& source,
+			std::vector<Texture2D*> const& sink
 		);
 
 		/// <summary>
@@ -23,5 +26,11 @@ namespace Geothermal::Graphics
 
 	protected:
 		std::shared_ptr<DeviceResources> deviceResources;
+
+		// Render pass really does not OWN the textures involved as source or sink
+		// it just need to keep some reference to them in the form of raw pointers
+
+		std::vector<Texture2D*> const& source;
+		std::vector<Texture2D*> const& sink;
 	};
 }

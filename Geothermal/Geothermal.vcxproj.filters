@@ -79,7 +79,7 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="RenderPass.cpp">
-      <Filter>Graphics</Filter>
+      <Filter>Graphics\Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,7 +200,7 @@
       <Filter>Ultilities</Filter>
     </ClInclude>
     <ClInclude Include="RenderPass.h">
-      <Filter>Graphics</Filter>
+      <Filter>Graphics\Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +239,9 @@
     </Filter>
     <Filter Include="GUI\IMGUI">
       <UniqueIdentifier>{dafc21e0-dadb-4fb2-b7e7-41585c5600cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Passes">
+      <UniqueIdentifier>{c6028261-460b-4209-8ae2-047b64dd27ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

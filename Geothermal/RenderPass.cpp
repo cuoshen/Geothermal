@@ -4,14 +4,14 @@
 using namespace std;
 using namespace Geothermal;
 using namespace Graphics;
+using namespace Passes;
 
 RenderPass::RenderPass
 (
 	shared_ptr<DeviceResources> const& deviceResources, 
-	vector<ID3D11ShaderResourceView*> const& source, 
-	vector<GameObject*> const& renderables, 
-	std::vector<ID3D11RenderTargetView*> const& sink
+	vector<Texture2D*> const& source,
+	vector<Texture2D*> const& sink
 ):
-	deviceResources(deviceResources)
+	deviceResources(deviceResources), source(source), sink(sink)
 {
 }
