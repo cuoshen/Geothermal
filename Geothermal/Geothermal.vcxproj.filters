@@ -214,6 +214,9 @@
     <ClInclude Include="PostProcessingPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="RenderPasses.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
