@@ -128,6 +128,7 @@ namespace Geothermal::Graphics::Bindables
 			assert(isIndexed);
 			return indexCount;
 		}
+
 	private:
 		bool isIndexed;
 		UINT indexCount;

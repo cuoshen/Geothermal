@@ -31,6 +31,7 @@ namespace Geothermal::Graphics::Bindables
 			ID3D11SamplerState* samplerAddress = samplerState.get();
 			deviceResources->Context()->PSSetSamplers(0, 1, &samplerAddress);
 		}
+
 	private:
 		winrt::com_ptr<ID3D11SamplerState> samplerState;
 	};

@@ -157,7 +157,7 @@ void GameMain::InitializeDebugResource()
 	debugMesh = new Mesh();
 	bool loaded =
 		loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
-		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+	//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	debugPlane = new Mesh();

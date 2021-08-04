@@ -26,6 +26,7 @@ namespace Geothermal
 		bool GetKeyDown(char key) const;
 
 		DirectX::XMFLOAT2 GetMouseMovement() const { return mouseMovement; }
+
 	private:
 		void ResetStates();
 		void OnKeyDown

@@ -36,23 +36,22 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	mainShadowMap =
 		make_unique<ShadowMap>(deviceResources, shadowMapDimensions.x, shadowMapDimensions.y);
 
-	
 	for (int i = 0; i < 2; i++)
 	{
 		hdrSceneRenderTarget[i] = make_unique<Texture2D>
-		(
-		deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
-		deviceResources->OutputSize().x, deviceResources->OutputSize().y,
-		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-		);
-		bloomTextures[i] = make_unique<Texture2D>
-		(
+			(
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-		);
+			);
+		bloomTextures[i] = make_unique<Texture2D>
+			(
+				deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
+				deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+			);
 	}
-	
+
 	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
 	dualPostProcess = make_unique<DualPostProcess>(deviceResources->Device());
 	toneMapper = make_unique<ToneMapPostProcess>(deviceResources->Device());
@@ -206,7 +205,7 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::PostProcessingPass()
 {
-	ID3D11ShaderResourceView* sceneTarget = 
+	ID3D11ShaderResourceView* sceneTarget =
 		hdrSceneRenderTarget[0]->UseAsShaderResource().get();
 	if (useBloom)
 	{
@@ -236,7 +235,7 @@ void CoreRenderPipeline::ApplyBloom()
 			bloomTextures[1]->UseAsRenderTarget().get(), deviceResources->ClearColor
 		);
 	}
-	
+
 	ID3D11RenderTargetView* target = bloomTextures[0]->UseAsRenderTarget().get();
 	deviceResources->SetTargets(1, &target, nullptr);
 

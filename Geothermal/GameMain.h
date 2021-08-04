@@ -31,6 +31,7 @@ namespace Geothermal
 		float DeltaTime() const { return deltaTime; }
 		float Time() const { return time; }
 		Input* GetInput() const { return input.get(); }
+
 	private:
 		GameMain(std::shared_ptr<Graphics::DeviceResources> deviceResources);
 		static GameMain* instance;

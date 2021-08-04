@@ -31,6 +31,7 @@ namespace Geothermal
 			Geothermal::Graphics::Meshes::Mesh* mesh,
 			std::shared_ptr<Geothermal::Graphics::DeviceResources> const& deviceResources
 		);
+
 	private:
 		std::vector<Geothermal::Graphics::Structures::VertexPNTT> ParseVertices();
 		/// <summary>

@@ -48,6 +48,7 @@ namespace Geothermal::Graphics
 		);
 
 		const float ClearColor[4] = { 0.0f,0.0f,0.0f,1.0f };
+
 	private:
 		void CreateDeviceResources();
 		void CreateWindowSizeDependentResources(HWND windowHandle);
