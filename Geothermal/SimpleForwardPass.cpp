@@ -16,11 +16,18 @@ SimpleForwardPass::SimpleForwardPass
 {
 }
 
-void SimpleForwardPass::AddResources(list<GameObject*> renderables, Camera* camera)
+void SimpleForwardPass::AddResources
+(
+	list<GameObject*> renderables, Camera* camera,
+	function<void(void)> uploadShadowResources,
+	function<void(void)> uploadLightingResources
+)
 {
 	assert(camera != nullptr);
 	this->renderables = renderables;
 	this->camera = camera;
+	this->uploadShadowResources = uploadShadowResources;
+	this->uploadLightingResources = uploadLightingResources;
 }
 
 void SimpleForwardPass::operator()()
@@ -40,11 +47,9 @@ void SimpleForwardPass::operator()()
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
-	//UploadShadowResources();
-
-	//// Update & bind all the lights
-	//lightConstantBuffer->Update(lights);
-	//lightConstantBuffer->Bind();
+	// have core render pipeline upload the shadow and lights to GPU
+	uploadShadowResources();
+	uploadLightingResources();
 
 	// For each object we render it in a single pass
 	// TODO: sort objects

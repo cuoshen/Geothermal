@@ -65,10 +65,11 @@ namespace Geothermal::Graphics
 		XMMATRIX world2light;
 		void UpdateWorld2Light();
 		void UploadShadowResources();
+		void UploadLightingResources();
 		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > ShadowCasterParametersBuffer;
 
 		Structures::LightBuffer lights;
-		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;
+		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightsConstantBuffer;
 		std::unique_ptr<Camera> camera;
 
 		std::shared_ptr<DeviceResources> deviceResources;

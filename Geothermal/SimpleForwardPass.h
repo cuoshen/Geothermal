@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "GraphicResources.h"
 #include "RenderPass.h"
 #include "GameObject.h"
@@ -19,7 +20,9 @@ namespace Geothermal::Graphics::Passes
 		void AddResources
 		(
 			std::list<GameObject*> renderables,
-			Camera* camera
+			Camera* camera,
+			std::function<void(void)> uploadShadowResources,
+			std::function<void(void)> uploadLightingResources
 		);
 
 		void operator()() override;
@@ -27,5 +30,7 @@ namespace Geothermal::Graphics::Passes
 	protected:
 		std::list<GameObject*> renderables;
 		Camera* camera;
+		std::function<void(void)> uploadShadowResources;
+		std::function<void(void)> uploadLightingResources;
 	};
 }

@@ -17,7 +17,7 @@ using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
-	deviceResources(deviceResources), camera(nullptr), lightConstantBuffer(nullptr),
+	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), bloomThreshold(1.0f),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(3.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
@@ -26,7 +26,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	ShaderCache::Initialize(deviceResources);
 
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
-	lightConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
+	lightsConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	shadowViewPort = CD3D11_VIEWPORT(
 		0.0f,
 		0.0f,
@@ -152,6 +152,13 @@ void CoreRenderPipeline::UploadShadowResources()
 	ShadowCasterParametersBuffer.Bind();
 }
 
+void CoreRenderPipeline::UploadLightingResources()
+{
+	// Update & bind all the lights
+	lightsConstantBuffer->Update(lights);
+	lightsConstantBuffer->Bind();
+}
+
 void CoreRenderPipeline::ShadowPass()
 {
 	deviceResources->ResetDefaultPipelineStates();
@@ -190,10 +197,7 @@ void CoreRenderPipeline::SimpleForwardPass()
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 
 	UploadShadowResources();
-
-	// Update & bind all the lights
-	lightConstantBuffer->Update(lights);
-	lightConstantBuffer->Bind();
+	UploadLightingResources();
 
 	// For each object we render it in a single pass
 	// TODO: sort objects
