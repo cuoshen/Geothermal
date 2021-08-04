@@ -20,10 +20,6 @@ PostProcessingPass::PostProcessingPass
 	toneMapper = make_unique<ToneMapPostProcess>(deviceResources->Device());
 }
 
-void PostProcessingPass::ApplyBloom()
-{
-}
-
 void PostProcessingPass::operator()()
 {
 	ID3D11ShaderResourceView* sceneTarget =
@@ -31,7 +27,7 @@ void PostProcessingPass::operator()()
 	if (useBloom)
 	{
 		ApplyBloom();
-		sceneTarget = source[1]->UseAsShaderResource().get();
+		sceneTarget = sink[2]->UseAsShaderResource().get();
 	}
 
 	// Clear back buffer and target it in OutputMerger
@@ -45,4 +41,53 @@ void PostProcessingPass::operator()()
 	toneMapper->SetExposure(exposure);
 	toneMapper->SetTransferFunction(ToneMapPostProcess::Linear);
 	toneMapper->Process(deviceResources->Context());
+}
+
+
+void PostProcessingPass::ApplyBloom()
+{
+	// Clear both bloom targets
+	for (int i = 0; i < 2; i++)
+	{
+		deviceResources->Context()->ClearRenderTargetView
+		(
+			sink[i]->UseAsRenderTarget().get(), deviceResources->ClearColor
+		);
+	}
+
+	ID3D11RenderTargetView* target = sink[0]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
+	basicPostProcess->SetBloomExtractParameter(bloomThreshold);
+	basicPostProcess->SetSourceTexture(source[0]->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
+
+	// Send blur to the other bloom texture
+	target = sink[1]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
+	basicPostProcess->SetBloomBlurParameters(true, bloomSize, bloomBrightness);
+	basicPostProcess->SetSourceTexture(sink[0]->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
+
+	// And then back
+	target = sink[0]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
+	basicPostProcess->SetBloomBlurParameters(false, bloomSize, bloomBrightness);
+	basicPostProcess->SetSourceTexture(sink[1]->UseAsShaderResource().get());
+	basicPostProcess->Process(deviceResources->Context());
+
+	// Finally combine to scene render buffer
+	target = sink[2]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, nullptr);
+
+	dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
+	dualPostProcess->SetBloomCombineParameters(1.0f, 1.0f, 1.0f, 1.0f);
+	dualPostProcess->SetSourceTexture(source[0]->UseAsShaderResource().get());
+	dualPostProcess->SetSourceTexture2(sink[0]->UseAsShaderResource().get());
+	dualPostProcess->Process(deviceResources->Context());
 }

@@ -3,7 +3,6 @@
 #include "GraphicResources.h"
 #include "Camera.h"
 #include "ViewPoint.h"
-#include "PostProcess.h"
 #include "RenderPasses.h"
 
 namespace Geothermal::Graphics
@@ -37,13 +36,8 @@ namespace Geothermal::Graphics
 		/// </summary>
 		void ShadowPass();
 
-		void ApplyBloom();
-
 		std::unique_ptr<Texture2D> hdrSceneRenderTarget[2];
 		std::unique_ptr<Texture2D> bloomTextures[2];
-		std::unique_ptr<DirectX::BasicPostProcess> basicPostProcess;
-		std::unique_ptr<DirectX::DualPostProcess> dualPostProcess;
-		std::unique_ptr<DirectX::ToneMapPostProcess> toneMapper;
 		float exposure;
 		bool useBloom;
 		float bloomSize;

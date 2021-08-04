@@ -21,8 +21,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), bloomThreshold(1.0f),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(3.0f),
-	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
-	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr), useBloom(false),
+	ShadowCasterParametersBuffer(deviceResources, 5u),  exposure(0.0f),
+	mainShadowMap(nullptr), useBloom(false),
 	simpleForwardPass(nullptr), postProcessingPass(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
@@ -54,19 +54,17 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 		);
 	}
 
-	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
-	dualPostProcess = make_unique<DualPostProcess>(deviceResources->Device());
-	toneMapper = make_unique<ToneMapPostProcess>(deviceResources->Device());
-
 	// Initialize our linear render graph here
-	vector<Texture2D*> simpleForwardSource;
-	vector<Texture2D*> simpleForwardSink;
-	simpleForwardSink.push_back(hdrSceneRenderTarget[0].get());
-	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, simpleForwardSource, simpleForwardSink);
-	vector<Texture2D*> postProcessingSource;
-	vector<Texture2D*> postProcessingSink;
-	postProcessingSource.push_back(hdrSceneRenderTarget[0].get());
-	postProcessingPass = new Passes::PostProcessingPass(deviceResources, postProcessingSource, postProcessingSink);
+	// CREATE A LOT OF MEMORY LEAKS HERE
+	// TODO: clean it up
+	vector<Texture2D*>* simpleForwardSource = new vector<Texture2D*>();
+	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
+	simpleForwardSink->push_back(hdrSceneRenderTarget[0].get());
+	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, *simpleForwardSource, *simpleForwardSink);
+	vector<Texture2D*>* postProcessingSource = new vector<Texture2D*>();
+	vector<Texture2D*>* postProcessingSink = new vector<Texture2D*>();
+	postProcessingSource->push_back(hdrSceneRenderTarget[0].get());
+	postProcessingPass = new Passes::PostProcessingPass(deviceResources, *postProcessingSource, *postProcessingSink);
 
 	OutputDebugString(L"Core Renderer ready \n");
 }
@@ -187,52 +185,4 @@ void CoreRenderPipeline::ShadowPass()
 	{
 		gameObject->Render();
 	}
-}
-
-void CoreRenderPipeline::ApplyBloom()
-{
-	// Clear both bloom targets
-	for (int i = 0; i < 2; i++)
-	{
-		deviceResources->Context()->ClearRenderTargetView
-		(
-			bloomTextures[1]->UseAsRenderTarget().get(), deviceResources->ClearColor
-		);
-	}
-
-	ID3D11RenderTargetView* target = bloomTextures[0]->UseAsRenderTarget().get();
-	deviceResources->SetTargets(1, &target, nullptr);
-
-	basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
-	basicPostProcess->SetBloomExtractParameter(bloomThreshold);
-	basicPostProcess->SetSourceTexture(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
-	basicPostProcess->Process(deviceResources->Context());
-
-	// Send blur to the other bloom texture
-	target = bloomTextures[1]->UseAsRenderTarget().get();
-	deviceResources->SetTargets(1, &target, nullptr);
-
-	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
-	basicPostProcess->SetBloomBlurParameters(true, bloomSize, bloomBrightness);
-	basicPostProcess->SetSourceTexture(bloomTextures[0]->UseAsShaderResource().get());
-	basicPostProcess->Process(deviceResources->Context());
-
-	// And then back
-	target = bloomTextures[0]->UseAsRenderTarget().get();
-	deviceResources->SetTargets(1, &target, nullptr);
-
-	basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
-	basicPostProcess->SetBloomBlurParameters(false, bloomSize, bloomBrightness);
-	basicPostProcess->SetSourceTexture(bloomTextures[1]->UseAsShaderResource().get());
-	basicPostProcess->Process(deviceResources->Context());
-
-	// Finally combine to scene render buffer
-	target = hdrSceneRenderTarget[1]->UseAsRenderTarget().get();
-	deviceResources->SetTargets(1, &target, nullptr);
-
-	dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
-	dualPostProcess->SetBloomCombineParameters(1.0f, 1.0f, 1.0f, 1.0f);
-	dualPostProcess->SetSourceTexture(hdrSceneRenderTarget[0]->UseAsShaderResource().get());
-	dualPostProcess->SetSourceTexture2(bloomTextures[0]->UseAsShaderResource().get());
-	dualPostProcess->Process(deviceResources->Context());
 }

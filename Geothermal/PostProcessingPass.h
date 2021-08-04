@@ -10,8 +10,8 @@ namespace Geothermal::Graphics::Passes
 		/// <summary>
 		/// Apply bloom if needed, then apply a Reinhard tone mapping.
 		/// </summary>
-		/// <param name="source"></param>
-		/// <param name="sink"></param>
+		/// <param name="source">[0]: HDR scene buffer from renderer</param>
+		/// <param name="sink">[0,1]: Bloom textures, [2]: final HDR buffer</param>
 		PostProcessingPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
