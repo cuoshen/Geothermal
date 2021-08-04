@@ -36,13 +36,7 @@ namespace Geothermal::Graphics
 		/// </summary>
 		void ShadowPass();
 
-		std::unique_ptr<Texture2D> hdrSceneRenderTarget[2];
-		std::unique_ptr<Texture2D> bloomTextures[2];
-		float exposure;
-		bool useBloom;
-		float bloomSize;
-		float bloomThreshold;
-		float bloomBrightness;
+		std::unique_ptr<Texture2D> hdrTargets[4];
 
 		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class

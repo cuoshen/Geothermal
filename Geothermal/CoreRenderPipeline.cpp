@@ -19,10 +19,9 @@ using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), bloomThreshold(1.0f),
-	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(3.0f),
-	ShadowCasterParametersBuffer(deviceResources, 5u),  exposure(0.0f),
-	mainShadowMap(nullptr), useBloom(false),
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
+	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
+	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr),
 	simpleForwardPass(nullptr), postProcessingPass(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
@@ -38,19 +37,13 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	mainShadowMap =
 		make_unique<ShadowMap>(deviceResources, shadowMapDimensions.x, shadowMapDimensions.y);
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		hdrSceneRenderTarget[i] = make_unique<Texture2D>
+		hdrTargets[i] = make_unique<Texture2D>
 		(
 		deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 		deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-		);
-		bloomTextures[i] = make_unique<Texture2D>
-		(
-			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
-			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
-			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
 		);
 	}
 
@@ -59,11 +52,11 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	// TODO: clean it up
 	vector<Texture2D*>* simpleForwardSource = new vector<Texture2D*>();
 	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
-	simpleForwardSink->push_back(hdrSceneRenderTarget[0].get());
+	simpleForwardSink->push_back(hdrTargets[0].get());
 	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, *simpleForwardSource, *simpleForwardSink);
 	vector<Texture2D*>* postProcessingSource = new vector<Texture2D*>();
 	vector<Texture2D*>* postProcessingSink = new vector<Texture2D*>();
-	postProcessingSource->push_back(hdrSceneRenderTarget[0].get());
+	postProcessingSource->push_back(hdrTargets[0].get());
 	postProcessingPass = new Passes::PostProcessingPass(deviceResources, *postProcessingSource, *postProcessingSink);
 
 	OutputDebugString(L"Core Renderer ready \n");
@@ -77,7 +70,7 @@ void CoreRenderPipeline::Render()
 
 	// at each frame, the functions stored in the render graph, also known as passes, execute one by one.
 	ShadowPass();
-	simpleForwardPass->AddResources
+	simpleForwardPass->SetResources
 	(
 		Scene::Instance()->ObjectsInScene, camera.get(), 
 		std::bind(&CoreRenderPipeline::UploadShadowResources, this),
@@ -120,11 +113,6 @@ void CoreRenderPipeline::DrawGUI()
 	{
 		ResetCamera();
 	}
-	ImGui::DragFloat("Exposure", &exposure, 0.1f);
-
-	ImGui::Checkbox("UseBloom", &useBloom);
-	ImGui::DragFloat("Bloom Size", &bloomSize, 0.1f);
-	ImGui::DragFloat("Bloom Threshold", &bloomThreshold, 0.001f);
 
 	ImGui::End();
 

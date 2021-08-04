@@ -17,7 +17,7 @@ SimpleForwardPass::SimpleForwardPass
 {
 }
 
-void SimpleForwardPass::AddResources
+void SimpleForwardPass::SetResources
 (
 	list<GameObject*> renderables, Camera* camera,
 	function<void(void)> uploadShadowResources,

@@ -21,7 +21,7 @@ namespace Geothermal::Graphics::Passes
 			std::vector<Texture2D*> const& sink
 		);
 
-		void AddResources
+		void SetResources
 		(
 			std::list<GameObject*> renderables,
 			Camera* camera,
