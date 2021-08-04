@@ -156,8 +156,8 @@ void GameMain::InitializeDebugResource()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		//loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
-		loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
+		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	debugPlane = new Mesh();
@@ -180,7 +180,7 @@ void GameMain::InitializeDebugResource()
 		0.2f,																				// Diffuse
 		2.0f,																				// Specular
 		10.0f,																				// Smoothness
-		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
+		USE_SHADOW_MAP		// Texture flags
 	};
 
 	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties0 =

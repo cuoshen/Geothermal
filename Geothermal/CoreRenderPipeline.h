@@ -50,6 +50,7 @@ namespace Geothermal::Graphics
 		std::unique_ptr<DirectX::DualPostProcess> dualPostProcess;
 		std::unique_ptr<DirectX::ToneMapPostProcess> toneMapper;
 		float exposure;
+		bool useBloom;
 		float bloomSize;
 		float bloomThreshold;
 		float bloomBrightness;

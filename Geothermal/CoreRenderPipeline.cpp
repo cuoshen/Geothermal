@@ -21,7 +21,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), bloomThreshold(1.0f),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(3.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
-	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr)
+	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr), useBloom(false)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -95,6 +95,7 @@ void CoreRenderPipeline::StartGUIFrame()
 void CoreRenderPipeline::DrawGUI()
 {
 	ImGui::Begin("Camera Control");
+
 	XMFLOAT3 cameraPosition;
 	XMVECTOR pos = camera->GetTransform()->WorldPosition();
 	XMStoreFloat3(&cameraPosition, pos);
@@ -113,8 +114,11 @@ void CoreRenderPipeline::DrawGUI()
 		ResetCamera();
 	}
 	ImGui::DragFloat("Exposure", &exposure, 0.1f);
+
+	ImGui::Checkbox("UseBloom", &useBloom);
 	ImGui::DragFloat("Bloom Size", &bloomSize, 0.1f);
 	ImGui::DragFloat("Bloom Threshold", &bloomThreshold, 0.001f);
+
 	ImGui::End();
 
 	ImGui::Render();
@@ -202,7 +206,13 @@ void CoreRenderPipeline::SimpleForwardPass()
 
 void CoreRenderPipeline::PostProcessingPass()
 {
-	ApplyBloom();
+	ID3D11ShaderResourceView* sceneTarget = 
+		hdrSceneRenderTarget[0]->UseAsShaderResource().get();
+	if (useBloom)
+	{
+		ApplyBloom();
+		sceneTarget = hdrSceneRenderTarget[1]->UseAsShaderResource().get();
+	}
 
 	// Clear back buffer and target it in OutputMerger
 	deviceResources->ClearFrame();
@@ -210,7 +220,7 @@ void CoreRenderPipeline::PostProcessingPass()
 	deviceResources->SetTargets(1, &target, nullptr);
 
 	toneMapper->SetOperator(ToneMapPostProcess::Reinhard);
-	toneMapper->SetHDRSourceTexture(hdrSceneRenderTarget[1]->UseAsShaderResource().get());
+	toneMapper->SetHDRSourceTexture(sceneTarget);
 	toneMapper->SetExposure(exposure);
 	toneMapper->SetTransferFunction(ToneMapPostProcess::Linear);
 	toneMapper->Process(deviceResources->Context());
