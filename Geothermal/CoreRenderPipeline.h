@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "ViewPoint.h"
 #include "PostProcess.h"
+#include "RenderPasses.h"
 
 namespace Geothermal::Graphics
 {
@@ -28,19 +29,13 @@ namespace Geothermal::Graphics
 		void DrawGUI();
 		void ResetCamera();
 
-		std::list<std::function<void()>> linearRenderGraph;
+		Passes::SimpleForwardPass* simpleForwardPass;
+		Passes::PostProcessingPass* postProcessingPass;
+
 		/// <summary>
 		/// Get a shadow map by rendering from the main light
 		/// </summary>
 		void ShadowPass();
-		/// <summary>
-		/// Draw every drawable geometry in a single forward pass
-		/// </summary>
-		void SimpleForwardPass();
-		/// <summary>
-		/// Remap HDR tone to SDR display, apply bloom and other effects accordingly
-		/// </summary>
-		void PostProcessingPass();
 
 		void ApplyBloom();
 

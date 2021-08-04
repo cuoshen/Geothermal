@@ -27,11 +27,11 @@ void PostProcessingPass::ApplyBloom()
 void PostProcessingPass::operator()()
 {
 	ID3D11ShaderResourceView* sceneTarget =
-		sink[0]->UseAsShaderResource().get();
+		source[0]->UseAsShaderResource().get();
 	if (useBloom)
 	{
 		ApplyBloom();
-		sceneTarget = sink[1]->UseAsShaderResource().get();
+		sceneTarget = source[1]->UseAsShaderResource().get();
 	}
 
 	// Clear back buffer and target it in OutputMerger

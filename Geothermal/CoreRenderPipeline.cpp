@@ -13,6 +13,7 @@
 using namespace Geothermal::Graphics;
 using namespace Bindables;
 using namespace Structures;
+using namespace Passes;
 using namespace std;
 using namespace DirectX;
 
@@ -21,7 +22,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), bloomThreshold(1.0f),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f), bloomSize(5.0f), bloomBrightness(3.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u), toneMapper(nullptr), exposure(0.0f),
-	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr), useBloom(false)
+	mainShadowMap(nullptr), basicPostProcess(nullptr), dualPostProcess(nullptr), useBloom(false),
+	simpleForwardPass(nullptr), postProcessingPass(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -39,17 +41,17 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	for (int i = 0; i < 2; i++)
 	{
 		hdrSceneRenderTarget[i] = make_unique<Texture2D>
-			(
+		(
+		deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
+		deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+		);
+		bloomTextures[i] = make_unique<Texture2D>
+		(
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-			);
-		bloomTextures[i] = make_unique<Texture2D>
-			(
-				deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
-				deviceResources->OutputSize().x, deviceResources->OutputSize().y,
-				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-			);
+		);
 	}
 
 	basicPostProcess = make_unique<BasicPostProcess>(deviceResources->Device());
@@ -57,11 +59,14 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	toneMapper = make_unique<ToneMapPostProcess>(deviceResources->Device());
 
 	// Initialize our linear render graph here
-	// a linear render graph is a list of functions or passes, each performs a specific render operation
-
-	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::ShadowPass, this));
-	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::SimpleForwardPass, this));
-	linearRenderGraph.push_back(std::bind(&CoreRenderPipeline::PostProcessingPass, this));
+	vector<Texture2D*> simpleForwardSource;
+	vector<Texture2D*> simpleForwardSink;
+	simpleForwardSink.push_back(hdrSceneRenderTarget[0].get());
+	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, simpleForwardSource, simpleForwardSink);
+	vector<Texture2D*> postProcessingSource;
+	vector<Texture2D*> postProcessingSink;
+	postProcessingSource.push_back(hdrSceneRenderTarget[0].get());
+	postProcessingPass = new Passes::PostProcessingPass(deviceResources, postProcessingSource, postProcessingSink);
 
 	OutputDebugString(L"Core Renderer ready \n");
 }
@@ -73,10 +78,15 @@ void CoreRenderPipeline::Render()
 	camera->Update();
 
 	// at each frame, the functions stored in the render graph, also known as passes, execute one by one.
-	for (auto renderPass : linearRenderGraph)
-	{
-		renderPass();
-	}
+	ShadowPass();
+	simpleForwardPass->AddResources
+	(
+		Scene::Instance()->ObjectsInScene, camera.get(), 
+		std::bind(&CoreRenderPipeline::UploadShadowResources, this),
+		std::bind(&CoreRenderPipeline::UploadLightingResources, this)
+	);
+	(*simpleForwardPass)();
+	(*postProcessingPass)();
 
 	// Draw GUI on top of the game
 	DrawGUI();
@@ -177,56 +187,6 @@ void CoreRenderPipeline::ShadowPass()
 	{
 		gameObject->Render();
 	}
-}
-
-void CoreRenderPipeline::SimpleForwardPass()
-{
-	deviceResources->ResetDefaultPipelineStates();
-	deviceResources->Context()->ClearRenderTargetView
-	(
-		hdrSceneRenderTarget[0]->UseAsRenderTarget().get(), deviceResources->ClearColor
-	);
-	deviceResources->Context()->ClearDepthStencilView
-	(
-		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
-	);
-	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
-	ID3D11RenderTargetView* target = hdrSceneRenderTarget[0]->UseAsRenderTarget().get();
-	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
-
-	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
-
-	UploadShadowResources();
-	UploadLightingResources();
-
-	// For each object we render it in a single pass
-	// TODO: sort objects
-	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
-	{
-		gameObject->Render();
-	}
-}
-
-void CoreRenderPipeline::PostProcessingPass()
-{
-	ID3D11ShaderResourceView* sceneTarget =
-		hdrSceneRenderTarget[0]->UseAsShaderResource().get();
-	if (useBloom)
-	{
-		ApplyBloom();
-		sceneTarget = hdrSceneRenderTarget[1]->UseAsShaderResource().get();
-	}
-
-	// Clear back buffer and target it in OutputMerger
-	deviceResources->ClearFrame();
-	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
-	deviceResources->SetTargets(1, &target, nullptr);
-
-	toneMapper->SetOperator(ToneMapPostProcess::Reinhard);
-	toneMapper->SetHDRSourceTexture(sceneTarget);
-	toneMapper->SetExposure(exposure);
-	toneMapper->SetTransferFunction(ToneMapPostProcess::Linear);
-	toneMapper->Process(deviceResources->Context());
 }
 
 void CoreRenderPipeline::ApplyBloom()
