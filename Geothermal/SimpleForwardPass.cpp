@@ -12,7 +12,8 @@ SimpleForwardPass::SimpleForwardPass
 	vector<Texture2D*> const& source, 
 	vector<Texture2D*> const& sink
 ):
-	RenderPass(deviceResources, source, sink), renderables(), camera(nullptr)
+	RenderPass(deviceResources, source, sink), renderables(), 
+	camera(nullptr), uploadLightingResources(nullptr), uploadShadowResources(nullptr)
 {
 }
 

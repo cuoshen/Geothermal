@@ -10,6 +10,10 @@ namespace Geothermal::Graphics::Passes
 	class SimpleForwardPass : public RenderPass
 	{
 	public:
+		/// <summary>
+		/// Draw all renderables in a simple forward pass.
+		/// </summary>
+		/// <param name="sink">[0]: HDR scene buffer that receives the rendered scene image</param>
 		SimpleForwardPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
