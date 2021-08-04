@@ -29,6 +29,11 @@ namespace Geothermal::Graphics::Passes
 			std::function<void(void)> uploadLightingResources
 		);
 
+		/// <summary>
+		/// TODO: Implement frustum culling
+		/// </summary>
+		void Cull();
+
 		void operator()() override;
 
 	protected:
