@@ -1,6 +1,5 @@
 #pragma once
 #include "GraphicResources.h"
-#include "GameObject.h"
 
 namespace Geothermal::Graphics::Passes
 {
