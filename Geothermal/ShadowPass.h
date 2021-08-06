@@ -21,10 +21,10 @@ namespace Geothermal::Graphics::Passes
 		void operator()() override;
 
 	protected:
-		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
+		const DirectX::XMUINT2 shadowMapDimensions = { 4096, 4096 };
 
 		/// <summary>
-		/// The shadow pass keeps a reference to the main shadow map
+		/// The shadow pass owns the main shadow map
 		/// </summary>
 		std::shared_ptr<ShadowMap> mainShadowMap;
 		D3D11_VIEWPORT shadowViewPort;

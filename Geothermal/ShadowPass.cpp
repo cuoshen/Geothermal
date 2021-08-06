@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ShadowPass.h"
 #include "GameObject.h"
 #include "Scene.h"
