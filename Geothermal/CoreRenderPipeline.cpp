@@ -20,8 +20,7 @@ using namespace DirectX;
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
-	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr),
-	simpleForwardPass(nullptr), postProcessingPass(nullptr)
+	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
 
@@ -41,19 +40,15 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	// Initialize our linear render graph here
 	// CREATE A LOT OF MEMORY LEAKS HERE
 	// TODO: clean it up
-	vector<Texture2D*>* shadowSource = new vector<Texture2D*>();
-	vector<Texture2D*>* shadowSink = new vector<Texture2D*>();
-	shadowPass = new Passes::ShadowPass(deviceResources, *shadowSource, *shadowSink);
+	shadowPass = new Passes::ShadowPass(deviceResources, {}, {});
 
-	vector<Texture2D*>* simpleForwardSource = new vector<Texture2D*>();
 	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
 	simpleForwardSink->push_back(hdrTargets[0].get());
-	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, *simpleForwardSource, *simpleForwardSink);
+	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, {}, *simpleForwardSink);
 
 	vector<Texture2D*>* postProcessingSource = new vector<Texture2D*>();
-	vector<Texture2D*>* postProcessingSink = new vector<Texture2D*>();
 	postProcessingSource->push_back(hdrTargets[0].get());
-	postProcessingPass = new Passes::PostProcessingPass(deviceResources, *postProcessingSource, *postProcessingSink);
+	postProcessingPass = new Passes::PostProcessingPass(deviceResources, *postProcessingSource, {});
 
 	mainShadowMap = shadowPass->MainShadowMap();
 
