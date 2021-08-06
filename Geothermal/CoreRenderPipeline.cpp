@@ -38,8 +38,9 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	}
 
 	// Initialize our linear render graph here
-	// CREATE A LOT OF MEMORY LEAKS HERE
-	// TODO: clean it up
+	// We create sources and sinks here, then pass their control into the RenderPasses
+	// No memory leak should occur
+
 	shadowPass = new Passes::ShadowPass(deviceResources, {}, {});
 
 	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
@@ -61,11 +62,12 @@ void CoreRenderPipeline::Render()
 
 	camera->Update();
 
-	// at each frame, the passes execute one by one.
+	// at each frame, execute the passes one by one.
 
 	XMVECTOR mainLightDirection = XMLoadFloat3(&lights.MainLight.Direction);
 	world2light = shadowPass->UpdateWorld2Light(mainLightShadowCastingOrigin, mainLightDirection);
 	(*shadowPass)();
+
 	simpleForwardPass->SetResources
 	(
 		Scene::Instance()->ObjectsInScene, camera.get(), 
@@ -73,9 +75,9 @@ void CoreRenderPipeline::Render()
 		std::bind(&CoreRenderPipeline::UploadLightingResources, this)
 	);
 	(*simpleForwardPass)();
+
 	(*postProcessingPass)();
 
-	// Draw GUI on top of the game
 	DrawGUI();
 	deviceResources->Present();
 }
