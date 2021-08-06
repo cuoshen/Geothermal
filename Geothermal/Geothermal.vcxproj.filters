@@ -87,6 +87,9 @@
     <ClCompile Include="PostProcessingPass.cpp">
       <Filter>Graphics\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="ShadowPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -215,6 +218,9 @@
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
     <ClInclude Include="RenderPasses.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
   </ItemGroup>

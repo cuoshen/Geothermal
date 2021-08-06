@@ -28,25 +28,17 @@ namespace Geothermal::Graphics
 		void DrawGUI();
 		void ResetCamera();
 
+		Passes::ShadowPass* shadowPass;
 		Passes::SimpleForwardPass* simpleForwardPass;
 		Passes::PostProcessingPass* postProcessingPass;
-
-		/// <summary>
-		/// Get a shadow map by rendering from the main light
-		/// </summary>
-		void ShadowPass();
 
 		std::unique_ptr<Texture2D> hdrTargets[4];
 
 		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class
-		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
-		const XMFLOAT3 mainLightShadowCastingOrigin = { 0.0f, 10.0f, 0.0f };
-		std::unique_ptr<ShadowMap> mainShadowMap;
-		D3D11_VIEWPORT shadowViewPort;
-		ViewPoint shadowCaster;
+		const XMVECTORF32 mainLightShadowCastingOrigin = { 0.0f, 10.0f, 0.0f };
+		std::shared_ptr<ShadowMap> mainShadowMap;
 		XMMATRIX world2light;
-		void UpdateWorld2Light();
 		void UploadShadowResources();
 		void UploadLightingResources();
 		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > ShadowCasterParametersBuffer;

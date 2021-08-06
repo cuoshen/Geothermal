@@ -171,6 +171,7 @@
     <ClCompile Include="RenderPass.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderCache.cpp" />
+    <ClCompile Include="ShadowPass.cpp" />
     <ClCompile Include="SimpleForwardPass.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="ShadingAttributes.h" />
     <ClInclude Include="ShadowMap.h" />
+    <ClInclude Include="ShadowPass.h" />
     <ClInclude Include="SimpleForwardPass.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />

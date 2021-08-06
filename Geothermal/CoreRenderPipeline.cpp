@@ -20,7 +20,6 @@ using namespace DirectX;
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
-	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f),
 	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr),
 	simpleForwardPass(nullptr), postProcessingPass(nullptr)
 {
@@ -28,15 +27,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightsConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
-	shadowViewPort = CD3D11_VIEWPORT(
-		0.0f,
-		0.0f,
-		shadowMapDimensions.x,
-		shadowMapDimensions.y
-	);
-	mainShadowMap =
-		make_unique<ShadowMap>(deviceResources, shadowMapDimensions.x, shadowMapDimensions.y);
-
+	
 	for (int i = 0; i < 4; i++)
 	{
 		hdrTargets[i] = make_unique<Texture2D>
@@ -50,14 +41,21 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	// Initialize our linear render graph here
 	// CREATE A LOT OF MEMORY LEAKS HERE
 	// TODO: clean it up
+	vector<Texture2D*>* shadowSource = new vector<Texture2D*>();
+	vector<Texture2D*>* shadowSink = new vector<Texture2D*>();
+	shadowPass = new Passes::ShadowPass(deviceResources, *shadowSource, *shadowSink);
+
 	vector<Texture2D*>* simpleForwardSource = new vector<Texture2D*>();
 	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
 	simpleForwardSink->push_back(hdrTargets[0].get());
 	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, *simpleForwardSource, *simpleForwardSink);
+
 	vector<Texture2D*>* postProcessingSource = new vector<Texture2D*>();
 	vector<Texture2D*>* postProcessingSink = new vector<Texture2D*>();
 	postProcessingSource->push_back(hdrTargets[0].get());
 	postProcessingPass = new Passes::PostProcessingPass(deviceResources, *postProcessingSource, *postProcessingSink);
+
+	mainShadowMap = shadowPass->MainShadowMap();
 
 	OutputDebugString(L"Core Renderer ready \n");
 }
@@ -68,8 +66,11 @@ void CoreRenderPipeline::Render()
 
 	camera->Update();
 
-	// at each frame, the functions stored in the render graph, also known as passes, execute one by one.
-	ShadowPass();
+	// at each frame, the passes execute one by one.
+
+	XMVECTOR mainLightDirection = XMLoadFloat3(&lights.MainLight.Direction);
+	world2light = shadowPass->UpdateWorld2Light(mainLightShadowCastingOrigin, mainLightDirection);
+	(*shadowPass)();
 	simpleForwardPass->SetResources
 	(
 		Scene::Instance()->ObjectsInScene, camera.get(), 
@@ -127,16 +128,6 @@ void CoreRenderPipeline::ResetCamera()
 	camera->Yaw(0.0f);
 }
 
-void CoreRenderPipeline::UpdateWorld2Light()
-{
-	XMVECTOR position = XMLoadFloat3(&mainLightShadowCastingOrigin);
-	XMVECTOR direction = XMLoadFloat3(&lights.MainLight.Direction);
-	XMFLOAT3 upFloat3 = XMFLOAT3{ 0.0f, 1.0f, 0.0f };
-	XMVECTOR up = XMLoadFloat3(&upFloat3);
-
-	world2light = XMMatrixLookToLH(position, direction, up);
-}
-
 void CoreRenderPipeline::UploadShadowResources()
 {
 	// Upload shadow map to GPU
@@ -144,7 +135,7 @@ void CoreRenderPipeline::UploadShadowResources()
 	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
 	deviceResources->Context()->PSSetShaderResources(mainShadowMap->Slot(), 1, &shadowMapSRVAddress);
 	// Upload shadow parameters to GPU
-	ShadowCasterParametersBuffer.Update(XMMatrixTranspose(world2light * shadowCaster.Perspective()));
+	ShadowCasterParametersBuffer.Update(XMMatrixTranspose(world2light * shadowPass->CasterPerspective()));
 	ShadowCasterParametersBuffer.Bind();
 }
 
@@ -153,24 +144,4 @@ void CoreRenderPipeline::UploadLightingResources()
 	// Update & bind all the lights
 	lightsConstantBuffer->Update(lights);
 	lightsConstantBuffer->Bind();
-}
-
-void CoreRenderPipeline::ShadowPass()
-{
-	deviceResources->ResetDefaultPipelineStates();
-	deviceResources->Context()->ClearDepthStencilView
-	(
-		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
-	);
-	deviceResources->Context()->RSSetViewports(1, &shadowViewPort);
-	deviceResources->SetTargets(0, nullptr, mainShadowMap->UseAsDepthStencil().get());
-
-	// Render from the perspective of the main light
-	UpdateWorld2Light();
-	shadowCaster.Bind(world2light);
-
-	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
-	{
-		gameObject->Render();
-	}
 }

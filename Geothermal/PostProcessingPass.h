@@ -19,12 +19,11 @@ namespace Geothermal::Graphics::Passes
 			std::vector<Texture2D*> const& sink
 		);
 
-		void ApplyBloom();
-
 		void operator()() override;
 
 	protected:
 		// TODO: Implement a set of my own post processors and remove DirectXTK implementations
+		void ApplyBloom();
 
 		std::unique_ptr<DirectX::BasicPostProcess> basicPostProcess;
 		std::unique_ptr<DirectX::DualPostProcess> dualPostProcess;
