@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SimpleForwardPass.h"
+#include <math.h>
 
 using namespace std;
 using namespace Geothermal;
@@ -8,11 +9,11 @@ using namespace Passes;
 
 SimpleForwardPass::SimpleForwardPass
 (
-	shared_ptr<DeviceResources> const& deviceResources, 
-	vector<Texture2D*> const& source, 
+	shared_ptr<DeviceResources> const& deviceResources,
+	vector<Texture2D*> const& source,
 	vector<Texture2D*> const& sink
-):
-	RenderPass(deviceResources, source, sink), renderables(), 
+) :
+	RenderPass(deviceResources, source, sink), renderables(),
 	camera(nullptr), uploadLightingResources(nullptr), uploadShadowResources(nullptr)
 {
 }
@@ -33,12 +34,27 @@ void SimpleForwardPass::SetResources
 
 list<GameObject*> SimpleForwardPass::Cull()
 {
-	list<GameObject*> result(renderables.size());
+	list<GameObject*> result;
 
 	for (GameObject*& renderable : renderables)
 	{
-		// Get view space coordinates
+		// Get clipping space coordinates
+		XMVECTOR worldPositionVector = renderable->GetTransform().WorldPosition();
+		XMVECTOR clipPositionVector = XMVector4Transform(worldPositionVector, camera->World2Clip());
+		XMFLOAT4 clipPosition;  XMStoreFloat4(&clipPosition, clipPositionVector);
+		// Divide w to get normalized device coordinates
+		XMFLOAT3 ndcPosition = { clipPosition.x / clipPosition.w, clipPosition.y / clipPosition.w, clipPosition.z / clipPosition.w };
+
+		// Cull object if any of the coord is out of [-1, 1]
+		bool toBeCulled = 
+			(abs(ndcPosition.x) > 1) || (abs(ndcPosition.y) > 1) || (abs(ndcPosition.z) > 1);
+		if (!toBeCulled)
+		{
+			result.push_back(renderable);
+		}
 	}
+
+	return result;
 }
 
 void SimpleForwardPass::operator()()
@@ -62,9 +78,9 @@ void SimpleForwardPass::operator()()
 	uploadShadowResources();
 	uploadLightingResources();
 
-	// For each object we render it in a single pass
+	// First cull objects outside the view frustum, then render them in a single pass
 	// TODO: sort objects
-	for (GameObject*& gameObject : renderables)
+	for (GameObject*& gameObject : Cull())
 	{
 		gameObject->Render();
 	}
