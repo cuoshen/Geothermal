@@ -95,7 +95,7 @@ void CoreRenderPipeline::DrawGUI()
 	ImGui::Begin("Camera Control");
 
 	XMFLOAT3 cameraPosition;
-	XMVECTOR pos = camera->GetTransform()->WorldPosition();
+	XMVECTOR pos = camera->GetTransform().WorldPosition();
 	XMStoreFloat3(&cameraPosition, pos);
 	ImGui::Text
 	(
@@ -120,7 +120,7 @@ void CoreRenderPipeline::DrawGUI()
 
 void CoreRenderPipeline::ResetCamera()
 {
-	camera->GetTransform()->UpdateTransform(XMMatrixIdentity());
+	camera->GetTransform().UpdateTransform(XMMatrixIdentity());
 	camera->Pitch(0.0f);
 	camera->Yaw(0.0f);
 }
