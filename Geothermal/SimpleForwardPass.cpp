@@ -45,6 +45,8 @@ list<GameObject*> SimpleForwardPass::Cull()
 		// Divide w to get normalized device coordinates
 		XMFLOAT3 ndcPosition = { clipPosition.x / clipPosition.w, clipPosition.y / clipPosition.w, clipPosition.z / clipPosition.w };
 
+		// TODO: AABB-based culling
+
 		// Cull object if any of the coord is out of [-1, 1]
 		bool toBeCulled = 
 			(abs(ndcPosition.x) > 1) || (abs(ndcPosition.y) > 1) || (abs(ndcPosition.z) > 1);
