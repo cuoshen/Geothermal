@@ -30,9 +30,15 @@ namespace Geothermal::Graphics::Passes
 		);
 
 		/// <summary>
-		/// TODO: Implement frustum culling
+		/// Apply a frustum culling to renderables
 		/// </summary>
-		void Cull();
+		/// <returns>A list of game objects visible in the frustum</returns>
+		std::list<GameObject*> Cull();
+		/// <summary>
+		/// Sort opaque game objects from near to far
+		/// </summary>
+		/// <returns>List of sorted opaque objects</returns>
+		std::list<GameObject*> SortOpaque();
 
 		void operator()() override;
 

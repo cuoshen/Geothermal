@@ -31,6 +31,16 @@ void SimpleForwardPass::SetResources
 	this->uploadLightingResources = uploadLightingResources;
 }
 
+list<GameObject*> SimpleForwardPass::Cull()
+{
+	list<GameObject*> result(renderables.size());
+
+	for (GameObject*& renderable : renderables)
+	{
+		// Get view space coordinates
+	}
+}
+
 void SimpleForwardPass::operator()()
 {
 	deviceResources->ResetDefaultPipelineStates();
