@@ -48,14 +48,14 @@ void Input::RegisterInput(MSG* msg)
 	}
 }
 
-bool Input::GetMouseButton(char button)
+bool Input::GetMouseButton(MouseButtons button)
 {
-	return (keysDown.count(button) != 0);
+	return (keysDown.count((char)button) != 0);
 }
 
-bool Input::GetMouseButtonDown(char button)
+bool Input::GetMouseButtonDown(MouseButtons button)
 {
-	return (keysDownThisFrame.count(button) != 0);
+	return (keysDownThisFrame.count((char)button) != 0);
 }
 
 bool Input::GetKey(char key) const

@@ -4,6 +4,13 @@
 
 namespace Geothermal
 {
+	enum class MouseButtons
+	{
+		LEFT = VK_LBUTTON,
+		RIGHT = VK_RBUTTON,
+		MIDDLE = VK_MBUTTON
+	};
+
 	/// <summary>
 	/// Unified input manager providing handling functions for all inputs
 	/// </summary>
@@ -14,8 +21,8 @@ namespace Geothermal
 		void Update();
 		void RegisterInput(MSG* msg);
 
-		bool GetMouseButton(char button);
-		bool GetMouseButtonDown(char button);
+		bool GetMouseButton(MouseButtons button);
+		bool GetMouseButtonDown(MouseButtons button);
 		/// <summary>
 		/// Returns true while the key is being pressed down
 		/// </summary>

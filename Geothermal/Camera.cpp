@@ -80,7 +80,7 @@ void Camera::HandleMovement()
 void Camera::HandleRotation()
 {
 	Input* input = GameMain::Instance()->GetInput();
-	if (input->GetMouseButton(VK_RBUTTON))
+	if (input->GetMouseButton(MouseButtons::RIGHT))
 	{
 		XMFLOAT2 rotation = input->GetMouseMovement();
 		pitch += rotation.y * mouseSensitivity;
