@@ -76,8 +76,7 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 	const vector<tinyobj::material_t>& materials = reader.GetMaterials();
 
 	vector<VertexPNTT> vertices;
-	VertexPNTT* triangle;
-	VertexPNTT* finishedTriangle = new VertexPNTT[3];
+	VertexPNTT* triangle = new VertexPNTT[3];
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++)
 	{
@@ -88,13 +87,7 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 		{
 			// We enforce the rule that each face must be a triangle,
 			// if the shape is not fully triangulated, the loading operation is unsuccessful
-			if (currentShape.mesh.num_face_vertices[f] != 3)
-			{
-				OutputDebugString(L"Error parsing obj: Shape is not fully triangulated. \n");
-				return vector<VertexPNTT>();
-			}
-
-			triangle = new VertexPNTT[3];
+			assert(currentShape.mesh.num_face_vertices[f] == 3);
 
 			for (size_t v = 0; v < 3; v++)	// For each vertex
 			{
@@ -102,22 +95,20 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 				VertexPNTT vertex;
 				ConstructVertex(&vertex, index, attrib);
 				triangle[v] = vertex;
-				//vertices.push_back(vertex);
 			}
 
 			// Compute tangent
-			ComputeTangent(triangle, finishedTriangle);
+			ComputeTangent(triangle);
 
 			for (size_t i = 0; i < 3; i++)
 			{
-				vertices.push_back(finishedTriangle[i]);
+				vertices.push_back(triangle[i]);
 			}
 
 			index_offset += 3;
-			delete[] triangle;
 		}
 	}
-	delete[] finishedTriangle;
+	delete[] triangle;
 
 	return vertices;
 }
@@ -152,7 +143,7 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	}
 }
 
-void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
+void ModelLoader::ComputeTangent(VertexPNTT triangle[3])
 {
 	// Solve the equation EdgeMatrix == DeltaUVMatrix . TangentBitangentBasisMatrix
 
@@ -187,6 +178,4 @@ void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 	};
 
 	triangle[0].tangent = triangle[1].tangent = triangle[2].tangent = tangent;
-
-	memcpy(receiver, triangle, 3 * sizeof(VertexPNTT));
 }

@@ -48,8 +48,7 @@ namespace Geothermal
 		/// </summary>
 		void ComputeTangent
 		(
-			Geothermal::Graphics::Structures::VertexPNTT triangle[3],
-			Geothermal::Graphics::Structures::VertexPNTT receiver[3]
+			Geothermal::Graphics::Structures::VertexPNTT triangle[3]
 		);
 
 		tinyobj::ObjReader reader;
