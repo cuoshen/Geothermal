@@ -26,38 +26,46 @@ void Input::RegisterInput(MSG* msg)
 	case WM_KEYUP:
 		OnKeyUp(msg->wParam, msg->lParam);
 		break;
+
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+		OnMouseDown(msg->wParam, msg->lParam);
+		break;
+	case WM_LBUTTONUP:
+		OnMouseUp(VK_LBUTTON, msg->lParam);
+		break;
+	case WM_RBUTTONUP:
+		OnMouseUp(VK_RBUTTON, msg->lParam);
+		break;
+	case WM_MBUTTONUP:
+		OnMouseUp(VK_MBUTTON, msg->lParam);
+		break;
+
 	case WM_MOUSEMOVE:
 		OnMouseMoved(msg->wParam, msg->lParam);
 		break;
 	}
 }
 
-bool Input::GetMouseButton()
+bool Input::GetMouseButton(char button)
 {
-	return false;
+	return (keysDown.count(button) != 0);
 }
 
-bool Input::GetMouseButtonDown()
+bool Input::GetMouseButtonDown(char button)
 {
-	return false;
+	return (keysDownThisFrame.count(button) != 0);
 }
 
 bool Input::GetKey(char key) const
 {
-	if (keysDown.count(key) != 0)
-	{
-		return true;
-	}
-	return false;
+	return (keysDown.count(key) != 0);
 }
 
 bool Input::GetKeyDown(char key) const
 {
-	if (keysDownThisFrame.count(key) != 0)
-	{
-		return true;
-	}
-	return false;
+	return (keysDownThisFrame.count(key) != 0);
 }
 
 void Input::ResetStates()
@@ -80,6 +88,17 @@ void Input::OnKeyDown(WPARAM wParam, LPARAM lParam)
 }
 
 void Input::OnKeyUp(WPARAM wParam, LPARAM lParam)
+{
+	keysDown.erase(wParam);
+}
+
+void Input::OnMouseDown(WPARAM wParam, LPARAM lParam)
+{
+	keysDown.insert(wParam);
+	keysDownThisFrame.insert(wParam);
+}
+
+void Input::OnMouseUp(WPARAM wParam, LPARAM lParam)
 {
 	keysDown.erase(wParam);
 }

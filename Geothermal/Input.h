@@ -14,8 +14,8 @@ namespace Geothermal
 		void Update();
 		void RegisterInput(MSG* msg);
 
-		bool GetMouseButton();
-		bool GetMouseButtonDown();
+		bool GetMouseButton(char button);
+		bool GetMouseButtonDown(char button);
 		/// <summary>
 		/// Returns true while the key is being pressed down
 		/// </summary>
@@ -35,6 +35,16 @@ namespace Geothermal
 			LPARAM      lParam
 		);
 		void OnKeyUp
+		(
+			WPARAM      wParam,
+			LPARAM      lParam
+		);
+		void OnMouseDown
+		(
+			WPARAM      wParam,
+			LPARAM      lParam
+		);
+		void OnMouseUp
 		(
 			WPARAM      wParam,
 			LPARAM      lParam
