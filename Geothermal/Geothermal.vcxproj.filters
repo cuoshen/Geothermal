@@ -223,6 +223,9 @@
     <ClInclude Include="ShadowPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Ultilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

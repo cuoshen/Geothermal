@@ -15,10 +15,6 @@ GameObject::GameObject() :
 	transform = make_unique<Transform>();
 }
 
-GameObject::~GameObject()
-{
-}
-
 void GameObject::Render() const
 {
 	if (!isActive)

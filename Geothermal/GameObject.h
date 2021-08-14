@@ -13,7 +13,6 @@ namespace Geothermal
 	{
 	public:
 		GameObject();
-		~GameObject();
 
 		friend class GameObjectFactory;
 
