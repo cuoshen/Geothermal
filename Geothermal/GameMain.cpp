@@ -161,9 +161,8 @@ void GameMain::InitializeDebugResource()
 	assert(loaded);
 
 	debugPlane = new Mesh();
-	ModelLoader planeLoader;
 	loaded =
-		planeLoader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
 	// For now we want to put everything into a single test material

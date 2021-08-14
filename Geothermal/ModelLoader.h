@@ -50,7 +50,7 @@ namespace Geothermal
 			Geothermal::Graphics::Structures::VertexPNTT triangle[3]
 		);
 
-		tinyobj::ObjReader reader;
+		std::unique_ptr<tinyobj::ObjReader> reader;
 		tinyobj::ObjReaderConfig reader_config;
 	};
 }

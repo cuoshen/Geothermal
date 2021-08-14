@@ -13,7 +13,7 @@ using namespace Bindables;
 using namespace std;
 
 ModelLoader::ModelLoader() :
-	reader(), reader_config()
+	reader(nullptr), reader_config()
 {
 	reader_config.vertex_color = false;
 }
@@ -37,32 +37,36 @@ bool ModelLoader::LoadObj2Mesh
 
 bool ModelLoader::LoadObjString2Mesh
 (
-	string objString, string mtlString, Mesh* mesh, 
+	string objString, string mtlString, Mesh* mesh,
 	std::shared_ptr<DeviceResources> const& deviceResources
 )
 {
+	// Clear existing data from previous read action
+	reader = nullptr;
+	reader = make_unique<tinyobj::ObjReader>();
+
 	if (mesh == nullptr)
 	{
 		return false;	// Cannot load into nullptr
 	}
-	if (!reader.ParseFromString(objString, mtlString, reader_config))
+	if (!reader->ParseFromString(objString, mtlString, reader_config))
 	{
-		if (!reader.Error().empty())
+		if (!reader->Error().empty())
 		{
-			OutputDebugStringA(reader.Error().c_str());
+			OutputDebugStringA(reader->Error().c_str());
 		}
 		return false;	// Failed to parse obj file
 	}
-	if (!reader.Warning().empty())
+	if (!reader->Warning().empty())
 	{
-		OutputDebugStringA(reader.Warning().c_str());
+		OutputDebugStringA(reader->Warning().c_str());
 	}
 
 	vector<VertexPNTT> verticesParsed = ParseVertices();
 	if (verticesParsed.size() > 0)
 	{
 		// Create vertex buffer and load into mesh
-		mesh->vertices = 
+		mesh->vertices =
 			make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
 	}
 	else
@@ -75,9 +79,9 @@ bool ModelLoader::LoadObjString2Mesh
 
 vector<VertexPNTT> ModelLoader::ParseVertices()
 {
-	const tinyobj::attrib_t& attrib = reader.GetAttrib();
-	const vector<tinyobj::shape_t>& shapes = reader.GetShapes();
-	const vector<tinyobj::material_t>& materials = reader.GetMaterials();
+	const tinyobj::attrib_t& attrib = reader->GetAttrib();
+	const vector<tinyobj::shape_t>& shapes = reader->GetShapes();
+	const vector<tinyobj::material_t>& materials = reader->GetMaterials();
 
 	vector<VertexPNTT> vertices;
 	VertexPNTT* triangle = new VertexPNTT[3];
