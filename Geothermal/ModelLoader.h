@@ -37,9 +37,8 @@ namespace Geothermal
 		/// <summary>
 		/// Assemble a single vertex from parsed attribute data
 		/// </summary>
-		void ConstructVertex
+		inline Geothermal::Graphics::Structures::VertexPNTT ConstructVertex
 		(
-			Geothermal::Graphics::Structures::VertexPNTT* vertex,
 			tinyobj::index_t index,
 			const tinyobj::attrib_t& attrib
 		);

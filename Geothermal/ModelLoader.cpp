@@ -36,7 +36,10 @@ bool ModelLoader::LoadObj2Mesh
 }
 
 bool ModelLoader::LoadObjString2Mesh
-(string objString, string mtlString, Mesh* mesh, std::shared_ptr<DeviceResources> const& deviceResources)
+(
+	string objString, string mtlString, Mesh* mesh, 
+	std::shared_ptr<DeviceResources> const& deviceResources
+)
 {
 	if (mesh == nullptr)
 	{
@@ -59,7 +62,8 @@ bool ModelLoader::LoadObjString2Mesh
 	if (verticesParsed.size() > 0)
 	{
 		// Create vertex buffer and load into mesh
-		mesh->vertices = make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
+		mesh->vertices = 
+			make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
 	}
 	else
 	{
@@ -92,9 +96,7 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 			for (size_t v = 0; v < 3; v++)	// For each vertex
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
-				VertexPNTT vertex;
-				ConstructVertex(&vertex, index, attrib);
-				triangle[v] = vertex;
+				triangle[v] = ConstructVertex(index, attrib);
 			}
 
 			// Compute tangent
@@ -113,10 +115,11 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 	return vertices;
 }
 
-void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
+inline VertexPNTT ModelLoader::ConstructVertex(tinyobj::index_t index, const tinyobj::attrib_t& attrib)
 {
+	VertexPNTT vertex;
 	size_t startingIndex = 3 * size_t(index.vertex_index);
-	vertex->position =
+	vertex.position =
 	{
 		attrib.vertices[startingIndex + 0],
 		attrib.vertices[startingIndex + 1],
@@ -125,7 +128,7 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	if (index.normal_index >= 0)
 	{
 		startingIndex = 3 * size_t(index.normal_index);
-		vertex->normal =
+		vertex.normal =
 		{
 			attrib.normals[startingIndex + 0],
 			attrib.normals[startingIndex + 1],
@@ -135,12 +138,14 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	if (index.texcoord_index >= 0)
 	{
 		startingIndex = 2 * size_t(index.texcoord_index);
-		vertex->textureCoordinate =
+		vertex.textureCoordinate =
 		{
 			attrib.texcoords[startingIndex + 0],
 			attrib.texcoords[startingIndex + 1],
 		};
 	}
+
+	return vertex;
 }
 
 void ModelLoader::ComputeTangent(VertexPNTT triangle[3])
