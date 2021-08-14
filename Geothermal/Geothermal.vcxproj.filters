@@ -90,6 +90,9 @@
     <ClCompile Include="ShadowPass.cpp">
       <Filter>Graphics\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Ultilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
