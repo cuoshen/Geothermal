@@ -23,8 +23,8 @@ namespace Geothermal
 
 	/// <summary>
 	/// Generate all bounding box vertices from 2-points input, 
-	/// transformed into world space.
+	/// transformed into another coordinate space.
 	/// </summary>
-	/// <returns>All 6 box vertices in world space</returns>
-	std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices(AABB box, DirectX::XMMATRIX model2world);
+	/// <returns>All 6 box vertices in desirable coordinate space</returns>
+	std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices(AABB box, DirectX::XMMATRIX transform);
 }
