@@ -148,8 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="ECSMsgHub.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -178,9 +180,12 @@
   <ItemGroup>
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
+    <ClInclude Include="Defs.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="ECSMsgHub.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="GameObject.h" />

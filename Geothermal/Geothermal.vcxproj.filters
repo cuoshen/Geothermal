@@ -78,6 +78,12 @@
     <ClCompile Include="ViewPoint.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentPool.cpp">
+      <Filter>ECS\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ECSMsgHub.cpp">
+      <Filter>ECS\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -193,6 +199,15 @@
     <ClInclude Include="GraphicResources.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentPool.h">
+      <Filter>ECS\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Defs.h">
+      <Filter>ECS\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ECSMsgHub.h">
+      <Filter>ECS\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -230,6 +245,21 @@
     </Filter>
     <Filter Include="GUI\IMGUI">
       <UniqueIdentifier>{dafc21e0-dadb-4fb2-b7e7-41585c5600cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{bf032644-83af-4764-846d-a9c82def4a57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Entity">
+      <UniqueIdentifier>{4776868a-0d2a-42f3-90b6-831f29f44b1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Component">
+      <UniqueIdentifier>{c83e003b-ca6d-4f07-8669-7316b0ffb7af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\System">
+      <UniqueIdentifier>{4de424ad-141f-416f-9e38-25216bb1a550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Utils">
+      <UniqueIdentifier>{3d3b4e16-f042-4d69-b12f-8c6512f28b4f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
