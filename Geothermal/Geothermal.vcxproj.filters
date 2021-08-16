@@ -244,6 +244,15 @@
     <ClInclude Include="ECSMsgHub.h">
       <Filter>ECS\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Primes.h">
+      <Filter>ECS\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Signiture.h">
+      <Filter>ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentManager.h">
+      <Filter>ECS\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -293,6 +302,9 @@
     </Filter>
     <Filter Include="ECS\Utils">
       <UniqueIdentifier>{b3226730-cfdc-4b35-b0d6-be48858045dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\System">
+      <UniqueIdentifier>{2f93e4c9-b059-4623-9e51-a487917664af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

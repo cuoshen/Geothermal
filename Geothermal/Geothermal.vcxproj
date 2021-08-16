@@ -186,6 +186,7 @@
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PostProcessingPass.h" />
+    <ClInclude Include="Primes.h" />
     <ClInclude Include="QuadMesh.h" />
     <ClInclude Include="GraphicResources.h" />
     <ClInclude Include="RenderPass.h" />
@@ -224,6 +226,7 @@
     <ClInclude Include="ShadingAttributes.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="ShadowPass.h" />
+    <ClInclude Include="Signiture.h" />
     <ClInclude Include="SimpleForwardPass.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />

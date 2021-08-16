@@ -1,39 +1,57 @@
 #pragma once
 
+#include <assert.h>
+
 #include "Defs.h"
 #include "ECSMsgHub.h"
-#include <assert.h>
 
 // yo, I capitalized the first letter of member variables intentionally
 // if not necessary don't change it back
 
 namespace ECS
 {
+	/// <summary>
+	/// WTF is this? It's only used to make the intellisense work. Don't remove or modify.
+	/// </summary>
 	class SampleComponent
 	{
 		int a;
 		char b;
 	};
 
-	//class ComponentPoolBase
-	//{
-	//public:
-	//	/// <summary>
-	//	/// Event callback for 
-	//	/// </summary>
-	//	/// <param name="destroyedEntity"></param>
-	//	virtual void OnEntityDestroyed(Entity destroyedEntity) = 0;
-	//};
 
-	// TODO: implement its singleton functionalities
+
+
+	/// <summary>
+	/// Base class used to index Component pools.
+	/// Sort of a minimal version of reflection for a single type.
+	/// Together with the TypeNum member of ComponentPool, other classes can quickly index into each type's pool.
+	/// </summary>
+	class IComponentPool
+	{
+	public:
+		static int GetTypeCount();
+
+	protected:
+		static int Register();
+
+	private:
+		static int TypeCount;
+	};
+
+	int IComponentPool::TypeCount = 0;
+
+
+
 
 	/// <summary>
 	/// Data structure to store and manage components of a certain type. 
+	/// It's also the factory for components, although components are not comforming to a similar interface.
 	/// Most of its methods should not be called outside.
 	/// </summary>
 	/// <typeparam name="T">a POD component type</typeparam>
 	template <class T>
-	class ComponentPool /*: public ComponentPoolBase*/
+	class ComponentPool : public IComponentPool
 	{
 	public:
 		ComponentPool()
@@ -44,19 +62,22 @@ namespace ECS
 			});
 		}
 
-		void Insert(T newComponent, Entity owner)
+		T& Insert(T newComponent, Entity owner)
 		{
 			assert(Count < MAX_ENTITIES && "ECS runtime error: Too many components of this type.");
 			assert(EntityToIndex.find(owner) == EntityToIndex.end() && "ECS runtime error: entity alread has this component.");
 
 			// insert
 			Components[Count] = newComponent; // copied over
+			T& outref = Components[Count];
 
 			// update ownership
 			EntityToIndex[owner] = Count;
 			IndexToEntity[Count] = owner;
 
 			Count++;
+
+			return outref;
 		}
 		
 		void Remove(Entity owner)
@@ -86,6 +107,9 @@ namespace ECS
 			return Components[EntityToIndex[owner]];
 		}
 
+	public:
+		static int TypeNum;
+
 	private:
 		std::array<T, MAX_ENTITIES> Components;
 		int Count;
@@ -94,6 +118,10 @@ namespace ECS
 		std::unordered_map<Entity, int> EntityToIndex;
 		std::unordered_map<int, Entity> IndexToEntity;
 	};
+
+
+	template <class T>
+	int ComponentPool<T>::TypeNum = IComponentPool::Register();
 }
 
 
