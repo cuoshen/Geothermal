@@ -4,12 +4,12 @@
 using namespace DirectX;
 using namespace Geothermal;
 
-Transform::Transform():
+Transform::Transform() :
 	object2world(XMMatrixIdentity())
 {
 }
 
-Transform::Transform(XMMATRIX initialTransform):
+Transform::Transform(XMMATRIX initialTransform) :
 	object2world(initialTransform)
 {
 }

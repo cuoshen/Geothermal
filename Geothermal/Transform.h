@@ -31,6 +31,7 @@ namespace Geothermal
 		XMVECTOR WorldPosition();
 		XMVECTOR Front();
 		XMVECTOR Up();
+
 	private:
 
 		// MAYBE: refactor this region into its own file

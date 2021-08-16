@@ -4,24 +4,26 @@
 using namespace std;
 using namespace winrt;
 using namespace DirectX;
-using namespace Geothermal::Graphics;
+using namespace Geothermal;
+using namespace Graphics;
 
 Texture2D::Texture2D
 (
-	shared_ptr<DeviceResources> const& deviceResources, 
-	hstring const& filename, TEXTURE_FILE_TYPE fileType
-):
+	shared_ptr<DeviceResources> const& deviceResources,
+	hstring const& filename, TEXTURE_FILE_TYPE fileType, uint slot
+) :
 	deviceResources(deviceResources),
-	texture(nullptr), 
+	texture(nullptr),
 	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(DXGI_FORMAT_R8G8B8A8_SNORM),
 	// If we create a texture from file, usually, we don't want to override the content
 	// thus we use it only as a shader resource
-	bindFlags(D3D11_BIND_SHADER_RESOURCE)
+	bindFlags(D3D11_BIND_SHADER_RESOURCE),
+	slot(slot)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 
-	if (fileType == DDS)
+	if (fileType == TEXTURE_FILE_TYPE::DDS)
 	{
 		// Use DDSTextureLoader
 
@@ -37,7 +39,7 @@ Texture2D::Texture2D
 			)
 		);
 
-		D3D11_RESOURCE_DIMENSION resourceType = 
+		D3D11_RESOURCE_DIMENSION resourceType =
 			D3D11_RESOURCE_DIMENSION_UNKNOWN;
 		resource->GetType(&resourceType);
 		assert(resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D);
@@ -65,10 +67,10 @@ Texture2D::Texture2D
 	check_hresult(
 		factory->CreateDecoderFromFilename
 		(
-			filename.c_str(), 
-			0, 
-			GENERIC_READ, 
-			WICDecodeMetadataCacheOnDemand, 
+			filename.c_str(),
+			0,
+			GENERIC_READ,
+			WICDecodeMetadataCacheOnDemand,
 			decoder.put()
 		)
 	);
@@ -83,20 +85,21 @@ Texture2D::Texture2D
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, vector<char> data,
-	DXGI_FORMAT format, UINT width, UINT height, UINT bitsPerPixel, UINT bindFlags
-):
+	DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot
+) :
 	deviceResources(deviceResources),
-	texture(nullptr), 
+	texture(nullptr),
 	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(format),
-	bindFlags(bindFlags)
+	bindFlags(bindFlags),
+	slot(slot)
 {
 	assert(IsValidBindFlags(bindFlags));
 
 	CreateTextureFromMemory(data, width, height, bitsPerPixel, bindFlags);
 }
 
-void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT height, UINT bitsPerPixel, UINT bindFlags)
+void Texture2D::CreateTextureFromMemory(vector<char> data, uint width, uint height, uint bitsPerPixel, uint bindFlags)
 {
 	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height, bindFlags);
 
@@ -106,8 +109,8 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT heig
 
 	D3D11_SUBRESOURCE_DATA initialData;
 	initialData.pSysMem = data.data();
-	initialData.SysMemPitch = static_cast<UINT>(rowPitch);
-	initialData.SysMemSlicePitch = static_cast<UINT>(imageSize);
+	initialData.SysMemPitch = static_cast<uint>(rowPitch);
+	initialData.SysMemSlicePitch = static_cast<uint>(imageSize);
 
 	check_hresult(
 		deviceResources->Device()->CreateTexture2D(&description, &initialData, texture.put())
@@ -116,13 +119,15 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, UINT width, UINT heig
 
 Texture2D::Texture2D
 (
-	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format, UINT width, UINT height, UINT bindFlags
+	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format,
+	uint width, uint height, uint bindFlags, uint slot
 ) :
 	deviceResources(deviceResources),
-	texture(nullptr), 
-	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr), 
+	texture(nullptr),
+	shaderResourceView(nullptr), renderTargetView(nullptr), depthStencilView(nullptr),
 	format(format),
-	bindFlags(bindFlags)
+	bindFlags(bindFlags),
+	slot(slot)
 {
 	assert(IsValidBindFlags(bindFlags));
 
@@ -180,7 +185,7 @@ void Texture2D::CreateRenderTargetView()
 	D3D11_RENDER_TARGET_VIEW_DESC RTVDescription = {};
 	RTVDescription.Format = format;
 	RTVDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	
+
 	check_hresult(
 		deviceResources->Device()->CreateRenderTargetView(texture.get(), &RTVDescription, renderTargetView.put())
 	);
@@ -214,7 +219,7 @@ void Texture2D::CreateDepthStencilView()
 	);
 }
 
-D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UINT height, UINT bindFlags)
+D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(uint width, uint height, uint bindFlags)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 	description.Width = width;
@@ -232,13 +237,13 @@ D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(UINT width, UIN
 	return description;
 }
 
-bool Texture2D::IsValidBindFlags(UINT bindFlags)
+bool Texture2D::IsValidBindFlags(uint bindFlags)
 {
 	bool isShaderResource = bindFlags & D3D11_BIND_SHADER_RESOURCE;
 	bool isRenderTarget = bindFlags & D3D11_BIND_RENDER_TARGET;
 	bool isDepthStencil = bindFlags & D3D11_BIND_DEPTH_STENCIL;
 
-	// We cannot use the same texture as render target view AND depth stencil view, thus the xor
+	// We cannot use the same texture as render target view AND depth stencil view, thus the neq
 	// We want to use the texture for SOMETHING of value, thus we should have at least 1 valid bindflag
 	return (isRenderTarget != isDepthStencil) && (isShaderResource || isRenderTarget || isDepthStencil);
 }

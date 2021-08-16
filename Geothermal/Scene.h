@@ -20,6 +20,7 @@ namespace Geothermal
 			return instance;
 		}
 		std::list<GameObject*> ObjectsInScene;
+
 	private:
 		static Scene* instance;
 		Scene();

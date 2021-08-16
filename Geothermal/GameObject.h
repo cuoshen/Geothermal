@@ -13,7 +13,6 @@ namespace Geothermal
 	{
 	public:
 		GameObject();
-		~GameObject();
 
 		friend class GameObjectFactory;
 
@@ -28,8 +27,8 @@ namespace Geothermal
 		/// </summary>
 		virtual void Render() const;
 
-		bool IsActive() { return isActive; }
-		Transform* GetTransform() const { return transform.get(); }
+		bool IsActive() const { return isActive; }
+		Transform& GetTransform() const { return *transform.get(); }
 	protected:
 		UINT64 id;	// 64-bit unsigned integer ID which uniquely identify the game object
 		bool isActive;
@@ -44,7 +43,11 @@ namespace Geothermal
 
 		void MakeNewProduct();
 		void BuildTransform(DirectX::XMMATRIX initialTransform);
-		void BuildRenderer(Graphics::Meshes::Mesh mesh, std::shared_ptr<Graphics::DeviceResources> deviceResources);
+		void BuildRenderer
+		(
+			std::shared_ptr<Graphics::DeviceResources> deviceResources,
+			Graphics::Meshes::Mesh mesh, std::shared_ptr<Graphics::Materials::Material> material
+		);
 		void SetObjectID(UINT64 id);
 
 		/// <summary>

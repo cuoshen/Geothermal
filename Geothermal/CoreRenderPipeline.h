@@ -1,7 +1,9 @@
 #pragma once
+#include <functional>
 #include "GraphicResources.h"
 #include "Camera.h"
 #include "ViewPoint.h"
+#include "RenderPasses.h"
 
 namespace Geothermal::Graphics
 {
@@ -14,42 +16,35 @@ namespace Geothermal::Graphics
 	public:
 		CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources);
 
-		void LoadAllShaders();
 		/// <summary>
 		/// Render the whole scene in a single forward pass with the main camera
 		/// </summary>
 		void Render();
-		Structures::DirectionalLight& MainLight() { return mainLight; }
+
+		const Structures::DirectionalLight& MainLight() { return mainLight; }
+
 	private:
 		void StartGUIFrame();
 		void DrawGUI();
 		void ResetCamera();
 
-		/// <summary>
-		/// Get a shadow map by rendering from the main light
-		/// </summary>
-		void ShadowPass();
-		/// <summary>
-		/// Draw every drawable geometry in a single forward pass
-		/// </summary>
-		void SimpleForwardPass();
+		Passes::ShadowPass* shadowPass;
+		Passes::SimpleForwardPass* simpleForwardPass;
+		Passes::PostProcessingPass* postProcessingPass;
+
+		std::unique_ptr<Texture2D> hdrTargets[4];
 
 		Structures::DirectionalLight mainLight;
-
 		// TODO: Refactor into dedicated shadow caster class
-		const XMUINT2 shadowMapDimensions = { 4096, 4096 };
-		const XMFLOAT3 mainLightShadowCastingOrigin = {0.0f, 10.0f, 0.0f};
-		ShadowMap mainShadowMap;
-		D3D11_VIEWPORT shadowViewPort;
-		ViewPoint shadowCaster;
+		const XMVECTORF32 mainLightShadowCastingOrigin = { 0.0f, 10.0f, 0.0f };
+		std::shared_ptr<ShadowMap> mainShadowMap;
 		XMMATRIX world2light;
-		void UpdateWorld2Light();
-
 		void UploadShadowResources();
-		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > parametersBufferVS;
+		void UploadLightingResources();
+		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > ShadowCasterParametersBuffer;
 
 		Structures::LightBuffer lights;
-		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightConstantBuffer;
+		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::LightBuffer>> lightsConstantBuffer;
 		std::unique_ptr<Camera> camera;
 
 		std::shared_ptr<DeviceResources> deviceResources;

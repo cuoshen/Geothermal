@@ -83,6 +83,20 @@
     </ClCompile>
     <ClCompile Include="ECSMsgHub.cpp">
       <Filter>ECS\Utils</Filter>
+    <ClCompile Include="RenderPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleForwardPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessingPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Ultilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +221,26 @@
     </ClInclude>
     <ClInclude Include="ECSMsgHub.h">
       <Filter>ECS\Utils</Filter>
+    <ClInclude Include="GeothermalTypes.h">
+      <Filter>Ultilities</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleForwardPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessingPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPasses.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Ultilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +294,8 @@
     </Filter>
     <Filter Include="ECS\Utils">
       <UniqueIdentifier>{3d3b4e16-f042-4d69-b12f-8c6512f28b4f}</UniqueIdentifier>
+    <Filter Include="Graphics\Passes">
+      <UniqueIdentifier>{c6028261-460b-4209-8ae2-047b64dd27ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

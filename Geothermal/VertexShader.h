@@ -14,7 +14,7 @@ namespace Geothermal::Graphics::Bindables
 			std::wstring filename,
 			D3D11_INPUT_ELEMENT_DESC* vertexLayout,
 			UINT layoutElementCount
-		):
+		) :
 			Bindable(deviceResources)
 		{
 			// Use a blob to read compiled shaders

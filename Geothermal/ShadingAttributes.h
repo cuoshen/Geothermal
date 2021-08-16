@@ -10,7 +10,7 @@ namespace Geothermal::Graphics::Structures
 		USE_SHADOW_MAP = 0x04
 	};
 
-	struct PhongAttributes
+	struct ShadingAttributes
 	{
 		DirectX::XMFLOAT4 Ambient;
 		DirectX::XMFLOAT4 BaseColor;
@@ -40,7 +40,7 @@ namespace Geothermal::Graphics::Structures
 		float								Padding0;
 	};
 
-	#define MAX_POINT_LIGHTS_IN_SCENE 32
+	constexpr uint maximumPointLightNumber = 32;
 
 	/// <summary>
 	/// Pack all lighting information into this buffer
@@ -55,10 +55,10 @@ namespace Geothermal::Graphics::Structures
 		{
 			MainLight = main;
 			LightActivation.x = 0;
-			memset(AdditionalLights, 0, sizeof(Light) * MAX_POINT_LIGHTS_IN_SCENE);
+			memset(AdditionalLights, 0, sizeof(Light) * maximumPointLightNumber);
 		}
 		DirectionalLight			MainLight;
-		Light								AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
+		Light								AdditionalLights[maximumPointLightNumber];
 		DirectX::XMUINT4		LightActivation;
 	};
 }

@@ -17,7 +17,7 @@ cbuffer Properties : register(PROPERTIES_SLOT)
 	int			TextureFlags;
 };
 
-float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample) 
+float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample)
 {
 	normalSample = (2.0f * normalSample) - 1.0f;		// Bring sample range from [0,1] to [-1,1]
 
@@ -27,7 +27,7 @@ float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 n
 	float3 biTangent = cross(pixelNormal, pixelTangent);
 	float3x3 tangent2World = float3x3(pixelTangent, biTangent, pixelNormal);
 
-	return normalize(mul(normalSample , tangent2World));
+	return normalize(mul(normalSample, tangent2World));
 }
 
 #define SHADOW_BIAS 0.0001f
@@ -40,11 +40,11 @@ bool IsInShadow(float4 lightSpacePosition)
 	projectedPosition.y = (-lightSpacePosition.y / lightSpacePosition.w / 2.0f) + 0.5f;
 
 	// Check whether both x and y falls within (0,1), if so it may fall in shadow
-	if 
-	(
-		(saturate(projectedPosition.x) == projectedPosition.x) &&
-		(saturate(projectedPosition.y) == projectedPosition.y)
-	)
+	if
+		(
+			(saturate(projectedPosition.x) == projectedPosition.x) &&
+			(saturate(projectedPosition.y) == projectedPosition.y)
+			)
 	{
 		float depthReachedByLight = ShadowMap.Sample(Sampler, projectedPosition).r;
 		depthReachedByLight += SHADOW_BIAS;

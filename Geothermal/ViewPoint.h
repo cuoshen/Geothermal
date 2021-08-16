@@ -18,7 +18,7 @@ namespace Geothermal::Graphics
 		/// <summary>
 		/// Orthographic viewpoint
 		/// </summary>
-		ViewPoint(std::shared_ptr<DeviceResources> const& deviceResources, 
+		ViewPoint(std::shared_ptr<DeviceResources> const& deviceResources,
 			float viewWidth, float viewHeight, float nearZ, float farZ);
 
 		/// <summary>

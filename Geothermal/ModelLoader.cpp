@@ -12,8 +12,8 @@ using namespace Structures;
 using namespace Bindables;
 using namespace std;
 
-ModelLoader::ModelLoader():
-	reader(), reader_config()
+ModelLoader::ModelLoader() :
+	reader(nullptr), reader_config()
 {
 	reader_config.vertex_color = false;
 }
@@ -21,8 +21,8 @@ ModelLoader::ModelLoader():
 bool ModelLoader::LoadObj2Mesh
 (
 	winrt::hstring const& objFileName,
-	winrt::hstring const& mtlFileName, 
-	Mesh* mesh, 
+	winrt::hstring const& mtlFileName,
+	Mesh* mesh,
 	shared_ptr<DeviceResources> const& deviceResources
 )
 {
@@ -36,30 +36,38 @@ bool ModelLoader::LoadObj2Mesh
 }
 
 bool ModelLoader::LoadObjString2Mesh
-(string objString, string mtlString, Mesh* mesh, std::shared_ptr<DeviceResources> const& deviceResources)
+(
+	string objString, string mtlString, Mesh* mesh,
+	std::shared_ptr<DeviceResources> const& deviceResources
+)
 {
+	// Clear existing data from previous read action
+	reader = nullptr;
+	reader = make_unique<tinyobj::ObjReader>();
+
 	if (mesh == nullptr)
 	{
 		return false;	// Cannot load into nullptr
 	}
-	if (!reader.ParseFromString(objString, mtlString, reader_config))
+	if (!reader->ParseFromString(objString, mtlString, reader_config))
 	{
-		if (!reader.Error().empty())
+		if (!reader->Error().empty())
 		{
-			OutputDebugStringA(reader.Error().c_str());
+			OutputDebugStringA(reader->Error().c_str());
 		}
 		return false;	// Failed to parse obj file
 	}
-	if (!reader.Warning().empty())
+	if (!reader->Warning().empty())
 	{
-		OutputDebugStringA(reader.Warning().c_str());
+		OutputDebugStringA(reader->Warning().c_str());
 	}
 
 	vector<VertexPNTT> verticesParsed = ParseVertices();
 	if (verticesParsed.size() > 0)
 	{
 		// Create vertex buffer and load into mesh
-		mesh->vertices = make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
+		mesh->vertices =
+			make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
 	}
 	else
 	{
@@ -71,13 +79,12 @@ bool ModelLoader::LoadObjString2Mesh
 
 vector<VertexPNTT> ModelLoader::ParseVertices()
 {
-	const tinyobj::attrib_t& attrib = reader.GetAttrib();
-	const vector<tinyobj::shape_t>& shapes = reader.GetShapes();
-	const vector<tinyobj::material_t>& materials = reader.GetMaterials();
+	const tinyobj::attrib_t& attrib = reader->GetAttrib();
+	const vector<tinyobj::shape_t>& shapes = reader->GetShapes();
+	const vector<tinyobj::material_t>& materials = reader->GetMaterials();
 
 	vector<VertexPNTT> vertices;
-	VertexPNTT* triangle;
-	VertexPNTT* finishedTriangle = new VertexPNTT[3];
+	VertexPNTT* triangle = new VertexPNTT[3];
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++)
 	{
@@ -88,44 +95,35 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 		{
 			// We enforce the rule that each face must be a triangle,
 			// if the shape is not fully triangulated, the loading operation is unsuccessful
-			if (currentShape.mesh.num_face_vertices[f] != 3)
-			{
-				OutputDebugString(L"Error parsing obj: Shape is not fully triangulated. \n");
-				return vector<VertexPNTT>();
-			}
-
-			triangle = new VertexPNTT[3];
+			assert(currentShape.mesh.num_face_vertices[f] == 3);
 
 			for (size_t v = 0; v < 3; v++)	// For each vertex
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
-				VertexPNTT vertex;
-				ConstructVertex(&vertex, index, attrib);
-				triangle[v] = vertex;
-				//vertices.push_back(vertex);
+				triangle[v] = ConstructVertex(index, attrib);
 			}
 
 			// Compute tangent
-			ComputeTangent(triangle, finishedTriangle);
+			ComputeTangent(triangle);
 
 			for (size_t i = 0; i < 3; i++)
 			{
-				vertices.push_back(finishedTriangle[i]);
+				vertices.push_back(triangle[i]);
 			}
 
 			index_offset += 3;
-			delete[] triangle;
 		}
 	}
-	delete[] finishedTriangle;
+	delete[] triangle;
 
 	return vertices;
 }
 
-void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, const tinyobj::attrib_t& attrib)
+inline VertexPNTT ModelLoader::ConstructVertex(tinyobj::index_t index, const tinyobj::attrib_t& attrib)
 {
+	VertexPNTT vertex;
 	size_t startingIndex = 3 * size_t(index.vertex_index);
-	vertex->position = 
+	vertex.position =
 	{
 		attrib.vertices[startingIndex + 0],
 		attrib.vertices[startingIndex + 1],
@@ -134,8 +132,8 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	if (index.normal_index >= 0)
 	{
 		startingIndex = 3 * size_t(index.normal_index);
-		vertex->normal = 
-		{ 
+		vertex.normal =
+		{
 			attrib.normals[startingIndex + 0],
 			attrib.normals[startingIndex + 1],
 			attrib.normals[startingIndex + 2],
@@ -144,15 +142,17 @@ void ModelLoader::ConstructVertex(VertexPNTT* vertex, tinyobj::index_t index, co
 	if (index.texcoord_index >= 0)
 	{
 		startingIndex = 2 * size_t(index.texcoord_index);
-		vertex->textureCoordinate = 
-		{ 
+		vertex.textureCoordinate =
+		{
 			attrib.texcoords[startingIndex + 0],
 			attrib.texcoords[startingIndex + 1],
 		};
 	}
+
+	return vertex;
 }
 
-void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
+void ModelLoader::ComputeTangent(VertexPNTT triangle[3])
 {
 	// Solve the equation EdgeMatrix == DeltaUVMatrix . TangentBitangentBasisMatrix
 
@@ -160,11 +160,11 @@ void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 	XMFLOAT3& p1 = triangle[1].position;
 	XMFLOAT3& p2 = triangle[2].position;
 
-	XMFLOAT3 edge0 = 
-	{ 
+	XMFLOAT3 edge0 =
+	{
 		p1.x - p0.x,
 		p1.y - p0.y,
-		p1.z - p0.z 
+		p1.z - p0.z
 	};
 	XMFLOAT3 edge1 =
 	{
@@ -179,7 +179,7 @@ void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 	float dv1 = { triangle[2].textureCoordinate.y - triangle[0].textureCoordinate.y };
 
 	float determinantReciprocal = 1.0f / (du0 * dv1 - du1 * dv0);
-	XMFLOAT3 tangent = 
+	XMFLOAT3 tangent =
 	{
 		determinantReciprocal * (dv1 * edge0.x - dv0 * edge1.x),
 		determinantReciprocal * (dv1 * edge0.y - dv0 * edge1.y),
@@ -187,6 +187,4 @@ void ModelLoader::ComputeTangent(VertexPNTT triangle[3], VertexPNTT receiver[3])
 	};
 
 	triangle[0].tangent = triangle[1].tangent = triangle[2].tangent = tangent;
-
-	memcpy(receiver, triangle, 3 * sizeof(VertexPNTT));
 }

@@ -5,12 +5,13 @@
 #include <algorithm>
 
 using namespace Geothermal;
-using namespace Graphics::Bindables;
+using namespace Graphics;
+using namespace Bindables;
 using namespace std;
 
 Camera* Camera::main;
 
-Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources):
+Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources) :
 	GameObject(),
 	ViewPoint(deviceResources, aspectRatio, nearZ, farZ),
 	pitch(0.0f), yaw(0.0f)
@@ -59,7 +60,7 @@ void Camera::HandleMovement()
 
 	if (input->GetKey('A'))
 	{
-		transform->ApplyTransform(XMMatrixTranslationFromVector(ds*left));
+		transform->ApplyTransform(XMMatrixTranslationFromVector(ds * left));
 	}
 	else if (input->GetKey('D'))
 	{
@@ -79,7 +80,7 @@ void Camera::HandleMovement()
 void Camera::HandleRotation()
 {
 	Input* input = GameMain::Instance()->GetInput();
-	if (input->GetKey('X'))
+	if (input->GetMouseButton(MouseButtons::RIGHT))
 	{
 		XMFLOAT2 rotation = input->GetMouseMovement();
 		pitch += rotation.y * mouseSensitivity;
@@ -119,5 +120,5 @@ XMMATRIX Camera::World2Clip()
 
 void Camera::BindCamera2Pipeline()
 {
-	 Bind(World2View());
+	Bind(World2View());
 }

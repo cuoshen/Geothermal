@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
@@ -168,9 +169,13 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="ObjectRenderer.cpp" />
+    <ClCompile Include="PostProcessingPass.cpp" />
     <ClCompile Include="QuadMesh.cpp" />
+    <ClCompile Include="RenderPass.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderCache.cpp" />
+    <ClCompile Include="ShadowPass.cpp" />
+    <ClCompile Include="SimpleForwardPass.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -178,6 +183,7 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ComponentPool.h" />
@@ -190,6 +196,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="GeothermalTypes.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_dx11.h" />
@@ -205,14 +212,19 @@
     <ClInclude Include="ObjectRenderer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="PostProcessingPass.h" />
     <ClInclude Include="QuadMesh.h" />
     <ClInclude Include="GraphicResources.h" />
+    <ClInclude Include="RenderPass.h" />
+    <ClInclude Include="RenderPasses.h" />
     <ClInclude Include="SamplerState.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCache.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="ShadingAttributes.h" />
     <ClInclude Include="ShadowMap.h" />
+    <ClInclude Include="ShadowPass.h" />
+    <ClInclude Include="SimpleForwardPass.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />

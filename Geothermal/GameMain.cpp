@@ -5,14 +5,17 @@
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
 #include "Mesh.h"
+#include "Material.h"
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;
 using namespace Structures;
 using namespace Meshes;
+using namespace Materials;
 #endif
 
 using namespace std;
+using namespace winrt;
 using namespace DirectX;
 
 GameMain* GameMain::instance;
@@ -20,6 +23,10 @@ GameMain* GameMain::instance;
 GameMain::GameMain(shared_ptr<DeviceResources> deviceResources) :
 	windowClosed(false), deltaTime(0.0f), time(0.0f), timer(nullptr), input(nullptr)
 {
+	UINT hardwareSupportedThreadNumber = thread::hardware_concurrency();
+	wstring threadsInfo = to_wstring(hardwareSupportedThreadNumber) + wstring(L" concurrent threads are supported on this device.\n");
+	OutputDebugString(threadsInfo.c_str());
+
 	if (deviceResources)
 	{
 		this->deviceResources = deviceResources;
@@ -61,8 +68,6 @@ UINT GameMain::HandleMessage(MSG msg)
 
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
-
-	OutputDebugString(L"update called \n");
 
 	GameMain::Instance()->GetInput()->RegisterInput(&msg);
 
@@ -137,10 +142,10 @@ void GameMain::LateUpdate()
 
 void GameMain::InstantiateDebugScene()
 {
-	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f) ;
+	XMMATRIX center = XMMatrixTranslation(0.0f, 0.0f, 10.0f);
 	for (int i = -1; i <= 1; i++)
 	{
-		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 6.0f, 0.0f, 0.0f);
+		XMMATRIX initialTransform = center * XMMatrixTranslation((float)i * 8.0f, 0.0f, 0.0f);
 		AddDebugGameObject(initialTransform);
 	}
 	AddGround(center);
@@ -151,41 +156,66 @@ void GameMain::InitializeDebugResource()
 	ModelLoader loader;
 	debugMesh = new Mesh();
 	bool loaded =
-		loader.LoadObj2Mesh(L"Assets\\building.obj", L"Assets\\building.mtl", debugMesh, deviceResources);
-		//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\building_2.obj", L"Assets\\building_2.mtl", debugMesh, deviceResources);
+	//loader.LoadObj2Mesh(L"Assets\\sphere.obj", L"Assets\\sphere.mtl", debugMesh, deviceResources);
 	assert(loaded);
 
 	debugPlane = new Mesh();
-	ModelLoader planeLoader;
 	loaded =
-		planeLoader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
+		loader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
-	PhongAttributes shadingParameters = PhongAttributes
+	// For now we want to put everything into a single test material
+	// TODO: remove this and support per-object material instead
+	materials[0] =
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+	materials[1] =
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+
+	ShadingAttributes shadingParameters0 = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
-		{0.4f, 0.4f, 0.4f, 1.0f},												// Base color
-		0.5f,																				// Diffuse
-		0.5f,																				// Specular
+		{0.8f, 0.8f, 0.8f, 1.0f},												// Base color
+		0.2f,																				// Diffuse
+		2.0f,																				// Specular
 		10.0f,																				// Smoothness
 		USE_SHADOW_MAP		// Texture flags
 	};
 
-	PixelConstantBuffer<PhongAttributes> properties(deviceResources, shadingParameters, 2u);
-	properties.Bind();
+	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties0 =
+		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters0, 2u);
+	materials[0]->AddParameterSet(properties0);
+
+	ShadingAttributes shadingParameters1 = ShadingAttributes
+	{
+		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
+		{0.3f, 0.3f, 0.3f, 1.0f},												// Base color
+		0.5f,																				// Diffuse
+		0.5f,																				// Specular
+		3.0f,																				// Smoothness
+		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
+	};
+
+	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties1 =
+		make_shared<PixelConstantBuffer<ShadingAttributes>>(deviceResources, shadingParameters1, 2u);
+	materials[1]->AddParameterSet(properties1);
 
 	SamplerState samplerState(deviceResources);
 	samplerState.Bind();
 
-	Texture2D debugAlbedoTexture(deviceResources, L"Assets\\concrete_albedo.dds", DDS);
-	winrt::com_ptr<ID3D11ShaderResourceView> albedoAsSRV = debugAlbedoTexture.UseAsShaderResource();
-	ID3D11ShaderResourceView* albedoSRVAddress = albedoAsSRV.get();
-	deviceResources->Context()->PSSetShaderResources(0, 1, &albedoSRVAddress);
+	shared_ptr<Texture2D> debugAlbedoTexture0 =
+		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
+	materials[0]->AddTexture(debugAlbedoTexture0);
+	shared_ptr<Texture2D> debugAlbedoTexture1 =
+		make_shared<Texture2D>(deviceResources, L"Assets\\paint_albedo.dds", TEXTURE_FILE_TYPE::DDS, 0u);
+	materials[1]->AddTexture(debugAlbedoTexture1);
 
-	Texture2D debugNormalTexture(deviceResources, L"Assets\\concrete_normal.dds", DDS);
-	winrt::com_ptr<ID3D11ShaderResourceView> normalAsSRV = debugNormalTexture.UseAsShaderResource();
-	ID3D11ShaderResourceView* normalSRVAddress = normalAsSRV.get();
-	deviceResources->Context()->PSSetShaderResources(1, 1, &normalSRVAddress);
+	shared_ptr<Texture2D> debugNormalTexture0 =
+		make_shared<Texture2D>(deviceResources, L"Assets\\concrete_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
+	materials[0]->AddTexture(debugNormalTexture0);
+	shared_ptr<Texture2D> debugNormalTexture1 =
+		make_shared<Texture2D>(deviceResources, L"Assets\\paint_normal.dds", TEXTURE_FILE_TYPE::DDS, 1u);
+	materials[1]->AddTexture(debugNormalTexture1);
 }
 
 void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
@@ -193,7 +223,7 @@ void GameMain::AddDebugGameObject(XMMATRIX initialTransform)
 	GameObjectFactory factory;
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
-	factory.BuildRenderer(*debugMesh, deviceResources); // Use the debug mesh
+	factory.BuildRenderer(deviceResources, *debugMesh, materials[0]); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 
@@ -205,7 +235,7 @@ void GameMain::AddGround(XMMATRIX initialTransform)
 	GameObjectFactory factory;
 	factory.MakeNewProduct();
 	factory.BuildTransform(initialTransform);
-	factory.BuildRenderer(*debugPlane, deviceResources); // Use the debug mesh
+	factory.BuildRenderer(deviceResources, *debugPlane, materials[1]); // Use the debug mesh
 	factory.SetObjectID(0x01);
 	shared_ptr<GameObject> product = factory.GetProduct();	// Register to main scene by default
 

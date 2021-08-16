@@ -31,15 +31,15 @@ namespace Geothermal
 			Geothermal::Graphics::Meshes::Mesh* mesh,
 			std::shared_ptr<Geothermal::Graphics::DeviceResources> const& deviceResources
 		);
+
 	private:
 		std::vector<Geothermal::Graphics::Structures::VertexPNTT> ParseVertices();
 		/// <summary>
 		/// Assemble a single vertex from parsed attribute data
 		/// </summary>
-		void ConstructVertex
+		inline Geothermal::Graphics::Structures::VertexPNTT ConstructVertex
 		(
-			Geothermal::Graphics::Structures::VertexPNTT* vertex,
-			tinyobj::index_t index, 
+			tinyobj::index_t index,
 			const tinyobj::attrib_t& attrib
 		);
 		/// <summary>
@@ -47,11 +47,10 @@ namespace Geothermal
 		/// </summary>
 		void ComputeTangent
 		(
-			Geothermal::Graphics::Structures::VertexPNTT triangle[3],
-			Geothermal::Graphics::Structures::VertexPNTT receiver[3]
+			Geothermal::Graphics::Structures::VertexPNTT triangle[3]
 		);
 
-		tinyobj::ObjReader reader;
+		std::unique_ptr<tinyobj::ObjReader> reader;
 		tinyobj::ObjReaderConfig reader_config;
 	};
 }

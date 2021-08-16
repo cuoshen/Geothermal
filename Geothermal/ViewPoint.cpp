@@ -22,7 +22,7 @@ ViewPoint::ViewPoint(shared_ptr<DeviceResources> const& deviceResources, float a
 void ViewPoint::Bind(XMMATRIX world2View)
 {
 	// Transform view space origin into world space
-	XMVECTOR worldPosition = 
+	XMVECTOR worldPosition =
 		XMVector4Transform(XMVECTORF32{ 0.0f, 0.0f, 0.0f, 1.0f }, XMMatrixInverse(nullptr, world2View));
 
 	XMStoreFloat3(&(parameters.CameraWorldPosition), worldPosition);

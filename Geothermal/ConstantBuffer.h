@@ -20,7 +20,7 @@ namespace Geothermal::Graphics::Bindables
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
 			const C& constant, UINT slot = 0u
-		):
+		) :
 			Bindable(deviceResources),
 			slot(slot)
 		{
@@ -44,7 +44,7 @@ namespace Geothermal::Graphics::Bindables
 		ConstantBuffer
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources, UINT slot = 0u
-		):
+		) :
 			Bindable(deviceResources),
 			slot(slot)
 		{

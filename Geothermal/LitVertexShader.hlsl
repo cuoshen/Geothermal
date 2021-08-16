@@ -18,13 +18,13 @@ Varyings main(VertexInput input)
 	output.lightSpacePosition = mul(worldPosition, World2Light);
 
 	output.normal = normalize(
-										mul(float4(input.normal, 0.0f), Model2WorldTransform).xyz
-									);
+		mul(float4(input.normal, 0.0f), Model2WorldTransform).xyz
+	);
 
 	output.tangent = float3(0.0f, 0.0f, 0.0f);
 	output.tangent = normalize(
-										mul(float4(input.tangent, 0.0f), Model2WorldTransform).xyz
-									);
+		mul(float4(input.tangent, 0.0f), Model2WorldTransform).xyz
+	);
 
 	output.texcoord = input.texcoord;
 
