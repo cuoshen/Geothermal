@@ -163,6 +163,7 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ISystem.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="ShaderCache.cpp" />
     <ClCompile Include="ShadowPass.cpp" />
     <ClCompile Include="SimpleForwardPass.cpp" />
+    <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -201,6 +203,7 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ISystem.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModelLoader.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="ShadowPass.h" />
     <ClInclude Include="SimpleForwardPass.h" />
+    <ClInclude Include="SystemManager.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />

@@ -93,6 +93,12 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Ultilities</Filter>
     </ClCompile>
+    <ClCompile Include="ISystem.cpp">
+      <Filter>ECS_Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemManager.cpp">
+      <Filter>ECS_Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -229,6 +235,12 @@
     <ClInclude Include="AABB.h">
       <Filter>Ultilities</Filter>
     </ClInclude>
+    <ClInclude Include="ISystem.h">
+      <Filter>ECS_Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager.h">
+      <Filter>ECS_Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -269,6 +281,9 @@
     </Filter>
     <Filter Include="Graphics\Passes">
       <UniqueIdentifier>{c6028261-460b-4209-8ae2-047b64dd27ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS_Systems">
+      <UniqueIdentifier>{83205dbd-5779-4c4f-ad22-6181a59ba5b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
