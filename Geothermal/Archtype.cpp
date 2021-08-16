@@ -15,11 +15,8 @@ namespace ECS
 		// include the ID if not already in there
 		typeCombination = (typeCombination % newTypeID == 0) ? typeCombination * newTypeID : typeCombination;
 
-		// update the biggest type
-		if (biggestType < newTypeID)
-		{
-			biggestType = newTypeID;
-		}
+		// update biggest type
+		biggestType = max(biggestType, newTypeID);
 
 		return this;
 	}

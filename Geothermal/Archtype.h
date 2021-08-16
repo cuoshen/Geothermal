@@ -13,6 +13,8 @@ namespace ECS
 	/// </summary>
 	class Archetype
 	{
+		friend class EntityManager;
+
 	private: /* fields */
 		int typeCombination = 1;
 		int biggestType = -1;
