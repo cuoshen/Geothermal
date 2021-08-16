@@ -93,6 +93,12 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Ultilities</Filter>
     </ClCompile>
+    <ClCompile Include="ECSMsgHub.cpp">
+      <Filter>ECS\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentPool.cpp">
+      <Filter>ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -229,6 +235,15 @@
     <ClInclude Include="AABB.h">
       <Filter>Ultilities</Filter>
     </ClInclude>
+    <ClInclude Include="Defs.h">
+      <Filter>ECS\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentPool.h">
+      <Filter>ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ECSMsgHub.h">
+      <Filter>ECS\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -269,6 +284,15 @@
     </Filter>
     <Filter Include="Graphics\Passes">
       <UniqueIdentifier>{c6028261-460b-4209-8ae2-047b64dd27ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{8ed7b6fb-8e68-40dd-a5db-891cb3b44e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Components">
+      <UniqueIdentifier>{77a482e5-f601-41dd-9736-3d3ff147e344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Utils">
+      <UniqueIdentifier>{b3226730-cfdc-4b35-b0d6-be48858045dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
