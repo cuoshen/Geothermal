@@ -99,6 +99,9 @@
     <ClCompile Include="ComponentPool.cpp">
       <Filter>ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>ECS\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -252,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="ComponentManager.h">
       <Filter>ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>ECS\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
