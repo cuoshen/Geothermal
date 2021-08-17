@@ -106,6 +106,9 @@
       <Filter>ECS\Entities</Filter>
     </ClCompile>
     <ClCompile Include="ComponentManager.cpp" />
+    <ClCompile Include="ECSRuntime.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -262,6 +265,12 @@
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>ECS\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Archetype.h">
+      <Filter>ECS\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="ECSRuntime.h">
+      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

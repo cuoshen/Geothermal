@@ -5,6 +5,7 @@
 
 #include "Defs.h"
 #include "ECSMsgHub.h"
+#include "Archetype.h"
 
 namespace ECS
 {

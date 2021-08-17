@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Defs.h"
+#include "Archetype.h"
 
 namespace ECS
 {

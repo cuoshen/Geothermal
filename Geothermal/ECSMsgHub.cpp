@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ECSMsgHub.h"
 #include "ComponentPool.h"
+#include "Archetype.h"
 
 std::vector<std::function<void(ECS::Entity)>> ECS::ECSMsgHub::EntityDestroyCallbacks;
 std::vector<std::function<void(ECS::Entity, ECS::Archetype)>> ECS::ECSMsgHub::EntityModifyCallbacks;

@@ -7,6 +7,9 @@
 
 namespace ECS
 {
+	class EntityManager;
+	class ComponentManager;
+
 	struct Archetype;
 
 	/// <summary>

@@ -8,6 +8,8 @@
 
 namespace ECS
 {
+	class Runtime;
+
 	/// <summary>
 	/// Outer interface for component pool usages.
 	/// Not static, not singleton, just a normal, user-friendly object class.
@@ -15,10 +17,7 @@ namespace ECS
 	class ComponentManager
 	{
 	public:
-		ComponentManager()
-		{
-			Pools = std::vector<std::shared_ptr<IComponentPool>>(IComponentPool::GetTypeCount());
-		}
+		ComponentManager(Runtime* runtime);
 
 		/// <summary>
 		/// Create new component for an Entity.
@@ -30,6 +29,8 @@ namespace ECS
 		T& NewComponent(Entity owner)
 		{
 			T& outref = NewComponent_Internal<T>(owner);
+
+			EntitySignalProxy(owner);
 
 			return outref;
 		}
@@ -47,8 +48,6 @@ namespace ECS
 			T& outref = NewComponent<T>(owner);
 			outref = newData;
 
-			EntitySignalProxy(owner);
-
 			return outref;
 		}
 
@@ -63,6 +62,8 @@ namespace ECS
 			}
 		}
 
+		void OnEntityDestroy(Entity e);
+
 	private:
 		/// <summary>
 		/// Create new component for an Entity.
@@ -76,21 +77,30 @@ namespace ECS
 		{
 			int type = ComponentPool<T>::TypeNum;
 
+			// late initialization of pool
 			if (Pools[type] == nullptr)
 			{
 				Pools[type] = std::make_shared<ComponentPool<T>>();
+
+				// add a callback function for destroy event
+				OnEntityDestroyCallbacks[type] = [this](Entity e)
+				{
+					this->RemoveComponent<T>(e);
+				};
 			}
 
+			// TODO: the exception workflow doens't make sense
 			T& outref = std::static_pointer_cast<ComponentPool<T>>(Pools[type])->Insert(T(), owner);
 
 			return outref;
 		}
 
-		void EntitySignalProxy(Entity owner);
+		void EntitySignalProxy(Entity e);
 
-		/// <summary>
-		/// This vector is created with the right size calculated statically.
-		/// </summary>
-		std::vector<std::shared_ptr<IComponentPool>> Pools;
+		Runtime* runtime;
+
+		// These vectors are created with the right size calculated statically. Vector not array because it's not a static number.
+		std::vector<std::shared_ptr<IComponentPool>> Pools = std::vector<std::shared_ptr<IComponentPool>>(IComponentPool::GetTypeCount());
+		std::vector<std::function<void(Entity)>> OnEntityDestroyCallbacks = std::vector<std::function<void(Entity)>>(IComponentPool::GetTypeCount());
 	};
 }
