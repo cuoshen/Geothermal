@@ -11,12 +11,11 @@ namespace ECS
 	class SystemBase
 	{
 	public:
-		SystemBase();
-
-	public:
 		virtual void Initialize() {}
 		virtual void Update() {}
 		virtual void LateUpdate() {}
+
+		virtual Archetype GetSigniture() = 0;
 	};
 
 
@@ -26,7 +25,7 @@ namespace ECS
 	// reflection ////////////////////////////////////////////////////////////////////////////////
 	public:
 		template <class T>
-		static int Regsiter()
+		static int Register()
 		{
 			Systems.push_back(std::static_pointer_cast<SystemBase>(std::make_shared<T>()));
 
@@ -39,15 +38,7 @@ namespace ECS
 	// end: reflection ///////////////////////////////////////////////////////////////////////////
 
 	public:
-		SystemManager()
-		{
-			EntityLists = std::vector<std::set<Entity>>(Count);
-			
-			ECSMsgHub::RegsiterEntityModifyCallback([this](Entity entity, Archetype newSigniture)
-				{
-					// TODO: update entity list for every system
-				});
-		}
+		SystemManager();
 
 	private:
 		std::vector<std::set<Entity>> EntityLists;
@@ -69,6 +60,9 @@ namespace ECS
 
 	class SampleSystem : public ISystem<SampleSystem>
 	{
-		
+		//Archetype GetSigniture() override
+		//{
+		//	return Archetype
+		//}
 	};
 }

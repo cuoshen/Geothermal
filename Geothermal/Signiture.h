@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Primes.h"
+#include "ComponentPool.h"
+
 namespace ECS
 {
 	/// <summary>
@@ -9,20 +12,46 @@ namespace ECS
 	struct Archetype
 	{
 	public:
-		Archetype& Add(const Archetype& other)
+		Archetype() : Signiture(1) {}
+
+		template <class T>
+		Archetype& Add()
 		{
-			Signiture *= other.Signiture;
+			int typePrime = ECS_Tools::primes[ComponentPool<T>::TypeNum];
+
+			if (Signiture != 1 && Signiture % typePrime != 0)
+			{
+				Signiture *= typePrime;
+			}
+
 			return *this;
 		}
 
-		void Remove(const Archetype& removed)
+		template <class T>
+		Archetype& Remove()
 		{
-			if (Signiture % removed.Signiture == 0) Signiture /= removed.Signiture;
+			int typePrime = ECS_Tools::primes[ComponentPool<T>::TypeNum];
+
+			if (Signiture != 1 && Signiture % typePrime == 0)
+			{
+				Signiture /= typePrime;
+			}
+
+			return *this;
+		}
+
+		template <class T>
+		bool Contains()
+		{
+			int typePrime = ECS_Tools::primes[ComponentPool<T>::TypeNum];
+
+			return Signiture != 1 && Signiture % typePrime == 0;
 		}
 
 		bool Contains(const Archetype& other)
 		{
-			return Signiture > other.Signiture && Signiture % other.Signiture == 0;
+			// empty archetype is not contained by anyone to avoid useless loops
+			return other.Signiture != 1 && Signiture % other.Signiture == 0;
 		}
 
 	private:
