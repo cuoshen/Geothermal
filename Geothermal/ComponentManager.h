@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "Defs.h"
-#include "ECSMsgHub.h"
 #include "ComponentPool.h"
 
 namespace ECS
@@ -30,17 +29,8 @@ namespace ECS
 		template <class T>
 		T& NewComponent(Entity owner)
 		{
-			int type = ComponentPool<T>::TypeNum;
+			T& outref = NewComponent_Internal<T>(owner);
 
-			if (Pools[type] == nullptr)
-			{
-				Pools[type] = std::make_shared<ComponentPool<T>>();
-			}
-
-			T& outref = std::static_pointer_cast<ComponentPool<T>>(Pools[type])->Insert(T(), owner);
-
-			ECSMsgHub::SignalNewComponentEvent(owner);
-		
 			return outref;
 		}
 
@@ -57,6 +47,8 @@ namespace ECS
 			T& outref = NewComponent<T>(owner);
 			outref = newData;
 
+			EntitySignalProxy(owner);
+
 			return outref;
 		}
 
@@ -64,14 +56,38 @@ namespace ECS
 		void RemoveComponent(Entity owner)
 		{
 			int type = ComponentPool<T>::TypeNum;
-			
+
 			if (Pools[type] != nullptr)
 			{
-
+				std::static_pointer_cast<ComponentPool<T>>(Pools[type])->Remove(owner);
 			}
 		}
 
 	private:
+		/// <summary>
+		/// Create new component for an Entity.
+		/// Not exposed to user.
+		/// </summary>
+		/// <typeparam name="T">type of component</typeparam>
+		/// <param name="owner">entity to hold the component</param>
+		/// <returns>a reference to the component</returns>
+		template <class T>
+		T& NewComponent_Internal(Entity owner)
+		{
+			int type = ComponentPool<T>::TypeNum;
+
+			if (Pools[type] == nullptr)
+			{
+				Pools[type] = std::make_shared<ComponentPool<T>>();
+			}
+
+			T& outref = std::static_pointer_cast<ComponentPool<T>>(Pools[type])->Insert(T(), owner);
+
+			return outref;
+		}
+
+		void EntitySignalProxy(Entity owner);
+
 		/// <summary>
 		/// This vector is created with the right size calculated statically.
 		/// </summary>

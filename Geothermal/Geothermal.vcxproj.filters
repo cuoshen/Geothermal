@@ -102,6 +102,10 @@
     <ClCompile Include="System.cpp">
       <Filter>ECS\System</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>ECS\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -256,6 +260,9 @@
     <ClInclude Include="System.h">
       <Filter>ECS\System</Filter>
     </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>ECS\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -308,6 +315,9 @@
     </Filter>
     <Filter Include="ECS\System">
       <UniqueIdentifier>{2f93e4c9-b059-4623-9e51-a487917664af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Entities">
+      <UniqueIdentifier>{dcd47116-b62d-43ca-a61d-635257a0cd5d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
