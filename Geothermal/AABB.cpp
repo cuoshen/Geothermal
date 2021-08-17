@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AABB.h"
+#include <cmath>
 
 using namespace std;
 using namespace DirectX;
@@ -30,4 +31,16 @@ array<XMFLOAT3, 6> Geothermal::GenerateBoxVertices(AABB box, XMMATRIX transform)
 	}
 
 	return verticesInWorldSpace;
+}
+
+void Geothermal::UpdateBounds(AABB& bounds, XMFLOAT3 point)
+{
+	XMFLOAT3& newMinXYZ = bounds.MinXYZ;
+	newMinXYZ.x = std::min(point.x, newMinXYZ.x);
+	newMinXYZ.y = std::min(point.y, newMinXYZ.y);
+	newMinXYZ.z = std::min(point.z, newMinXYZ.z);
+	XMFLOAT3& newMaxXYZ = bounds.MaxXYZ;
+	newMaxXYZ.x = std::max(point.x, newMaxXYZ.x);
+	newMaxXYZ.y = std::max(point.y, newMaxXYZ.y);
+	newMaxXYZ.z = std::max(point.z, newMaxXYZ.z);
 }

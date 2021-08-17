@@ -30,9 +30,6 @@
     <ClCompile Include="QuadMesh.cpp">
       <Filter>Graphics\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderCache.cpp">
-      <Filter>Graphics\Materials</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -93,6 +90,9 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Ultilities</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderCache.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -141,9 +141,6 @@
     </ClInclude>
     <ClInclude Include="QuadMesh.h">
       <Filter>Graphics\Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderCache.h">
-      <Filter>Graphics\Materials</Filter>
     </ClInclude>
     <ClInclude Include="Vertices.h">
       <Filter>Graphics\Structures</Filter>
@@ -228,6 +225,12 @@
     </ClInclude>
     <ClInclude Include="AABB.h">
       <Filter>Ultilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderCache.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceCache.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

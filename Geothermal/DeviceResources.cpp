@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DeviceResources.h"
 //#include "Ultilities.h"
-#include <math.h>
+#include <cmath>
 #include <unknwn.h>
 
 using namespace Geothermal::Graphics;
@@ -67,8 +67,8 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
 {
 	ClearPreviousSizeDependentResources();
 
-	outputSize.x = max(1, outputSize.x);
-	outputSize.y = max(1, outputSize.y);
+	outputSize.x = std::max((uint32)1, outputSize.x);
+	outputSize.y = std::max((uint32)1, outputSize.y);
 
 	if (swapChain != nullptr)
 	{

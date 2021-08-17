@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "GraphicResources.h"
 #include "FileIO.h"
+#include <limits>
 
 using namespace DirectX;
 using namespace Geothermal;
@@ -38,7 +39,7 @@ bool ModelLoader::LoadObj2Mesh
 bool ModelLoader::LoadObjString2Mesh
 (
 	string objString, string mtlString, Mesh* mesh,
-	std::shared_ptr<DeviceResources> const& deviceResources
+	shared_ptr<DeviceResources> const& deviceResources
 )
 {
 	// Clear existing data from previous read action
@@ -62,29 +63,23 @@ bool ModelLoader::LoadObjString2Mesh
 		OutputDebugStringA(reader->Warning().c_str());
 	}
 
-	vector<VertexPNTT> verticesParsed = ParseVertices();
-	if (verticesParsed.size() > 0)
-	{
-		// Create vertex buffer and load into mesh
-		mesh->vertices =
-			make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, verticesParsed);
-	}
-	else
-	{
-		OutputDebugString(L"No shape parsed \n");
-	}
-
-	return true;
+	return AssembleMesh(mesh, deviceResources);
 }
 
-vector<VertexPNTT> ModelLoader::ParseVertices()
+bool ModelLoader::AssembleMesh(Mesh* mesh, shared_ptr<DeviceResources> const& deviceResources)
 {
 	const tinyobj::attrib_t& attrib = reader->GetAttrib();
 	const vector<tinyobj::shape_t>& shapes = reader->GetShapes();
 	const vector<tinyobj::material_t>& materials = reader->GetMaterials();
 
 	vector<VertexPNTT> vertices;
+	shared_ptr<AABB> bounds = make_shared<AABB>();
+	float floatMin = numeric_limits<float>::min();
+	float floatMax = numeric_limits<float>::max();
+	bounds->MinXYZ = XMFLOAT3{ floatMin, floatMin, floatMin };
+	bounds->MaxXYZ = XMFLOAT3{ floatMax, floatMax, floatMax };
 	VertexPNTT* triangle = new VertexPNTT[3];
+
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++)
 	{
@@ -101,6 +96,7 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
 				triangle[v] = ConstructVertex(index, attrib);
+				UpdateBounds(*bounds.get(), triangle[v].position);
 			}
 
 			// Compute tangent
@@ -116,7 +112,20 @@ vector<VertexPNTT> ModelLoader::ParseVertices()
 	}
 	delete[] triangle;
 
-	return vertices;
+	if (vertices.empty())
+	{
+		mesh->vertices = nullptr;
+		mesh->bounds = nullptr;
+		OutputDebugString(L"No shape parsed \n");
+		return false;
+	}
+
+	// Create vertex buffer and load into mesh
+	mesh->vertices =
+		make_shared<IndexedVertexBuffer<VertexPNTT>>(deviceResources, vertices);
+	mesh->bounds = bounds;
+
+	return true;
 }
 
 inline VertexPNTT ModelLoader::ConstructVertex(tinyobj::index_t index, const tinyobj::attrib_t& attrib)
@@ -136,7 +145,7 @@ inline VertexPNTT ModelLoader::ConstructVertex(tinyobj::index_t index, const tin
 		{
 			attrib.normals[startingIndex + 0],
 			attrib.normals[startingIndex + 1],
-			attrib.normals[startingIndex + 2],
+			attrib.normals[startingIndex + 2]
 		};
 	}
 	if (index.texcoord_index >= 0)
@@ -145,7 +154,7 @@ inline VertexPNTT ModelLoader::ConstructVertex(tinyobj::index_t index, const tin
 		vertex.textureCoordinate =
 		{
 			attrib.texcoords[startingIndex + 0],
-			attrib.texcoords[startingIndex + 1],
+			attrib.texcoords[startingIndex + 1]
 		};
 	}
 

@@ -212,6 +212,7 @@
     <ClInclude Include="GraphicResources.h" />
     <ClInclude Include="RenderPass.h" />
     <ClInclude Include="RenderPasses.h" />
+    <ClInclude Include="ResourceCache.h" />
     <ClInclude Include="SamplerState.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCache.h" />

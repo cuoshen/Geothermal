@@ -13,6 +13,7 @@ namespace Geothermal
 		/// <summary>
 		/// Attempt to load an obj file into a mesh
 		/// </summary>
+		/// <returns>Whether the operation is successful</returns>
 		bool LoadObj2Mesh
 		(
 			winrt::hstring const& objFileName,
@@ -24,6 +25,7 @@ namespace Geothermal
 		/// <summary>
 		/// Instead of using an obj file, we use two strings for the obj and mtl files.
 		/// </summary>
+		/// <returns>Whether the operation is successful</returns>
 		bool LoadObjString2Mesh
 		(
 			std::string objString,
@@ -33,9 +35,18 @@ namespace Geothermal
 		);
 
 	private:
-		std::vector<Geothermal::Graphics::Structures::VertexPNTT> ParseVertices();
 		/// <summary>
-		/// Assemble a single vertex from parsed attribute data
+		/// At this point we already have tiny obj loader parse the obj into some arrays of data.
+		/// Assemble a Geothermal::Graphics::Meshes::Mesh from the information parsed.
+		/// </summary>
+		/// <returns>Whether the operation is successful</returns>
+		bool AssembleMesh
+		(
+			Geothermal::Graphics::Meshes::Mesh* mesh,
+			std::shared_ptr<Geothermal::Graphics::DeviceResources> const& deviceResources
+		);
+		/// <summary>
+		/// Construct a single vertex from parsed attribute data
 		/// </summary>
 		inline Geothermal::Graphics::Structures::VertexPNTT ConstructVertex
 		(
