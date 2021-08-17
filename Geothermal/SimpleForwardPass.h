@@ -44,6 +44,8 @@ namespace Geothermal::Graphics::Passes
 		/// <returns>List of sorted opaque objects</returns>
 		std::list<GameObject*> SortOpaque();
 
+		void SetUpPipelineStates();
+
 		std::list<GameObject*> renderables;
 		Camera* camera;
 		std::function<void(void)> uploadShadowResources;

@@ -5,3 +5,4 @@
 #include "ShadowPass.h"
 #include "SimpleForwardPass.h"
 #include "PostProcessingPass.h"
+#include "DebugPass.h"

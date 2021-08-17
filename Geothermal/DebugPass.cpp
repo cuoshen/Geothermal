@@ -13,7 +13,7 @@ DebugPass::DebugPass
 	std::vector<Texture2D*> const& source, 
 	std::vector<Texture2D*> const& sink
 ) : 
-	RenderPass(deviceResources, source, sink)
+	SimpleForwardPass(deviceResources, source, sink)
 {
 }
 

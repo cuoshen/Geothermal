@@ -1,10 +1,14 @@
 #pragma once
+#include <functional>
 #include "GraphicResources.h"
 #include "RenderPass.h"
+#include "SimpleForwardPass.h"
+#include "GameObject.h"
+#include "Camera.h"
 
 namespace Geothermal::Graphics::Passes
 {
-	class DebugPass : public RenderPass
+	class DebugPass : public SimpleForwardPass
 	{
 	public:
 		DebugPass

@@ -67,7 +67,7 @@ list<GameObject*> SimpleForwardPass::Cull()
 	return result;
 }
 
-void SimpleForwardPass::operator()()
+void SimpleForwardPass::SetUpPipelineStates()
 {
 	deviceResources->ResetDefaultPipelineStates();
 	deviceResources->Context()->ClearRenderTargetView
@@ -79,6 +79,12 @@ void SimpleForwardPass::operator()()
 		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
+}
+
+void SimpleForwardPass::operator()()
+{
+	SetUpPipelineStates();
+
 	ID3D11RenderTargetView* target = sink[0]->UseAsRenderTarget().get();
 	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
 
