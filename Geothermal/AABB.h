@@ -26,7 +26,7 @@ namespace Geothermal
 	/// transformed into another coordinate space.
 	/// </summary>
 	/// <returns>All 6 box vertices in desirable coordinate space</returns>
-	std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices(AABB box, DirectX::XMMATRIX transform);
+	std::array<DirectX::XMFLOAT4, 6> GenerateBoxVertices(AABB box, DirectX::XMMATRIX transform);
 
 	void UpdateBounds(AABB& bounds, DirectX::XMFLOAT3 point);
 }

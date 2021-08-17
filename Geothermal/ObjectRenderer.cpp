@@ -11,10 +11,9 @@ ObjectRenderer::ObjectRenderer
 	std::shared_ptr<DeviceResources> const& deviceResources,
 	Meshes::Mesh mesh, std::shared_ptr<Materials::Material> material
 ) :
-	mesh(), object2WorldTransformBuffer(deviceResources, 0u),
+	mesh(mesh), object2WorldTransformBuffer(deviceResources, 0u),
 	deviceResources(deviceResources), material(material)
 {
-	this->mesh.vertices = mesh.vertices;
 }
 
 void ObjectRenderer::Render(XMMATRIX object2World)

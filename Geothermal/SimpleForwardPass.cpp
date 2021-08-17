@@ -36,21 +36,25 @@ list<GameObject*> SimpleForwardPass::Cull()
 {
 	list<GameObject*> result;
 
+	bool isInFrustum = false;
 	for (GameObject*& renderable : renderables)
 	{
 		// Get clipping space coordinates
-		XMVECTOR worldPositionVector = renderable->GetTransform().WorldPosition();
-		XMVECTOR clipPositionVector = XMVector4Transform(worldPositionVector, camera->World2Clip());
-		XMFLOAT4 clipPosition;  XMStoreFloat4(&clipPosition, clipPositionVector);
-		// Divide w to get normalized device coordinates
-		XMFLOAT3 ndcPosition = { clipPosition.x / clipPosition.w, clipPosition.y / clipPosition.w, clipPosition.z / clipPosition.w };
+		AABB& boundingBox = renderable->Renderer().Bounds();
+		array<XMFLOAT4, 6> clippingSpaceBoundingBox = 
+			GenerateBoxVertices
+			(
+				boundingBox,
+				renderable->GetTransform().Object2WorldMatrix() * camera->World2Clip()
+			);
 
-		// TODO: AABB-based culling
+		for (XMFLOAT4& clipPosition : clippingSpaceBoundingBox)
+		{
+			XMFLOAT3 ndcPosition = { clipPosition.x / clipPosition.w, clipPosition.y / clipPosition.w, clipPosition.z / clipPosition.w };
+			isInFrustum |= (abs(ndcPosition.x) <= 1) && (abs(ndcPosition.y) <= 1) && (ndcPosition.z >= 0) && (ndcPosition.z <= 1);
+		}
 
-		// Cull object if any of the coord is out of [-1, 1]
-		bool toBeCulled = 
-			(abs(ndcPosition.x) > 1) || (abs(ndcPosition.y) > 1) || (abs(ndcPosition.z) > 1);
-		if (!toBeCulled)
+		if (isInFrustum)
 		{
 			result.push_back(renderable);
 		}

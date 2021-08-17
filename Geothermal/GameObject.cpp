@@ -24,7 +24,7 @@ void GameObject::Render() const
 	}
 	if (renderer != nullptr)
 	{
-		renderer->Render(transform->GetObject2WorldMatrix());
+		renderer->Render(transform->Object2WorldMatrix());
 	}
 }
 

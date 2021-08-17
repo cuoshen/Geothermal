@@ -193,7 +193,7 @@ void GameMain::InitializeDebugResource()
 		0.5f,																				// Diffuse
 		0.5f,																				// Specular
 		3.0f,																				// Smoothness
-		USE_SHADOW_MAP | USE_ALBEDO_MAP | USE_NORMAL_MAP		// Texture flags
+		USE_SHADOW_MAP | USE_NORMAL_MAP		// Texture flags
 	};
 
 	shared_ptr<PixelConstantBuffer<ShadingAttributes>> properties1 =

@@ -74,10 +74,10 @@ bool ModelLoader::AssembleMesh(Mesh* mesh, shared_ptr<DeviceResources> const& de
 
 	vector<VertexPNTT> vertices;
 	shared_ptr<AABB> bounds = make_shared<AABB>();
-	float floatMin = numeric_limits<float>::min();
-	float floatMax = numeric_limits<float>::max();
-	bounds->MinXYZ = XMFLOAT3{ floatMin, floatMin, floatMin };
-	bounds->MaxXYZ = XMFLOAT3{ floatMax, floatMax, floatMax };
+	constexpr float floatMin = numeric_limits<float>::min();
+	constexpr float floatMax = numeric_limits<float>::max();
+	bounds->MinXYZ = XMFLOAT3{ floatMax, floatMax, floatMax };
+	bounds->MaxXYZ = XMFLOAT3{ floatMin, floatMin, floatMin };
 	VertexPNTT* triangle = new VertexPNTT[3];
 
 	// Loop over shapes

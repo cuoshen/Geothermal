@@ -30,6 +30,9 @@ namespace Geothermal::Graphics
 		);
 		void Render(DirectX::XMMATRIX object2World);
 		void BindAllResources();
+
+		AABB& Bounds() const { return *mesh.bounds.get(); };
+
 	protected:
 		std::shared_ptr<DeviceResources> deviceResources;
 

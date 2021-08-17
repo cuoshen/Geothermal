@@ -19,18 +19,21 @@ array<XMFLOAT3, 6> Geothermal::GenerateBoxVertices(AABB box)
 	};
 }
 
-array<XMFLOAT3, 6> Geothermal::GenerateBoxVertices(AABB box, XMMATRIX transform)
+array<XMFLOAT4, 6> Geothermal::GenerateBoxVertices(AABB box, XMMATRIX transform)
 {
 	array<XMFLOAT3, 6> verticesInModelSpace = GenerateBoxVertices(box);
-	array<XMFLOAT3, 6> verticesInWorldSpace;
+	array<XMFLOAT4, 6> verticesTransformed;
 	for (size_t i = 0; i < 6; i++)
 	{
-		XMVECTOR modelSpaceCoordinates = XMLoadFloat3(&verticesInModelSpace[i]);
-		XMVECTOR worldSpaceCoordinates = XMVector3Transform(modelSpaceCoordinates, transform);
-		XMStoreFloat3(&verticesInWorldSpace[i], worldSpaceCoordinates);
+		XMFLOAT4 modelSpacePosition =
+			XMFLOAT4{ verticesInModelSpace[i].x, verticesInModelSpace[i].y, verticesInModelSpace[i].z, 1.0f };
+
+		XMVECTOR modelSpaceCoordinates = XMLoadFloat4(&modelSpacePosition);
+		XMVECTOR transformed = XMVector4Transform(modelSpaceCoordinates, transform);
+		XMStoreFloat4(&verticesTransformed[i], transformed);
 	}
 
-	return verticesInWorldSpace;
+	return verticesTransformed;
 }
 
 void Geothermal::UpdateBounds(AABB& bounds, XMFLOAT3 point)

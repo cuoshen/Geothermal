@@ -26,7 +26,7 @@ namespace Geothermal
 		/// </summary>
 		void UpdateTransform(XMMATRIX newTransform);
 
-		XMMATRIX GetObject2WorldMatrix() { return object2world; }
+		XMMATRIX Object2WorldMatrix() { return object2world; }
 
 		XMVECTOR WorldPosition();
 		XMVECTOR Front();
