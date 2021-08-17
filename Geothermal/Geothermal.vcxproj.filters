@@ -93,6 +93,9 @@
     <ClCompile Include="ShaderCache.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="DebugPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -231,6 +234,9 @@
     </ClInclude>
     <ClInclude Include="ResourceCache.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPass.h">
+      <Filter>Graphics\Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -44,11 +44,6 @@ namespace Geothermal::Graphics::Passes
 		/// <returns>List of sorted opaque objects</returns>
 		std::list<GameObject*> SortOpaque();
 
-		/// <summary>
-		/// Visualize renderable bounding boxes in wireframe
-		/// </summary>
-		void VisualizeBounds();
-
 		std::list<GameObject*> renderables;
 		Camera* camera;
 		std::function<void(void)> uploadShadowResources;
