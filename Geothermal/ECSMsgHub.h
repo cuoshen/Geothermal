@@ -4,10 +4,11 @@
 #include <functional>
 
 #include "Defs.h"
-#include "Signiture.h"
 
 namespace ECS
 {
+	struct Archetype;
+
 	/// <summary>
 	/// Used for messaging internally between each logical module of ECS.
 	/// Intentionally made very granular to avoid complex hierarchy.

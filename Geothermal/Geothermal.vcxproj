@@ -228,7 +228,6 @@
     <ClInclude Include="ShadingAttributes.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="ShadowPass.h" />
-    <ClInclude Include="Signiture.h" />
     <ClInclude Include="SimpleForwardPass.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="tiny_obj_loader.h" />

@@ -250,9 +250,6 @@
     <ClInclude Include="Primes.h">
       <Filter>ECS\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Signiture.h">
-      <Filter>ECS\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentManager.h">
       <Filter>ECS\Components</Filter>
     </ClInclude>

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ComponentPool.h"
 
+int ECS::IComponentPool::TypeCount = 0;
+
 int ECS::IComponentPool::GetTypeCount()
 {
     return TypeCount;
