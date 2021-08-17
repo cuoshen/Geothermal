@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Defs.h"
 #include <vector>
 #include <functional>
+
+#include "Defs.h"
+#include "Signiture.h"
 
 namespace ECS
 {
@@ -17,21 +19,15 @@ namespace ECS
 	public:
 		// entity destroy event
 		static void SignalEntityDestoryEvent(Entity entity);
-		static void RegsiterEntityDestoryCallback(std::function<void(Entity)> newCallback)
-		{
-			EntityDestroyCallbacks.push_back(newCallback);
-		}
+		static void RegsiterEntityDestoryCallback(std::function<void(Entity)> newCallback);
 
-		// TODO: new entity event
-
-		// TODO: component destroy event
-		static void SignalComponentDestroyEvent(Entity owner); // TODO: is there need to also broadcast the component type ?
-
-		// TODO: new component event
-		static void SignalNewComponentEvent(Entity owner);
+		// entity modify event
+		static void SignalEntityModifyEvent(Entity entity, Archetype newSigniture);
+		static void RegsiterEntityModifyCallback(std::function<void(Entity, Archetype)> newCallback);
 
 	private:
 		static std::vector<std::function<void(Entity)>> EntityDestroyCallbacks;
+		static std::vector<std::function<void(Entity, Archetype)>> EntityModifyCallbacks;
 	};
 }
 
