@@ -96,7 +96,7 @@ bool ModelLoader::AssembleMesh(Mesh* mesh, shared_ptr<DeviceResources> const& de
 			{
 				tinyobj::index_t index = currentShape.mesh.indices[index_offset + v];
 				triangle[v] = ConstructVertex(index, attrib);
-				UpdateBounds(*bounds.get(), triangle[v].position);
+				bounds->UpdateBounds(triangle[v].position);
 			}
 
 			// Compute tangent

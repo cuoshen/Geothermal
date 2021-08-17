@@ -13,20 +13,20 @@ namespace Geothermal
 	{
 		DirectX::XMFLOAT3 MinXYZ;
 		DirectX::XMFLOAT3 MaxXYZ;
+
+		/// <summary>
+		/// Generate all bounding box vertices from 2-points input
+		/// </summary>
+		/// <returns>All 6 box vertices in model space</returns>
+		std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices();
+
+		/// <summary>
+		/// Generate all bounding box vertices from 2-points input, 
+		/// transformed into another coordinate space.
+		/// </summary>
+		/// <returns>All 6 box vertices in desirable coordinate space</returns>
+		std::array<DirectX::XMFLOAT4, 6> GenerateBoxVertices(DirectX::XMMATRIX transform);
+
+		void UpdateBounds(DirectX::XMFLOAT3 point);
 	};
-
-	/// <summary>
-	/// Generate all bounding box vertices from 2-points input
-	/// </summary>
-	/// <returns>All 6 box vertices in model space</returns>
-	std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices(AABB box);
-
-	/// <summary>
-	/// Generate all bounding box vertices from 2-points input, 
-	/// transformed into another coordinate space.
-	/// </summary>
-	/// <returns>All 6 box vertices in desirable coordinate space</returns>
-	std::array<DirectX::XMFLOAT4, 6> GenerateBoxVertices(AABB box, DirectX::XMMATRIX transform);
-
-	void UpdateBounds(AABB& bounds, DirectX::XMFLOAT3 point);
 }

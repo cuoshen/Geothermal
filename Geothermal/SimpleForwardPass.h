@@ -29,20 +29,26 @@ namespace Geothermal::Graphics::Passes
 			std::function<void(void)> uploadLightingResources
 		);
 
+		void operator()() override;
+
+	protected:
 		/// <summary>
 		/// Apply a frustum culling to renderables
 		/// </summary>
 		/// <returns>A list of game objects visible in the frustum</returns>
 		std::list<GameObject*> Cull();
+
 		/// <summary>
 		/// Sort opaque game objects from near to far
 		/// </summary>
 		/// <returns>List of sorted opaque objects</returns>
 		std::list<GameObject*> SortOpaque();
 
-		void operator()() override;
+		/// <summary>
+		/// Visualize renderable bounding boxes in wireframe
+		/// </summary>
+		void VisualizeBounds();
 
-	protected:
 		std::list<GameObject*> renderables;
 		Camera* camera;
 		std::function<void(void)> uploadShadowResources;

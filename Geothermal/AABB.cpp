@@ -6,22 +6,22 @@ using namespace std;
 using namespace DirectX;
 using namespace Geothermal;
 
-array<XMFLOAT3, 6> Geothermal::GenerateBoxVertices(AABB box)
+array<XMFLOAT3, 6> Geothermal::AABB::GenerateBoxVertices()
 {
 	return
 	{
-		XMFLOAT3{box.MinXYZ.x, box.MinXYZ.y, box.MinXYZ.z},
-		XMFLOAT3{box.MaxXYZ.x, box.MinXYZ.y, box.MinXYZ.z},
-		XMFLOAT3{box.MaxXYZ.x, box.MaxXYZ.y, box.MinXYZ.z},
-		XMFLOAT3{box.MaxXYZ.x, box.MaxXYZ.y, box.MaxXYZ.z},
-		XMFLOAT3{box.MinXYZ.x, box.MaxXYZ.y, box.MaxXYZ.z},
-		XMFLOAT3{box.MinXYZ.x, box.MinXYZ.y, box.MaxXYZ.z}
+		XMFLOAT3{MinXYZ.x, MinXYZ.y, MinXYZ.z},
+		XMFLOAT3{MaxXYZ.x, MinXYZ.y, MinXYZ.z},
+		XMFLOAT3{MaxXYZ.x, MaxXYZ.y, MinXYZ.z},
+		XMFLOAT3{MaxXYZ.x, MaxXYZ.y, MaxXYZ.z},
+		XMFLOAT3{MinXYZ.x, MaxXYZ.y, MaxXYZ.z},
+		XMFLOAT3{MinXYZ.x, MinXYZ.y, MaxXYZ.z}
 	};
 }
 
-array<XMFLOAT4, 6> Geothermal::GenerateBoxVertices(AABB box, XMMATRIX transform)
+array<XMFLOAT4, 6> Geothermal::AABB::GenerateBoxVertices(XMMATRIX transform)
 {
-	array<XMFLOAT3, 6> verticesInModelSpace = GenerateBoxVertices(box);
+	array<XMFLOAT3, 6> verticesInModelSpace = GenerateBoxVertices();
 	array<XMFLOAT4, 6> verticesTransformed;
 	for (size_t i = 0; i < 6; i++)
 	{
@@ -36,14 +36,12 @@ array<XMFLOAT4, 6> Geothermal::GenerateBoxVertices(AABB box, XMMATRIX transform)
 	return verticesTransformed;
 }
 
-void Geothermal::UpdateBounds(AABB& bounds, XMFLOAT3 point)
+void Geothermal::AABB::UpdateBounds(XMFLOAT3 point)
 {
-	XMFLOAT3& newMinXYZ = bounds.MinXYZ;
-	newMinXYZ.x = std::min(point.x, newMinXYZ.x);
-	newMinXYZ.y = std::min(point.y, newMinXYZ.y);
-	newMinXYZ.z = std::min(point.z, newMinXYZ.z);
-	XMFLOAT3& newMaxXYZ = bounds.MaxXYZ;
-	newMaxXYZ.x = std::max(point.x, newMaxXYZ.x);
-	newMaxXYZ.y = std::max(point.y, newMaxXYZ.y);
-	newMaxXYZ.z = std::max(point.z, newMaxXYZ.z);
+	MinXYZ.x = std::min(point.x, MinXYZ.x);
+	MinXYZ.y = std::min(point.y, MinXYZ.y);
+	MinXYZ.z = std::min(point.z, MinXYZ.z);
+	MaxXYZ.x = std::max(point.x, MaxXYZ.x);
+	MaxXYZ.y = std::max(point.y, MaxXYZ.y);
+	MaxXYZ.z = std::max(point.z, MaxXYZ.z);
 }

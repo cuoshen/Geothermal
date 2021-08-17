@@ -42,15 +42,19 @@ list<GameObject*> SimpleForwardPass::Cull()
 		// Get clipping space coordinates
 		AABB& boundingBox = renderable->Renderer().Bounds();
 		array<XMFLOAT4, 6> clippingSpaceBoundingBox = 
-			GenerateBoxVertices
-			(
-				boundingBox,
-				renderable->GetTransform().Object2WorldMatrix() * camera->World2Clip()
-			);
+			boundingBox.GenerateBoxVertices(renderable->GetTransform().Object2WorldMatrix() * camera->World2Clip());
 
 		for (XMFLOAT4& clipPosition : clippingSpaceBoundingBox)
 		{
-			XMFLOAT3 ndcPosition = { clipPosition.x / clipPosition.w, clipPosition.y / clipPosition.w, clipPosition.z / clipPosition.w };
+			// Do perspective division
+			XMFLOAT3 ndcPosition = 
+			{ 
+				clipPosition.x / clipPosition.w,
+				clipPosition.y / clipPosition.w,
+				clipPosition.z / clipPosition.w 
+			};
+
+			// If any of the points of the bound falls into the frustum, the entire shape needs to be rendered
 			isInFrustum |= (abs(ndcPosition.x) <= 1) && (abs(ndcPosition.y) <= 1) && (ndcPosition.z >= 0) && (ndcPosition.z <= 1);
 		}
 
