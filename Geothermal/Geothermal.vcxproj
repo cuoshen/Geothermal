@@ -153,7 +153,6 @@
     <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
-    <ClCompile Include="ECSMsgHub.cpp" />
     <ClCompile Include="ECSRuntime.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FileIO.cpp" />
@@ -197,7 +196,7 @@
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="DeviceResources.h" />
-    <ClInclude Include="ECSMsgHub.h" />
+    <ClInclude Include="ECS.h" />
     <ClInclude Include="ECSRuntime.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="FileIO.h" />

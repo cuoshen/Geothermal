@@ -1,39 +1,35 @@
 #include "pch.h"
 #include "ECSRuntime.h"
 
-#include "EntityManager.h"
-#include "ComponentManager.h"
 #include "System.h"
+#include "Primes.h"
 
-ECS::Runtime::Runtime()
+
+// no need to signal anything
+ECS::Entity ECS::Runtime::NewEntity()
 {
-	entityManager = std::make_shared<EntityManager>();
-	componentManager = std::make_shared<ComponentManager>();
-	systemManager = std::make_shared<SystemManager>();
+	return entityManager.NewEntity();
 }
 
-//void ECS::Runtime::RegisterEntityDestroyCallback(std::function<void(Entity)> callback)
-//{
-//	EntityDestroyCallbacks.push_back(callback);
-//}
-//
-//void ECS::Runtime::RegisterEntityModifyCallback(std::function<void(Entity, Archetype)> callback)
-//{
-//	EntityModifyCallbacks.push_back(callback);
-//}
-//
-//void ECS::Runtime::SignalEntityDestroyEvent(Entity entity)
-//{
-//	for (auto callback : EntityDestroyCallbacks)
-//	{
-//		callback(entity);
-//	}
-//}
-//
-//void ECS::Runtime::SignalEntityModifyEvent(Entity entity, Archetype signiture)
-//{
-//	for (auto callback : EntityModifyCallbacks)
-//	{
-//		callback(entity, signiture);
-//	}
-//}
+ECS::Entity ECS::Runtime::NewEntity(const Archetype& signiture)
+{
+	Entity newEntity = entityManager.NewEntity(signiture);
+	
+	if (newEntity != INVALID_ENTITY)
+	{
+		componentManager.BatchCreate(newEntity, signiture);
+
+		// refresh systems
+		systemManager.OnSignitureChange(newEntity, signiture);
+	}
+
+	return newEntity;
+}
+
+void ECS::Runtime::DestroyEntity(Entity e)
+{
+	entityManager.DestroyEntity(e);
+	componentManager.OnEntityDestroy(e);
+	systemManager.OnEntityDestroy(e);
+}
+

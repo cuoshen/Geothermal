@@ -4,7 +4,6 @@
 
 #include "Primes.h"
 #include "Defs.h"
-#include "ECSMsgHub.h"
 
 // yo, I capitalized the first letter of member variables intentionally
 // if not necessary don't change it back
@@ -56,17 +55,25 @@ namespace ECS
 	public:
 		ComponentPool()
 		{
-			// register a lambda to the msg hub
-			ECSMsgHub::RegsiterEntityModifyCallback([this](Entity destroyedEntity)
-				{
-					this->Remove(destroyedEntity);
-				});
+			//// register a lambda to the msg hub
+			//ECSMsgHub::RegsiterEntityModifyCallback([this](Entity destroyedEntity)
+			//	{
+			//		this->Remove(destroyedEntity);
+			//	});
 		}
 
 		T& Insert(T newComponent, Entity owner)
 		{
-			assert(Count < MAX_ENTITIES && "ECS runtime error: Too many components of this type.");
-			assert(EntityToIndex.find(owner) == EntityToIndex.end() && "ECS runtime error: entity alread has this component.");
+			//assert(Count < MAX_ENTITIES && "ECS runtime error: Too many components of this type.");
+			//assert(EntityToIndex.find(owner) == EntityToIndex.end() && "ECS runtime error: entity alread has this component.");
+
+			// NOTE: I'm not checking entity count here, because that's supposed to be done by entity manager!
+
+			if (/*Count >= MAX_ENTITIES || */EntityToIndex.find(owner) != EntityToIndex.end()) 
+			{
+				// component already found, return its refe
+				return Components[EntityToIndex[owner]];
+			}
 
 			// insert
 			Components[Count] = newComponent; // copied over

@@ -4,6 +4,8 @@
 
 namespace ECS
 {
+	class ComponentManager;
+
 	/// <summary>
 	/// Archetype used to represent entity type combinations.
 	/// It's intended to be used on stack only.
@@ -54,6 +56,8 @@ namespace ECS
 		}
 
 	private:
+		friend class ComponentManager;
+
 		int Signiture;
 	};
 }

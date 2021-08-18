@@ -4,7 +4,7 @@
 #include <set>
 
 #include "Defs.h"
-#include "ECSMsgHub.h"
+//#include "ECSMsgHub.h"
 #include "Archetype.h"
 
 namespace ECS
@@ -12,9 +12,9 @@ namespace ECS
 	class SystemBase
 	{
 	public:
-		virtual void Initialize() {}
-		virtual void Update() {}
-		virtual void LateUpdate() {}
+		virtual void Initialize(std::set<Entity> targets) {}
+		virtual void Update(std::set<Entity> targets) {}
+		virtual void LateUpdate(std::set<Entity> targets) {}
 
 		virtual Archetype GetSigniture() = 0;
 	};
@@ -33,16 +33,17 @@ namespace ECS
 			return Count++;
 		}
 
+		void OnSignitureChange(Entity e, Archetype newSigniture);
+
+		void OnEntityDestroy(Entity e);
+
 	private:
 		static int Count;
 		static std::vector<std::shared_ptr<SystemBase>> Systems;
 	// end: reflection ///////////////////////////////////////////////////////////////////////////
 
-	public:
-		SystemManager();
-
 	private:
-		std::vector<std::set<Entity>> EntityLists;
+		std::vector<std::set<Entity>> EntityLists = std::vector<std::set<Entity>>(Count);
 	};
 
 

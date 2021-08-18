@@ -4,6 +4,9 @@
 #include <functional>
 
 #include "Defs.h"
+#include "ComponentManager.h"
+#include "System.h"
+#include "EntityManager.h"
 
 namespace ECS
 {
@@ -12,23 +15,44 @@ namespace ECS
 	class Runtime
 	{
 	public:
-		Runtime();
+		Runtime() = default;
+
+		// user interface ////////////////////////////
+		template <class T>
+		T& NewComponent(Entity e) 
+		{
+			T& outref = componentManager.NewComponent<T>(e);
+			
+			// update signiture
+			entityManager.AddComponentSigniture<T>(e);
+
+			// update system lists
+			systemManager.OnSignitureChange(e, entityManager.GetSigniture(e));
+		}
+
+		template <class T>
+		void RemoveComponent(Entity e) 
+		{
+			componentManager.RemoveComponent<T>(e);
+
+			// update signiture
+			entityManager.RemoveComponentSigniture<T>(e);
+
+			// update lists
+			systemManager.OnSignitureChange(e, entityManager.GetSigniture(e));
+		}
+
+		Entity NewEntity();
+
+		Entity NewEntity(const Archetype& signiture);
+
+		void DestroyEntity(Entity e);
+		// end: user interface ///////////////////////
 
 	private:
-		friend class EntityManager;
-		friend class ComponentManager;
-		friend class SystemManager;
-
-		//void SignalEntityDestroyEvent(Entity entity);
-		//void SignalEntityModifyEvent(Entity entity, Archetype signiture);
-
-		std::shared_ptr<EntityManager> entityManager;
-		std::shared_ptr<ComponentManager> componentManager;
-		std::shared_ptr<SystemManager> systemManager;
-
-		//// message tunnels
-		//std::vector<std::function<void(Entity)>> EntityDestroyCallbacks;
-		//std::vector<std::function<void(Entity, Archetype)>> EntityModifyCallbacks;
+		EntityManager entityManager;
+		ComponentManager componentManager;
+		SystemManager systemManager;
 	};
 }
 

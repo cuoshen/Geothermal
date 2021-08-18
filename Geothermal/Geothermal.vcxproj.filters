@@ -93,9 +93,6 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Ultilities</Filter>
     </ClCompile>
-    <ClCompile Include="ECSMsgHub.cpp">
-      <Filter>ECS\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentPool.cpp">
       <Filter>ECS\Components</Filter>
     </ClCompile>
@@ -105,9 +102,11 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>ECS\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="ECSRuntime.cpp">
-      <Filter>ECS</Filter>
+      <Filter>ECS\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentManager.cpp">
+      <Filter>ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +250,6 @@
     <ClInclude Include="ComponentPool.h">
       <Filter>ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ECSMsgHub.h">
-      <Filter>ECS\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Primes.h">
       <Filter>ECS\Utils</Filter>
     </ClInclude>
@@ -270,6 +266,9 @@
       <Filter>ECS\Entities</Filter>
     </ClInclude>
     <ClInclude Include="ECSRuntime.h">
+      <Filter>ECS\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS.h">
       <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>

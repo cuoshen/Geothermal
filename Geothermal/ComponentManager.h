@@ -1,15 +1,14 @@
 #pragma once
 
-#include <typeinfo>
+#include <functional>
 #include <vector>
 
 #include "Defs.h"
 #include "ComponentPool.h"
+#include "Archetype.h"
 
 namespace ECS
 {
-	class Runtime;
-
 	/// <summary>
 	/// Outer interface for component pool usages.
 	/// Not static, not singleton, just a normal, user-friendly object class.
@@ -17,7 +16,8 @@ namespace ECS
 	class ComponentManager
 	{
 	public:
-		ComponentManager(Runtime* runtime);
+		// I don't think the runtime is needed here anymore
+		ComponentManager();
 
 		/// <summary>
 		/// Create new component for an Entity.
@@ -30,7 +30,7 @@ namespace ECS
 		{
 			T& outref = NewComponent_Internal<T>(owner);
 
-			EntitySignalProxy(owner);
+			// EntitySignalProxy(owner);
 
 			return outref;
 		}
@@ -62,6 +62,8 @@ namespace ECS
 			}
 		}
 
+		void BatchCreate(Entity e, const Archetype& signiture);
+
 		void OnEntityDestroy(Entity e);
 
 	private:
@@ -87,6 +89,12 @@ namespace ECS
 				{
 					this->RemoveComponent<T>(e);
 				};
+
+				// add a callback function for dynamic creation
+				DynamicCreationCallbacks[type] = [this](Entity e)
+				{
+					this->NewComponent<T>(e);
+				};
 			}
 
 			// TODO: the exception workflow doens't make sense
@@ -95,12 +103,10 @@ namespace ECS
 			return outref;
 		}
 
-		void EntitySignalProxy(Entity e);
-
-		Runtime* runtime;
 
 		// These vectors are created with the right size calculated statically. Vector not array because it's not a static number.
 		std::vector<std::shared_ptr<IComponentPool>> Pools = std::vector<std::shared_ptr<IComponentPool>>(IComponentPool::GetTypeCount());
 		std::vector<std::function<void(Entity)>> OnEntityDestroyCallbacks = std::vector<std::function<void(Entity)>>(IComponentPool::GetTypeCount());
+		std::vector<std::function<void(Entity)>> DynamicCreationCallbacks = std::vector<std::function<void(Entity)>>(IComponentPool::GetTypeCount());
 	};
 }

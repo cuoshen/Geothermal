@@ -6,23 +6,27 @@ std::vector<std::shared_ptr<ECS::SystemBase>> ECS::SystemManager::Systems;
 int ECS::SystemManager::Count = 0;
 
 
-ECS::SystemManager::SystemManager()
+void ECS::SystemManager::OnSignitureChange(Entity e, Archetype newSigniture)
 {
-	EntityLists = std::vector<std::set<Entity>>(Count);
-
-	ECSMsgHub::RegsiterEntityModifyCallback([this](Entity entity, Archetype newSigniture)
+	// update entity list for every system (locally)
+	for (int i = 0; i < this->EntityLists.size(); i++)
+	{
+		if (newSigniture.Contains(SystemManager::Systems[i]->GetSigniture()))
 		{
-			// update entity list for every system (locally)
-			for (int i = 0; i < this->EntityLists.size(); i++)
-			{
-				if (newSigniture.Contains(SystemManager::Systems[i]->GetSigniture()))
-				{
-					this->EntityLists[i].insert(entity);
-				}
-				else
-				{
-					this->EntityLists[i].erase(entity);
-				}
-			}
-		});
+			EntityLists[i].insert(e);
+		}
+		else
+		{
+			EntityLists[i].erase(e);
+		}
+	}
 }
+
+void ECS::SystemManager::OnEntityDestroy(Entity e)
+{
+	for (auto list : EntityLists)
+	{
+		list.erase(e);
+	}
+}
+
