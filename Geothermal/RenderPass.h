@@ -26,9 +26,10 @@ namespace Geothermal::Graphics::Passes
 	protected:
 		std::shared_ptr<DeviceResources> deviceResources;
 
+		virtual void SetUpPipelineStates() = 0;
+
 		// Render pass really does not OWN the textures involved as source or sink
 		// it just need to keep some reference to them in the form of raw pointers
-
 		std::vector<Texture2D*> const& source;
 		std::vector<Texture2D*> const& sink;
 	};

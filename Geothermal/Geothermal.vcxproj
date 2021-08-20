@@ -150,7 +150,7 @@
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
-    <ClCompile Include="DebugPass.cpp" />
+    <ClCompile Include="WireframeDebugPass.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -187,7 +187,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="CoreRenderPipeline.h" />
-    <ClInclude Include="DebugPass.h" />
+    <ClInclude Include="WireframeDebugPass.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="GameMain.h" />

@@ -44,13 +44,7 @@ XMMATRIX ShadowPass::CasterPerspective()
 
 void ShadowPass::operator()()
 {
-	deviceResources->ResetDefaultPipelineStates();
-	deviceResources->Context()->ClearDepthStencilView
-	(
-		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
-	);
-	deviceResources->Context()->RSSetViewports(1, &shadowViewPort);
-	deviceResources->SetTargets(0, nullptr, mainShadowMap->UseAsDepthStencil().get());
+	SetUpPipelineStates();
 
 	// Render from the perspective of the main light
 	// Assuming a call to UpdateWorld2Light earlier
@@ -60,4 +54,15 @@ void ShadowPass::operator()()
 	{
 		gameObject->Render();
 	}
+}
+
+void ShadowPass::SetUpPipelineStates()
+{
+	deviceResources->ResetDefaultPipelineStates();
+	deviceResources->Context()->ClearDepthStencilView
+	(
+		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
+	);
+	deviceResources->Context()->RSSetViewports(1, &shadowViewPort);
+	deviceResources->SetTargets(0, nullptr, mainShadowMap->UseAsDepthStencil().get());
 }

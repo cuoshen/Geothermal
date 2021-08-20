@@ -2,16 +2,15 @@
 #include <functional>
 #include "GraphicResources.h"
 #include "RenderPass.h"
-#include "SimpleForwardPass.h"
 #include "GameObject.h"
 #include "Camera.h"
 
 namespace Geothermal::Graphics::Passes
 {
-	class DebugPass : public SimpleForwardPass
+	class WireframeDebugPass : public RenderPass
 	{
 	public:
-		DebugPass
+		WireframeDebugPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
 			std::vector<Texture2D*> const& source,
@@ -21,6 +20,13 @@ namespace Geothermal::Graphics::Passes
 		void operator()() override;
 
 	protected:
+		std::list<GameObject*> renderables;
+		Camera* camera;
+
+		/// <summary>
+		/// Have the rasterizer draw wireframes
+		/// </summary>
+		void SetUpPipelineStates() override;
 		/// <summary>
 		/// Visualize renderable bounding boxes in wireframe
 		/// </summary>

@@ -34,5 +34,7 @@ namespace Geothermal::Graphics::Passes
 		float bloomSize;
 		float bloomThreshold;
 		float bloomBrightness;
+
+		void SetUpPipelineStates() override;
 	};
 }

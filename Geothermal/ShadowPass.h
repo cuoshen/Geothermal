@@ -23,8 +23,10 @@ namespace Geothermal::Graphics::Passes
 	protected:
 		const DirectX::XMUINT2 shadowMapDimensions = { 4096, 4096 };
 
+		void SetUpPipelineStates() override;
+
 		/// <summary>
-		/// The shadow pass owns the main shadow map
+		/// The shadow pass owns the main shadow map resource
 		/// </summary>
 		std::shared_ptr<ShadowMap> mainShadowMap;
 		D3D11_VIEWPORT shadowViewPort;

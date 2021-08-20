@@ -93,7 +93,7 @@
     <ClCompile Include="ShaderCache.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="DebugPass.cpp">
+    <ClCompile Include="WireframeDebugPass.cpp">
       <Filter>Graphics\Passes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -235,7 +235,7 @@
     <ClInclude Include="ResourceCache.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="DebugPass.h">
+    <ClInclude Include="WireframeDebugPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
   </ItemGroup>

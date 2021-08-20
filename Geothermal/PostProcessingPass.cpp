@@ -91,3 +91,9 @@ void PostProcessingPass::ApplyBloom()
 	dualPostProcess->SetSourceTexture2(sink[0]->UseAsShaderResource().get());
 	dualPostProcess->Process(deviceResources->Context());
 }
+
+void PostProcessingPass::SetUpPipelineStates()
+{
+	// For now DirectXTK post process will set their own pipeline states
+	// so no work needs to be done here
+}
