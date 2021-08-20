@@ -1,11 +1,14 @@
 #pragma once
 #include "pch.h"
+#include "DeviceResources.h"
 
 // AABB is used extensively outside of just the graphics module
 // thus it belongs here with the rest of the ultilities
 
 namespace Geothermal
 {
+	constexpr uint BoxVerticesCount = 6;
+
 	/// <summary>
 	/// Axis-Aligned Bounding Box
 	/// </summary>
@@ -28,5 +31,6 @@ namespace Geothermal
 		std::array<DirectX::XMFLOAT4, 6> GenerateBoxVertices(DirectX::XMMATRIX transform);
 
 		void UpdateBounds(DirectX::XMFLOAT3 point);
+		void DrawWireFrame(std::shared_ptr<Graphics::DeviceResources> deviceResources);
 	};
 }

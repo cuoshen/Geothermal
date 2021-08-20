@@ -6,7 +6,7 @@ using namespace std;
 using namespace DirectX;
 using namespace Geothermal;
 
-array<XMFLOAT3, 6> Geothermal::AABB::GenerateBoxVertices()
+array<XMFLOAT3, 6> AABB::GenerateBoxVertices()
 {
 	return
 	{
@@ -19,7 +19,7 @@ array<XMFLOAT3, 6> Geothermal::AABB::GenerateBoxVertices()
 	};
 }
 
-array<XMFLOAT4, 6> Geothermal::AABB::GenerateBoxVertices(XMMATRIX transform)
+array<XMFLOAT4, 6> AABB::GenerateBoxVertices(XMMATRIX transform)
 {
 	array<XMFLOAT3, 6> verticesInModelSpace = GenerateBoxVertices();
 	array<XMFLOAT4, 6> verticesTransformed;
@@ -36,7 +36,7 @@ array<XMFLOAT4, 6> Geothermal::AABB::GenerateBoxVertices(XMMATRIX transform)
 	return verticesTransformed;
 }
 
-void Geothermal::AABB::UpdateBounds(XMFLOAT3 point)
+void AABB::UpdateBounds(XMFLOAT3 point)
 {
 	MinXYZ.x = std::min(point.x, MinXYZ.x);
 	MinXYZ.y = std::min(point.y, MinXYZ.y);
@@ -44,4 +44,17 @@ void Geothermal::AABB::UpdateBounds(XMFLOAT3 point)
 	MaxXYZ.x = std::max(point.x, MaxXYZ.x);
 	MaxXYZ.y = std::max(point.y, MaxXYZ.y);
 	MaxXYZ.z = std::max(point.z, MaxXYZ.z);
+}
+
+void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources)
+{
+	// Build wireframe vertex buffer
+
+	for (uint i = 0; i < BoxVerticesCount; i++)
+	{
+		for (uint j = i; j < BoxVerticesCount; j++)
+		{
+			// Add a line between v[i] and v[j]
+		}
+	}
 }

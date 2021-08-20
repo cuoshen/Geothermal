@@ -5,26 +5,49 @@ using namespace Geothermal;
 using namespace Graphics;
 using namespace Passes;
 using namespace std;
-
+using namespace DirectX;
 
 WireframeDebugPass::WireframeDebugPass
 (
-	std::shared_ptr<DeviceResources> const& deviceResources, 
-	std::vector<Texture2D*> const& source, 
-	std::vector<Texture2D*> const& sink
+	shared_ptr<DeviceResources> const& deviceResources, 
+	vector<Texture2D*> const& source, 
+	vector<Texture2D*> const& sink
 ) : 
 	RenderPass(deviceResources, source, sink),
-	camera(nullptr)
+	camera(nullptr), states(nullptr)
 {
+	states = make_unique<CommonStates>();
+}
+
+void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* camera)
+{
+	this->camera = camera;
+	this->renderables = renderables;
 }
 
 void WireframeDebugPass::operator()()
 {
+	SetUpPipelineStates();
 	VisualizeBounds();
 }
 
-void Geothermal::Graphics::Passes::WireframeDebugPass::SetUpPipelineStates()
+void WireframeDebugPass::SetUpPipelineStates()
 {
+	deviceResources->Context()->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
+	deviceResources->Context()->OMSetDepthStencilState(states->DepthDefault(), 0);
+
+	// Set rasterizer state to wireframe
+	deviceResources->Context()->RSSetState(states->Wireframe());
+
+	deviceResources->Context()->ClearRenderTargetView
+	(
+		sink[0]->UseAsRenderTarget().get(), deviceResources->ClearColor
+	);
+	deviceResources->Context()->ClearDepthStencilView
+	(
+		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
+	);
+	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }
 
 void WireframeDebugPass::VisualizeBounds()

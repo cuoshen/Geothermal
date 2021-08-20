@@ -17,11 +17,18 @@ namespace Geothermal::Graphics::Passes
 			std::vector<Texture2D*> const& sink
 		);
 
+		void SetResources
+		(
+			std::list<GameObject*> renderables,
+			Camera* camera
+		);
+
 		void operator()() override;
 
 	protected:
 		std::list<GameObject*> renderables;
 		Camera* camera;
+		std::unique_ptr<DirectX::CommonStates> states;
 
 		/// <summary>
 		/// Have the rasterizer draw wireframes
