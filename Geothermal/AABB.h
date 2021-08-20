@@ -7,7 +7,7 @@
 
 namespace Geothermal
 {
-	constexpr uint BoxVerticesCount = 6;
+	constexpr uint BoxVerticesCount = 8;
 
 	/// <summary>
 	/// Axis-Aligned Bounding Box
@@ -22,14 +22,14 @@ namespace Geothermal
 		/// <summary>
 		/// Generate all bounding box vertices from 2-points input
 		/// </summary>
-		/// <returns>All 6 box vertices in model space</returns>
-		std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices();
+		/// <returns>All 8 box vertices in model space</returns>
+		std::array<DirectX::XMFLOAT3, BoxVerticesCount> GenerateBoxVertices();
 		/// <summary>
 		/// Generate all bounding box vertices from 2-points input, 
 		/// transformed into another coordinate space.
 		/// </summary>
-		/// <returns>All 6 box vertices in desirable coordinate space</returns>
-		std::array<DirectX::XMFLOAT4, 6> GenerateBoxVertices(DirectX::XMMATRIX transform);
+		/// <returns>All 8 box vertices in desirable coordinate space</returns>
+		std::array<DirectX::XMFLOAT4, BoxVerticesCount> GenerateBoxVertices(DirectX::XMMATRIX transform);
 
 		void DrawWireFrame
 		(

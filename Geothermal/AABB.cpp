@@ -9,24 +9,25 @@ using namespace std;
 using namespace DirectX;
 using namespace Geothermal;
 
-array<XMFLOAT3, 6> AABB::GenerateBoxVertices()
+array<XMFLOAT3, BoxVerticesCount> AABB::GenerateBoxVertices()
 {
-	return
+	array<XMFLOAT3, BoxVerticesCount> corners;
+	for (uint i = 0; i < BoxVerticesCount; i++)
 	{
-		XMFLOAT3{MinXYZ.x, MinXYZ.y, MinXYZ.z},
-		XMFLOAT3{MaxXYZ.x, MinXYZ.y, MinXYZ.z},
-		XMFLOAT3{MaxXYZ.x, MaxXYZ.y, MinXYZ.z},
-		XMFLOAT3{MaxXYZ.x, MaxXYZ.y, MaxXYZ.z},
-		XMFLOAT3{MinXYZ.x, MaxXYZ.y, MaxXYZ.z},
-		XMFLOAT3{MinXYZ.x, MinXYZ.y, MaxXYZ.z}
-	};
+		XMFLOAT3 point;
+		point.x = (i & 1) ? MinXYZ.x : MaxXYZ.x;
+		point.y = (i & 2) ? MinXYZ.y : MaxXYZ.y;
+		point.z = (i & 4) ? MinXYZ.z : MaxXYZ.z;
+		corners[i] = point;
+	}
+	return corners;
 }
 
-array<XMFLOAT4, 6> AABB::GenerateBoxVertices(XMMATRIX transform)
+array<XMFLOAT4, BoxVerticesCount> AABB::GenerateBoxVertices(XMMATRIX transform)
 {
-	array<XMFLOAT3, 6> verticesInModelSpace = GenerateBoxVertices();
-	array<XMFLOAT4, 6> verticesTransformed;
-	for (size_t i = 0; i < 6; i++)
+	array<XMFLOAT3, BoxVerticesCount> verticesInModelSpace = GenerateBoxVertices();
+	array<XMFLOAT4, BoxVerticesCount> verticesTransformed;
+	for (size_t i = 0; i < BoxVerticesCount; i++)
 	{
 		XMFLOAT4 modelSpacePosition =
 			XMFLOAT4{ verticesInModelSpace[i].x, verticesInModelSpace[i].y, verticesInModelSpace[i].z, 1.0f };
@@ -52,24 +53,28 @@ void AABB::UpdateBounds(XMFLOAT3 point)
 void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, XMMATRIX transform)
 {
 	// Build wireframe vertex buffer
-	array<XMFLOAT4, 6> boxVertices = this->GenerateBoxVertices(transform);
 	vector<Graphics::Structures::VertexP> wireframeVertices;
 
-	for (uint i = 0; i < BoxVerticesCount; i++)
+	array<XMFLOAT3, BoxVerticesCount> boxVertices = this->GenerateBoxVertices();
+	for (auto& position : boxVertices)
 	{
-		for (uint j = i; j < BoxVerticesCount; j++)
-		{
+		wireframeVertices.push_back({ position });
+	}
+	vector<UINT> indices;
+
+	for (uint i = 0; i < BoxVerticesCount - 1; i++)
+	{
 			// Add a line between v[i] and v[j]
-			wireframeVertices.push_back(Graphics::Structures::VertexP{ {boxVertices[i].x, boxVertices[i].y, boxVertices[i].z} });
-			wireframeVertices.push_back(Graphics::Structures::VertexP{ {boxVertices[j].x, boxVertices[j].y, boxVertices[j].z} });
-		}
+			indices.push_back(i);
+			indices.push_back(i + 1);
 	}
 
-	Graphics::Bindables::VertexBuffer<Graphics::Structures::VertexP> wireframe(deviceResources, wireframeVertices);
+	Graphics::Bindables::IndexedVertexBuffer<Graphics::Structures::VertexP> wireframe(deviceResources, wireframeVertices, indices);
 	wireframe.Bind();
+	deviceResources->Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	Graphics::Bindables::VertexConstantBuffer<XMMATRIX> object2WorldTransformBuffer(deviceResources, transform,0u);
+	Graphics::Bindables::VertexConstantBuffer<XMMATRIX> object2WorldTransformBuffer(deviceResources, XMMatrixTranspose(transform),0u);
 	object2WorldTransformBuffer.Bind();
 
-	deviceResources->Context()->Draw(wireframe.GetVertexCount(), 0u);
+	deviceResources->Context()->DrawIndexed(wireframe.GetIndexCount(), 0u, 0u);
 }
