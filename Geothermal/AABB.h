@@ -17,12 +17,13 @@ namespace Geothermal
 		DirectX::XMFLOAT3 MinXYZ;
 		DirectX::XMFLOAT3 MaxXYZ;
 
+		void UpdateBounds(DirectX::XMFLOAT3 point);
+
 		/// <summary>
 		/// Generate all bounding box vertices from 2-points input
 		/// </summary>
 		/// <returns>All 6 box vertices in model space</returns>
 		std::array<DirectX::XMFLOAT3, 6> GenerateBoxVertices();
-
 		/// <summary>
 		/// Generate all bounding box vertices from 2-points input, 
 		/// transformed into another coordinate space.
@@ -30,7 +31,9 @@ namespace Geothermal
 		/// <returns>All 6 box vertices in desirable coordinate space</returns>
 		std::array<DirectX::XMFLOAT4, 6> GenerateBoxVertices(DirectX::XMMATRIX transform);
 
-		void UpdateBounds(DirectX::XMFLOAT3 point);
-		void DrawWireFrame(std::shared_ptr<Graphics::DeviceResources> deviceResources);
+		void DrawWireFrame
+		(
+			std::shared_ptr<Graphics::DeviceResources> deviceResources, DirectX::XMMATRIX transform
+		);
 	};
 }

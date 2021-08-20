@@ -29,6 +29,7 @@ namespace Geothermal::Graphics::Passes
 		std::list<GameObject*> renderables;
 		Camera* camera;
 		std::unique_ptr<DirectX::CommonStates> states;
+		std::unique_ptr<Materials::Material> wireframeMaterial;
 
 		/// <summary>
 		/// Have the rasterizer draw wireframes

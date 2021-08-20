@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AABB.h"
 #include <cmath>
+#include "VertexBuffer.h"
 
 using namespace std;
 using namespace DirectX;
@@ -46,9 +47,10 @@ void AABB::UpdateBounds(XMFLOAT3 point)
 	MaxXYZ.z = std::max(point.z, MaxXYZ.z);
 }
 
-void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources)
+void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, XMMATRIX transform)
 {
 	// Build wireframe vertex buffer
+	array<XMFLOAT4, 6> boxVertices = this->GenerateBoxVertices(transform);
 
 	for (uint i = 0; i < BoxVerticesCount; i++)
 	{

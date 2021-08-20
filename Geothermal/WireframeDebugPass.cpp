@@ -3,7 +3,9 @@
 
 using namespace Geothermal;
 using namespace Graphics;
+using namespace Materials;
 using namespace Passes;
+using namespace Structures;
 using namespace std;
 using namespace DirectX;
 
@@ -17,6 +19,10 @@ WireframeDebugPass::WireframeDebugPass
 	camera(nullptr), states(nullptr)
 {
 	states = make_unique<CommonStates>();
+	// Initialize wireframe material
+	// Use the WireframeVertexShader + Unlit combo
+	wireframeMaterial = 
+		make_unique<Material>(deviceResources, L"WireframeVertexShader", L"Unlit", VertexPLayout, size(VertexPLayout));
 }
 
 void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* camera)
@@ -28,6 +34,7 @@ void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* cam
 void WireframeDebugPass::operator()()
 {
 	SetUpPipelineStates();
+	wireframeMaterial->Bind();
 	VisualizeBounds();
 }
 
@@ -52,4 +59,8 @@ void WireframeDebugPass::SetUpPipelineStates()
 
 void WireframeDebugPass::VisualizeBounds()
 {
+	for (GameObject*& renderable : renderables)
+	{
+		
+	}
 }
