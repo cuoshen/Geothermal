@@ -32,6 +32,7 @@ namespace Geothermal::Graphics
 		std::unique_ptr<Passes::SimpleForwardPass> simpleForwardPass;
 		std::unique_ptr<Passes::PostProcessingPass> postProcessingPass;
 		std::unique_ptr<Passes::WireframeDebugPass> debugPass;
+		bool debugMode;
 
 		std::unique_ptr<Texture2D> hdrTargets[4];
 

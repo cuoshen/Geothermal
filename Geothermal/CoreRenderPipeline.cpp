@@ -19,7 +19,7 @@ using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
 	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }),
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false),
 	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
@@ -83,8 +83,11 @@ void CoreRenderPipeline::Render()
 
 	(*postProcessingPass)();
 
-	debugPass->SetResources(Scene::Instance()->ObjectsInScene, camera.get());
-	(*debugPass)();
+	if (debugMode)
+	{
+		debugPass->SetResources(Scene::Instance()->ObjectsInScene, camera.get());
+		(*debugPass)();
+	}
 
 	DrawGUI();
 	deviceResources->Present();
@@ -118,6 +121,10 @@ void CoreRenderPipeline::DrawGUI()
 	if (ImGui::Button("Reset Camera"))
 	{
 		ResetCamera();
+	}
+	if (ImGui::Button("Debug mode"))
+	{
+		debugMode = !debugMode;
 	}
 
 	ImGui::End();

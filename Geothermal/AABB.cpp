@@ -71,7 +71,7 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 				((i ^ j) == 1) || ((i ^ j) == 2) || ((i ^ j) == 4)
 			)
 			{
-				// Add a line between neighbouring corners
+				// Only add a line between neighbouring corners
 				indices.push_back(i);
 				indices.push_back(j);
 			}
