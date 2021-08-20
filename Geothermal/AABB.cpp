@@ -2,6 +2,7 @@
 #include "AABB.h"
 #include <cmath>
 #include "VertexBuffer.h"
+#include "Vertices.h"
 
 using namespace std;
 using namespace DirectX;
@@ -51,12 +52,15 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 {
 	// Build wireframe vertex buffer
 	array<XMFLOAT4, 6> boxVertices = this->GenerateBoxVertices(transform);
+	vector<Graphics::Structures::VertexP> wireframeVertices;
 
 	for (uint i = 0; i < BoxVerticesCount; i++)
 	{
 		for (uint j = i; j < BoxVerticesCount; j++)
 		{
 			// Add a line between v[i] and v[j]
+			wireframeVertices.push_back(Graphics::Structures::VertexP{ {boxVertices[i].x, boxVertices[i].y, boxVertices[i].z} });
+			wireframeVertices.push_back(Graphics::Structures::VertexP{ {boxVertices[j].x, boxVertices[j].y, boxVertices[j].z} });
 		}
 	}
 }

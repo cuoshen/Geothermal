@@ -41,7 +41,7 @@ void WireframeDebugPass::operator()()
 void WireframeDebugPass::SetUpPipelineStates()
 {
 	deviceResources->Context()->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
-	deviceResources->Context()->OMSetDepthStencilState(states->DepthDefault(), 0);
+	deviceResources->Context()->OMSetDepthStencilState(states->DepthNone(), 0);
 
 	// Set rasterizer state to wireframe
 	deviceResources->Context()->RSSetState(states->Wireframe());
@@ -61,6 +61,9 @@ void WireframeDebugPass::VisualizeBounds()
 {
 	for (GameObject*& renderable : renderables)
 	{
-		
+		renderable->Renderer().Bounds().DrawWireFrame
+		(
+			deviceResources, renderable->GetTransform().Object2WorldMatrix()
+		);
 	}
 }
