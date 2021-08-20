@@ -66,17 +66,14 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 	{
 		for (uint j = 0; j < BoxVerticesCount; j++)
 		{
-			if (i != j)
+			if 
+			(
+				((i ^ j) == 1) || ((i ^ j) == 2) || ((i ^ j) == 4)
+			)
 			{
-				if 
-				(
-					((i ^ j) == 1) || ((i ^ j) == 2) || ((i ^ j) == 4)
-				)
-				{
-					// Add a line between neighbouring corners
-					indices.push_back(i);
-					indices.push_back(j);
-				}
+				// Add a line between neighbouring corners
+				indices.push_back(i);
+				indices.push_back(j);
 			}
 		}
 	}
