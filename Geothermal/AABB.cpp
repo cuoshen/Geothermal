@@ -3,6 +3,7 @@
 #include <cmath>
 #include "VertexBuffer.h"
 #include "Vertices.h"
+#include "ConstantBuffer.h"
 
 using namespace std;
 using namespace DirectX;
@@ -66,6 +67,9 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 
 	Graphics::Bindables::VertexBuffer<Graphics::Structures::VertexP> wireframe(deviceResources, wireframeVertices);
 	wireframe.Bind();
+
+	Graphics::Bindables::VertexConstantBuffer<XMMATRIX> object2WorldTransformBuffer(deviceResources, transform,0u);
+	object2WorldTransformBuffer.Bind();
 
 	deviceResources->Context()->Draw(wireframe.GetVertexCount(), 0u);
 }

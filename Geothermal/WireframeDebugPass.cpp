@@ -18,7 +18,7 @@ WireframeDebugPass::WireframeDebugPass
 	RenderPass(deviceResources, source, sink),
 	camera(nullptr), states(nullptr)
 {
-	states = make_unique<CommonStates>();
+	states = make_unique<CommonStates>(deviceResources->Device());
 	// Initialize wireframe material
 	// Use the WireframeVertexShader + Unlit combo
 	wireframeMaterial = 
@@ -34,7 +34,9 @@ void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* cam
 void WireframeDebugPass::operator()()
 {
 	SetUpPipelineStates();
-	wireframeMaterial->Bind();
+	ID3D11RenderTargetView* target = sink[0]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
+
 	VisualizeBounds();
 }
 
@@ -59,6 +61,9 @@ void WireframeDebugPass::SetUpPipelineStates()
 
 void WireframeDebugPass::VisualizeBounds()
 {
+	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
+	wireframeMaterial->Bind();
+
 	for (GameObject*& renderable : renderables)
 	{
 		renderable->Renderer().Bounds().DrawWireFrame

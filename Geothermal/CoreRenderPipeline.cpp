@@ -27,7 +27,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightsConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	
-	for (int i = 0; i < 4; i++)
+	static constexpr uint TargetCount = 4;
+	for (uint i = 0; i < TargetCount; i++)
 	{
 		hdrTargets[i] = make_unique<Texture2D>
 		(
@@ -41,15 +42,17 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	// We create sources and sinks here, then pass their control into the RenderPasses
 	// No memory leak should occur
 
-	shadowPass = new Passes::ShadowPass(deviceResources, {}, {});
+	auto emptyTargetContainer = vector<Texture2D*>();
+
+	shadowPass = make_unique<Passes::ShadowPass>(deviceResources, emptyTargetContainer, emptyTargetContainer);
 
 	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
 	simpleForwardSink->push_back(hdrTargets[0].get());
-	simpleForwardPass = new Passes::SimpleForwardPass(deviceResources, {}, *simpleForwardSink);
+	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, emptyTargetContainer, *simpleForwardSink);
 
 	vector<Texture2D*>* postProcessingSource = new vector<Texture2D*>();
 	postProcessingSource->push_back(hdrTargets[0].get());
-	postProcessingPass = new Passes::PostProcessingPass(deviceResources, *postProcessingSource, {});
+	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, *postProcessingSource, emptyTargetContainer);
 
 	mainShadowMap = shadowPass->MainShadowMap();
 

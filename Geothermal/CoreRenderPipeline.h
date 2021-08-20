@@ -28,9 +28,9 @@ namespace Geothermal::Graphics
 		void DrawGUI();
 		void ResetCamera();
 
-		Passes::ShadowPass* shadowPass;
-		Passes::SimpleForwardPass* simpleForwardPass;
-		Passes::PostProcessingPass* postProcessingPass;
+		std::unique_ptr<Passes::ShadowPass> shadowPass;
+		std::unique_ptr<Passes::SimpleForwardPass> simpleForwardPass;
+		std::unique_ptr<Passes::PostProcessingPass> postProcessingPass;
 
 		std::unique_ptr<Texture2D> hdrTargets[4];
 
