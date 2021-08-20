@@ -63,4 +63,9 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 			wireframeVertices.push_back(Graphics::Structures::VertexP{ {boxVertices[j].x, boxVertices[j].y, boxVertices[j].z} });
 		}
 	}
+
+	Graphics::Bindables::VertexBuffer<Graphics::Structures::VertexP> wireframe(deviceResources, wireframeVertices);
+	wireframe.Bind();
+
+	deviceResources->Context()->Draw(wireframe.GetVertexCount(), 0u);
 }
