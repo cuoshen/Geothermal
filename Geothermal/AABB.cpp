@@ -62,11 +62,17 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 	}
 	vector<UINT> indices;
 
-	for (uint i = 0; i < BoxVerticesCount - 1; i++)
+	for (uint i = 0; i < BoxVerticesCount; i++)
 	{
-			// Add a line between v[i] and v[j]
-			indices.push_back(i);
-			indices.push_back(i + 1);
+		for (uint j = 0; j < BoxVerticesCount; j++)
+		{
+			if (i != j)
+			{
+				// Add a line between v[i] and v[j]
+				indices.push_back(i);
+				indices.push_back(j);
+			}
+		}
 	}
 
 	Graphics::Bindables::IndexedVertexBuffer<Graphics::Structures::VertexP> wireframe(deviceResources, wireframeVertices, indices);

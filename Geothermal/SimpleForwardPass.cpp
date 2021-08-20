@@ -41,7 +41,7 @@ list<GameObject*> SimpleForwardPass::Cull()
 	{
 		// Get clipping space coordinates
 		AABB& boundingBox = renderable->Renderer().Bounds();
-		array<XMFLOAT4, 6> clippingSpaceBoundingBox = 
+		array<XMFLOAT4, BoxVerticesCount> clippingSpaceBoundingBox =
 			boundingBox.GenerateBoxVertices(renderable->GetTransform().Object2WorldMatrix() * camera->World2Clip());
 
 		for (XMFLOAT4& clipPosition : clippingSpaceBoundingBox)

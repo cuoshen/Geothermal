@@ -54,6 +54,8 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	postProcessingSource->push_back(hdrTargets[0].get());
 	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, *postProcessingSource, emptyTargetContainer);
 
+	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources, emptyTargetContainer, emptyTargetContainer);
+
 	mainShadowMap = shadowPass->MainShadowMap();
 
 	OutputDebugString(L"Core Renderer ready \n");
@@ -80,6 +82,9 @@ void CoreRenderPipeline::Render()
 	(*simpleForwardPass)();
 
 	(*postProcessingPass)();
+
+	debugPass->SetResources(Scene::Instance()->ObjectsInScene, camera.get());
+	(*debugPass)();
 
 	DrawGUI();
 	deviceResources->Present();

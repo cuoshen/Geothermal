@@ -22,7 +22,7 @@ WireframeDebugPass::WireframeDebugPass
 	// Initialize wireframe material
 	// Use the WireframeVertexShader + Unlit combo
 	wireframeMaterial = 
-		make_unique<Material>(deviceResources, L"WireframeVertexShader", L"Unlit", VertexPLayout, size(VertexPLayout));
+		make_unique<Material>(deviceResources, L"WireframeVertexShader.cso", L"Unlit.cso", VertexPLayout, size(VertexPLayout));
 }
 
 void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* camera)
@@ -34,8 +34,9 @@ void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* cam
 void WireframeDebugPass::operator()()
 {
 	SetUpPipelineStates();
-	ID3D11RenderTargetView* target = sink[0]->UseAsRenderTarget().get();
-	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
+	// Draw directly on the screen
+	ID3D11RenderTargetView* target = deviceResources->BackBufferTargetView();
+	deviceResources->SetTargets(1, &target, nullptr);
 
 	VisualizeBounds();
 }
@@ -46,16 +47,7 @@ void WireframeDebugPass::SetUpPipelineStates()
 	deviceResources->Context()->OMSetDepthStencilState(states->DepthNone(), 0);
 
 	// Set rasterizer state to wireframe
-	deviceResources->Context()->RSSetState(states->Wireframe());
-
-	deviceResources->Context()->ClearRenderTargetView
-	(
-		sink[0]->UseAsRenderTarget().get(), deviceResources->ClearColor
-	);
-	deviceResources->Context()->ClearDepthStencilView
-	(
-		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
-	);
+	deviceResources->Context()->RSSetState(states->CullNone());
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }
 
