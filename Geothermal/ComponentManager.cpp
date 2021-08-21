@@ -5,22 +5,22 @@
 #include "Primes.h"
 
 
-void ECS::ComponentManager::BatchCreate(Entity e, const Archetype& signiture)
+void Geothermal::ECS::ComponentManager::BatchCreate(Entity e, const Archetype& signiture)
 {
 	int s = signiture.Signiture;
 
 	// creat components
 	for (int i = 0; i < IComponentPool::GetTypeCount() && s > 1; i++)
 	{
-		if (s % ECS_Tools::primes[i] == 0)
+		if (s % Geothermal::ECS::Tools::primes[i] == 0)
 		{
-			s /= ECS_Tools::primes[i];
+			s /= Geothermal::ECS::Tools::primes[i];
 			DynamicCreationCallbacks[i](e);
 		}
 	}
 }
 
-void ECS::ComponentManager::OnEntityDestroy(Entity e)
+void Geothermal::ECS::ComponentManager::OnEntityDestroy(Entity e)
 {
 	for (auto callback : OnEntityDestroyCallbacks)
 	{

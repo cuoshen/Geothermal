@@ -7,7 +7,7 @@
 #include "ComponentPool.h"
 #include "Archetype.h"
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	/// <summary>
 	/// Outer interface for component pool usages.

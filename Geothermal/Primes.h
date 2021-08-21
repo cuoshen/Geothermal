@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace ECS_Tools
+namespace Geothermal::ECS::Tools
 {
 	//const int primes_used_count = 500;
 

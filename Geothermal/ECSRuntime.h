@@ -8,7 +8,7 @@
 #include "System.h"
 #include "EntityManager.h"
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	struct Archetype;
 

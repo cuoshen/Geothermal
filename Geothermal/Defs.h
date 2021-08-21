@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	using Entity = int;
 

@@ -4,10 +4,10 @@
 #include <set>
 
 #include "Defs.h"
-//#include "ECSMsgHub.h"
+//#include "Geothermal::ECSMsgHub.h"
 #include "Archetype.h"
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	class SystemBase
 	{

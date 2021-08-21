@@ -8,7 +8,7 @@
 // yo, I capitalized the first letter of member variables intentionally
 // if not necessary don't change it back
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	/// <summary>
 	/// WTF is this? It's only used to make the intellisense work. Don't remove or modify.
@@ -56,7 +56,7 @@ namespace ECS
 		ComponentPool()
 		{
 			//// register a lambda to the msg hub
-			//ECSMsgHub::RegsiterEntityModifyCallback([this](Entity destroyedEntity)
+			//Geothermal::ECSMsgHub::RegsiterEntityModifyCallback([this](Entity destroyedEntity)
 			//	{
 			//		this->Remove(destroyedEntity);
 			//	});
@@ -64,8 +64,8 @@ namespace ECS
 
 		T& Insert(T newComponent, Entity owner)
 		{
-			//assert(Count < MAX_ENTITIES && "ECS runtime error: Too many components of this type.");
-			//assert(EntityToIndex.find(owner) == EntityToIndex.end() && "ECS runtime error: entity alread has this component.");
+			//assert(Count < MAX_ENTITIES && "Geothermal::ECS runtime error: Too many components of this type.");
+			//assert(EntityToIndex.find(owner) == EntityToIndex.end() && "Geothermal::ECS runtime error: entity alread has this component.");
 
 			// NOTE: I'm not checking entity count here, because that's supposed to be done by entity manager!
 
@@ -90,7 +90,7 @@ namespace ECS
 
 		void Remove(Entity owner)
 		{
-			assert(EntityToIndex.find(owner) != EntityToIndex.end() && "ECS runtime error: Target owner doesn't exist.");
+			assert(EntityToIndex.find(owner) != EntityToIndex.end() && "Geothermal::ECS runtime error: Target owner doesn't exist.");
 
 			// cache some indices
 			int targetIndex = EntityToIndex[owner];
@@ -110,7 +110,7 @@ namespace ECS
 
 		T& Get(Entity owner)
 		{
-			assert(EntityToIndex.find(owner) != EntityToIndex.end() && "ECS runtime error: Can't find requested owner.");
+			assert(EntityToIndex.find(owner) != EntityToIndex.end() && "Geothermal::ECS runtime error: Can't find requested owner.");
 
 			return Components[EntityToIndex[owner]];
 		}

@@ -3,18 +3,18 @@
 
 #include "ComponentManager.h"
 
-ECS::EntityManager::EntityManager()
+Geothermal::ECS::EntityManager::EntityManager()
 {
 }
 
-ECS::Entity ECS::EntityManager::NewEntity()
+Geothermal::ECS::Entity Geothermal::ECS::EntityManager::NewEntity()
 {
 	// this event won't trigger anything cuz empty entity doesn't fit in any filter
 	Archetype a;
 	return NewEntity(a);
 }
 
-ECS::Entity ECS::EntityManager::NewEntity(const Archetype& signiture)
+Geothermal::ECS::Entity Geothermal::ECS::EntityManager::NewEntity(const Archetype& signiture)
 {
 	Entity e = AvailableEntities.GetEntity();
 
@@ -26,19 +26,19 @@ ECS::Entity ECS::EntityManager::NewEntity(const Archetype& signiture)
 	return e;
 }
 
-void ECS::EntityManager::DestroyEntity(Entity entity)
+void Geothermal::ECS::EntityManager::DestroyEntity(Entity entity)
 {
 	AvailableEntities.PutEntity(entity);
 	
-	// ECSMsgHub::SignalEntityDestoryEvent(entity);
+	// Geothermal::ECSMsgHub::SignalEntityDestoryEvent(entity);
 }
 
-ECS::Archetype ECS::EntityManager::GetSigniture(Entity entity)
+Geothermal::ECS::Archetype Geothermal::ECS::EntityManager::GetSigniture(Entity entity)
 {
 	return Archetype();
 }
 
-ECS::EntityManager::EntityRepository::EntityRepository()
+Geothermal::ECS::EntityManager::EntityRepository::EntityRepository()
 {
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
@@ -50,7 +50,7 @@ ECS::EntityManager::EntityRepository::EntityRepository()
 	std::make_heap(Entities.begin(), Entities.end(), std::greater<>());
 }
 
-ECS::Entity ECS::EntityManager::EntityRepository::GetEntity()
+Geothermal::ECS::Entity Geothermal::ECS::EntityManager::EntityRepository::GetEntity()
 {
 	if (Remaining > 0)
 	{
@@ -78,7 +78,7 @@ ECS::Entity ECS::EntityManager::EntityRepository::GetEntity()
 
 }
 
-void ECS::EntityManager::EntityRepository::PutEntity(Entity entity)
+void Geothermal::ECS::EntityManager::EntityRepository::PutEntity(Entity entity)
 {
 	if (Remaining < MAX_ENTITIES)
 	{
@@ -95,7 +95,7 @@ void ECS::EntityManager::EntityRepository::PutEntity(Entity entity)
 	}
 }
 
-bool ECS::EntityManager::EntityRepository::Has(Entity e)
+bool Geothermal::ECS::EntityManager::EntityRepository::Has(Entity e)
 {
 	int index = e >> 3;
 	int offset = e % 8;

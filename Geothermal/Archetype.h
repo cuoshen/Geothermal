@@ -2,7 +2,7 @@
 
 #include "ComponentPool.h"
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	class ComponentManager;
 
@@ -18,7 +18,7 @@ namespace ECS
 		template <class T>
 		Archetype& Add()
 		{
-			int typePrime = ECS_Tools::primes[ComponentPool<T>::TypeNum];
+			int typePrime = Geothermal::ECS::Tools::primes[ComponentPool<T>::TypeNum];
 
 			if (Signiture != 1 && Signiture % typePrime != 0)
 			{
@@ -31,7 +31,7 @@ namespace ECS
 		template <class T>
 		Archetype& Remove()
 		{
-			int typePrime = ECS_Tools::primes[ComponentPool<T>::TypeNum];
+			int typePrime = Geothermal::ECS::Tools::primes[ComponentPool<T>::TypeNum];
 
 			if (Signiture != 1 && Signiture % typePrime == 0)
 			{
@@ -44,7 +44,7 @@ namespace ECS
 		template <class T>
 		bool Contains()
 		{
-			int typePrime = ECS_Tools::primes[ComponentPool<T>::TypeNum];
+			int typePrime = Geothermal::ECS::Tools::primes[ComponentPool<T>::TypeNum];
 
 			return Signiture != 1 && Signiture % typePrime == 0;
 		}

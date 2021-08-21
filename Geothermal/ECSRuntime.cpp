@@ -6,12 +6,12 @@
 
 
 // no need to signal anything
-ECS::Entity ECS::Runtime::NewEntity()
+Geothermal::ECS::Entity Geothermal::ECS::Runtime::NewEntity()
 {
 	return entityManager.NewEntity();
 }
 
-ECS::Entity ECS::Runtime::NewEntity(const Archetype& signiture)
+Geothermal::ECS::Entity Geothermal::ECS::Runtime::NewEntity(const Archetype& signiture)
 {
 	Entity newEntity = entityManager.NewEntity(signiture);
 	
@@ -26,7 +26,7 @@ ECS::Entity ECS::Runtime::NewEntity(const Archetype& signiture)
 	return newEntity;
 }
 
-void ECS::Runtime::DestroyEntity(Entity e)
+void Geothermal::ECS::Runtime::DestroyEntity(Entity e)
 {
 	entityManager.DestroyEntity(e);
 	componentManager.OnEntityDestroy(e);

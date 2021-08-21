@@ -3,7 +3,7 @@
 #include "Defs.h"
 #include "Archetype.h"
 
-namespace ECS
+namespace Geothermal::ECS
 {
 	struct Archetype;
 
