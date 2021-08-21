@@ -96,6 +96,9 @@
     <ClCompile Include="WireframeDebugPass.cpp">
       <Filter>Graphics\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="SceneGeometryPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -236,6 +239,9 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="WireframeDebugPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGeometryPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
   </ItemGroup>

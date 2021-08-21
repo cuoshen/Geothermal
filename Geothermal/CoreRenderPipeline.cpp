@@ -73,9 +73,9 @@ void CoreRenderPipeline::Render()
 	world2light = shadowPass->UpdateWorld2Light(mainLightShadowCastingOrigin, mainLightDirection);
 	(*shadowPass)();
 
-	simpleForwardPass->SetResources
+	simpleForwardPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+	simpleForwardPass->SetDelegates
 	(
-		Scene::Instance()->ObjectsInScene, camera.get(), 
 		std::bind(&CoreRenderPipeline::UploadShadowResources, this),
 		std::bind(&CoreRenderPipeline::UploadLightingResources, this)
 	);
@@ -85,7 +85,7 @@ void CoreRenderPipeline::Render()
 
 	if (debugMode)
 	{
-		debugPass->SetResources(Scene::Instance()->ObjectsInScene, camera.get());
+		debugPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
 		(*debugPass)();
 	}
 

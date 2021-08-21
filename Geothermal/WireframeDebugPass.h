@@ -2,12 +2,15 @@
 #include <functional>
 #include "GraphicResources.h"
 #include "RenderPass.h"
-#include "GameObject.h"
-#include "Camera.h"
+#include "SceneGeometryPass.h"
 
 namespace Geothermal::Graphics::Passes
 {
-	class WireframeDebugPass : public RenderPass
+	/// <summary>
+	/// Visualize all scene object bounds with wireframe.
+	/// Does not use a source or sink as it writes directly to the back buffer.
+	/// </summary>
+	class WireframeDebugPass : public SceneGeometryPass
 	{
 	public:
 		WireframeDebugPass
@@ -17,17 +20,9 @@ namespace Geothermal::Graphics::Passes
 			std::vector<Texture2D*> const& sink
 		);
 
-		void SetResources
-		(
-			std::list<GameObject*> renderables,
-			Camera* camera
-		);
-
 		void operator()() override;
 
 	protected:
-		std::list<GameObject*> renderables;
-		Camera* camera;
 		std::unique_ptr<DirectX::CommonStates> states;
 		std::unique_ptr<Materials::Material> wireframeMaterial;
 

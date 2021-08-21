@@ -15,20 +15,14 @@ WireframeDebugPass::WireframeDebugPass
 	vector<Texture2D*> const& source, 
 	vector<Texture2D*> const& sink
 ) : 
-	RenderPass(deviceResources, source, sink),
-	camera(nullptr), states(nullptr)
+	SceneGeometryPass(deviceResources, source, sink),
+	states(nullptr)
 {
 	states = make_unique<CommonStates>(deviceResources->Device());
 	// Initialize wireframe material
 	// Use the WireframeVertexShader + Unlit combo
 	wireframeMaterial = 
 		make_unique<Material>(deviceResources, L"WireframeVertexShader.cso", L"Unlit.cso", VertexPLayout, size(VertexPLayout));
-}
-
-void WireframeDebugPass::SetResources(list<GameObject*> renderables, Camera* camera)
-{
-	this->camera = camera;
-	this->renderables = renderables;
 }
 
 void WireframeDebugPass::operator()()
