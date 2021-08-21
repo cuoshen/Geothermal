@@ -244,6 +244,12 @@
     <ClInclude Include="SceneGeometryPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="DeferredGBufferPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredLightingPass.h">
+      <Filter>Graphics\Passes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
