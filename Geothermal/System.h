@@ -19,8 +19,6 @@ namespace Geothermal::ECS
 		virtual Archetype GetSigniture() = 0;
 	};
 
-
-
 	class SystemManager
 	{
 	// reflection ////////////////////////////////////////////////////////////////////////////////
@@ -46,8 +44,6 @@ namespace Geothermal::ECS
 		std::vector<std::set<Entity>> EntityLists = std::vector<std::set<Entity>>(Count);
 	};
 
-
-
 	template <class T>
 	class ISystem : SystemBase
 	{
@@ -57,8 +53,6 @@ namespace Geothermal::ECS
 
 	template <class T>
 	const int ISystem<T>::ID = SystemManager::Register<T>();
-
-
 
 	class SampleSystem : public ISystem<SampleSystem>
 	{
