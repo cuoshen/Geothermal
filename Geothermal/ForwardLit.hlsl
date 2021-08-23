@@ -6,7 +6,7 @@ SamplerState Sampler;
 
 cbuffer Properties : register(PROPERTIES_SLOT)
 {
-	MaterialProperty property;
+	MaterialProperty Property;
 };
 
 float4 main(Varyings input) : SV_TARGET
@@ -15,9 +15,9 @@ float4 main(Varyings input) : SV_TARGET
 	float3 normal = normalize(input.normal);
 
 	// Parse texture flags
-	int useAlbedoMap = property.TextureFlags & 0x01;
-	int useNormalMap = property.TextureFlags & 0x02;
-	int useShadowMap = property.TextureFlags & 0x04;
+	int useAlbedoMap = Property.textureFlags & 0x01;
+	int useNormalMap = Property.textureFlags & 0x02;
+	int useShadowMap = Property.textureFlags & 0x04;
 
 	// Sample textures if needed
 	if (useAlbedoMap)
@@ -33,7 +33,7 @@ float4 main(Varyings input) : SV_TARGET
 	}
 
 	// Lighting
-	float4 pixelColor = property.BaseColor + textureColor;
+	float4 pixelColor = Property.baseColor + textureColor;
 	float intensity = 0.0f;
 	if (useShadowMap)
 	{
@@ -44,7 +44,7 @@ float4 main(Varyings input) : SV_TARGET
 				BlinnPhong
 				(
 					normal, input.worldPosition, -MainLight.Direction, 
-					property.Diffuse, property.Specular, property.Smoothness
+					Property.diffuse, Property.specular, Property.smoothness
 				);
 		}
 	}
@@ -54,7 +54,7 @@ float4 main(Varyings input) : SV_TARGET
 			BlinnPhong
 			(
 				normal, input.worldPosition, -MainLight.Direction, 
-				property.Diffuse, property.Specular, property.Smoothness
+				Property.diffuse, Property.specular, Property.smoothness
 			);
 	}
 
@@ -68,13 +68,13 @@ float4 main(Varyings input) : SV_TARGET
 				BlinnPhong
 				(
 					normal, input.worldPosition, lightDirection, 
-					property.Diffuse, property.Specular, property.Smoothness
+					Property.diffuse, Property.specular, Property.smoothness
 				);
 		}
 	}
 
 	pixelColor.xyz *= intensity;
-	pixelColor += property.Ambient;
+	pixelColor += Property.ambient;
 
 	return pixelColor;
 }

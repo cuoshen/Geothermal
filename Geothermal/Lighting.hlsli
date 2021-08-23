@@ -3,14 +3,14 @@
 
 struct MaterialProperty
 {
-	float4		Ambient;
-	float4		BaseColor;
-	float		Diffuse;
-	float		Specular;
-	float		Smoothness;
+	float4		ambient;
+	float4		baseColor;
+	float		diffuse;
+	float		specular;
+	float		smoothness;
 	// In order to keep us aligned , we combine texture usage into a single int32
 	//	&0x01 for albedo, &0x02 for normal, &0x03 for shadow
-	int			TextureFlags;
+	int			textureFlags;
 };
 
 float Lambert(float3 normal, float3 lightDirection, float diffuseStrength)
