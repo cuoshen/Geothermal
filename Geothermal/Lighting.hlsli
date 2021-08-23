@@ -1,6 +1,18 @@
 #ifndef GEOTHERMAL_LIGHTING
 #define GEOTHERMAL_LIGHTING
 
+struct MaterialProperty
+{
+	float4		Ambient;
+	float4		BaseColor;
+	float		Diffuse;
+	float		Specular;
+	float		Smoothness;
+	// In order to keep us aligned , we combine texture usage into a single int32
+	//	&0x01 for albedo, &0x02 for normal, &0x03 for shadow
+	int			TextureFlags;
+};
+
 float Lambert(float3 normal, float3 lightDirection, float diffuseStrength)
 {
 	float diffuse = max(

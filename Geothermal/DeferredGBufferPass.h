@@ -4,6 +4,8 @@
 
 namespace Geothermal::Graphics::Passes
 {
+	constexpr uint GBufferCount = 2;
+
 	/// <summary>
 	/// Deferred rendering geometry pass.
 	/// </summary>
@@ -12,7 +14,8 @@ namespace Geothermal::Graphics::Passes
 	public:
 		/// <param name="sink">
 		/// GBuffer layout: 
-		/// [0] 
+		/// [0] R8G8B8 Albedo A8 Unused;
+		/// [1] R32G32B32 World Space Normal A32 Roughness;
 		/// </param>
 		DeferredGBufferPass
 		(

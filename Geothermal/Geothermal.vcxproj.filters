@@ -311,6 +311,9 @@
     <FxCompile Include="WireframeVertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="DeferredGBuffer.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Common.hlsli">
@@ -322,6 +325,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="SlotConfig.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shadow.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

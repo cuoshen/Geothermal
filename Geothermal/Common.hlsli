@@ -40,5 +40,19 @@ struct VertexColoredVaryings
 };
 
 #include "Lighting.hlsli"
+#include "Shadow.hlsli"
+
+float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample)
+{
+	normalSample = (2.0f * normalSample) - 1.0f;		// Bring sample range from [0,1] to [-1,1]
+
+	pixelNormal = normalize(pixelNormal);
+	// Apply Gram-Schmidt to make sure tangent is orthogonal to the normal
+	pixelTangent = normalize(pixelTangent - dot(pixelTangent, pixelNormal) * pixelNormal);
+	float3 biTangent = cross(pixelNormal, pixelTangent);
+	float3x3 tangent2World = float3x3(pixelTangent, biTangent, pixelNormal);
+
+	return normalize(mul(normalSample, tangent2World));
+}
 
 #endif

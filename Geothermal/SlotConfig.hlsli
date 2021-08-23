@@ -1,3 +1,5 @@
+// Map each type of resource to a dedicated slot
+
 #ifndef GEOTHERMAL_SLOT_CONFIG
 #define GEOTHERMAL_SLOT_CONFIG
 

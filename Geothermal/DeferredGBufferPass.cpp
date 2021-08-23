@@ -13,6 +13,8 @@ DeferredGBufferPass::DeferredGBufferPass
 ) : 
 	SceneGeometryPass(deviceResources, nullptr, move(sink))
 {
+	assert(sink != nullptr);
+	assert(sink->size() == GBufferCount);
 }
 
 void DeferredGBufferPass::operator()()

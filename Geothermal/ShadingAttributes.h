@@ -17,9 +17,7 @@ namespace Geothermal::Graphics::Structures
 		float Diffuse;
 		float Specular;
 		float Smoothness;
-		// In order to keep us aligned 
-		// we combine UseAlbedoMap and UserNormalMap into the same field
-		//	&0x01 bit for albedo, &0x02 bit for normal
+		// In order to keep the struct 16-bytes-aligned, we combine texture flags into the same field
 		int TextureFlags;
 	};
 
@@ -27,17 +25,17 @@ namespace Geothermal::Graphics::Structures
 	{
 		DirectX::XMFLOAT4		Color;
 		DirectX::XMFLOAT3		Direction;
-		float								Padding0;
+		float									Padding0;
 	};
 
 	struct Light
 	{
 		DirectX::XMFLOAT4		Color;
 		DirectX::XMFLOAT4		Position;
-		float								Radius;
-		float								Attenuation;
-		int									Type;
-		float								Padding0;
+		float									Radius;
+		float									Attenuation;
+		int										Type;
+		float									Padding0;
 	};
 
 	constexpr uint maximumPointLightNumber = 32;
