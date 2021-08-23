@@ -150,6 +150,7 @@
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoreRenderPipeline.cpp" />
+    <ClCompile Include="DeferredGBufferPass.cpp" />
     <ClCompile Include="SceneGeometryPass.cpp" />
     <ClCompile Include="WireframeDebugPass.cpp" />
     <ClCompile Include="DeviceResources.cpp" />

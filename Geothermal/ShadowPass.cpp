@@ -45,7 +45,7 @@ void ShadowPass::operator()()
 	SetUpPipelineStates();
 
 	// Render from the perspective of the main light
-	// Assuming a call to UpdateWorld2Light earlier
+	// Assuming a call to UpdateWorld2Light earlier in the same frame
 	shadowCaster.Bind(world2light);
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
@@ -57,6 +57,7 @@ void ShadowPass::operator()()
 void ShadowPass::SetUpPipelineStates()
 {
 	deviceResources->ResetDefaultPipelineStates();
+	// Render the depth to mainShadowMap
 	deviceResources->Context()->ClearDepthStencilView
 	(
 		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0
