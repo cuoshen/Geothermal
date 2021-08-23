@@ -40,7 +40,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 
 	// Initialize our linear render graph here
 
-	shadowPass = make_unique<Passes::ShadowPass>(deviceResources, nullptr, nullptr);
+	shadowPass = make_unique<Passes::ShadowPass>(deviceResources);
 
 	auto simpleForwardSink = make_unique<vector<Texture2D*>>();
 	simpleForwardSink->push_back(hdrTargets[0].get());
@@ -50,7 +50,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	postProcessingSource->push_back(hdrTargets[0].get());
 	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, move(postProcessingSource), nullptr);
 
-	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources, nullptr, nullptr);
+	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources);
 
 	mainShadowMap = shadowPass->MainShadowMap();
 

@@ -11,11 +11,9 @@ using namespace DirectX;
 
 WireframeDebugPass::WireframeDebugPass
 (
-	shared_ptr<DeviceResources> const& deviceResources, 
-	unique_ptr<vector<Texture2D*>> source,
-	unique_ptr<vector<Texture2D*>> sink
+	shared_ptr<DeviceResources> const& deviceResources
 ) : 
-	SceneGeometryPass(deviceResources, move(source), move(sink)),
+	SceneGeometryPass(deviceResources, nullptr, nullptr),
 	states(nullptr)
 {
 	states = make_unique<CommonStates>(deviceResources->Device());

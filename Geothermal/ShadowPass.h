@@ -4,14 +4,15 @@
 
 namespace Geothermal::Graphics::Passes
 {
+	/// <summary>
+	/// Render to a depth map from the perspective of the light as the shadow map.
+	/// </summary>
 	class ShadowPass : public RenderPass
 	{
 	public:
 		ShadowPass
 		(
-			std::shared_ptr<DeviceResources> const& deviceResources,
-			std::unique_ptr<std::vector<Texture2D*>> source,
-			std::unique_ptr<std::vector<Texture2D*>> sink
+			std::shared_ptr<DeviceResources> const& deviceResources
 		);
 
 		DirectX::XMMATRIX UpdateWorld2Light(DirectX::XMVECTOR castingOrigin, DirectX::XMVECTOR lightDirection);
@@ -26,7 +27,7 @@ namespace Geothermal::Graphics::Passes
 		void SetUpPipelineStates() override;
 
 		/// <summary>
-		/// The shadow pass owns the main shadow map resource
+		/// The shadow pass partially owns the main shadow map resource
 		/// </summary>
 		std::shared_ptr<ShadowMap> mainShadowMap;
 		D3D11_VIEWPORT shadowViewPort;
