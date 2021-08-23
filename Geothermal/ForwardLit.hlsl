@@ -12,7 +12,7 @@ cbuffer Properties : register(PROPERTIES_SLOT)
 float4 main(Varyings input) : SV_TARGET
 {
 	float4 textureColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	float3 normal = normalize(input.normal);
+	float3 normal;
 
 	// Parse texture flags
 	int useAlbedoMap = Property.textureFlags & 0x01;
@@ -24,12 +24,17 @@ float4 main(Varyings input) : SV_TARGET
 	{
 		textureColor = AlbedoMap.Sample(Sampler, input.texcoord);
 	}
+
 	if (useNormalMap)
 	{
 		float3 normalSample = NormalMap.Sample(Sampler, input.texcoord).xyz;
 		// Compute normal
 		// by transporting normal sample from tangent space to world space
 		normal = ComputeWorldSpaceNormal(input.normal, input.tangent, normalSample);
+	}
+	else
+	{
+		normal = normalize(input.normal);
 	}
 
 	// Lighting
