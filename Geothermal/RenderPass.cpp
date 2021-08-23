@@ -9,9 +9,9 @@ using namespace Passes;
 RenderPass::RenderPass
 (
 	shared_ptr<DeviceResources> const& deviceResources,
-	vector<Texture2D*> const& source,
-	vector<Texture2D*> const& sink
+	std::unique_ptr<std::vector<Texture2D*>> source,
+	std::unique_ptr<std::vector<Texture2D*>> sink
 ) :
-	deviceResources(deviceResources), source(source), sink(sink)
+	deviceResources(deviceResources), source(move(source)), sink(move(sink))
 {
 }

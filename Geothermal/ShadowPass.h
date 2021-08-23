@@ -10,8 +10,8 @@ namespace Geothermal::Graphics::Passes
 		ShadowPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			std::vector<Texture2D*> const& source,
-			std::vector<Texture2D*> const& sink
+			std::unique_ptr<std::vector<Texture2D*>> source,
+			std::unique_ptr<std::vector<Texture2D*>> sink
 		);
 
 		DirectX::XMMATRIX UpdateWorld2Light(DirectX::XMVECTOR castingOrigin, DirectX::XMVECTOR lightDirection);

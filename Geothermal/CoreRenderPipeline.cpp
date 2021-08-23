@@ -39,22 +39,18 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	}
 
 	// Initialize our linear render graph here
-	// We create sources and sinks here, then pass their control into the RenderPasses
-	// No memory leak should occur
 
-	auto emptyTargetContainer = vector<Texture2D*>();
+	shadowPass = make_unique<Passes::ShadowPass>(deviceResources, nullptr, nullptr);
 
-	shadowPass = make_unique<Passes::ShadowPass>(deviceResources, emptyTargetContainer, emptyTargetContainer);
-
-	vector<Texture2D*>* simpleForwardSink = new vector<Texture2D*>();
+	auto simpleForwardSink = make_unique<vector<Texture2D*>>();
 	simpleForwardSink->push_back(hdrTargets[0].get());
-	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, emptyTargetContainer, *simpleForwardSink);
+	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, nullptr, move(simpleForwardSink));
 
-	vector<Texture2D*>* postProcessingSource = new vector<Texture2D*>();
+	auto postProcessingSource = make_unique<vector<Texture2D*>>();
 	postProcessingSource->push_back(hdrTargets[0].get());
-	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, *postProcessingSource, emptyTargetContainer);
+	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, move(postProcessingSource), nullptr);
 
-	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources, emptyTargetContainer, emptyTargetContainer);
+	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources, nullptr, nullptr);
 
 	mainShadowMap = shadowPass->MainShadowMap();
 

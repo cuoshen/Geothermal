@@ -16,8 +16,8 @@ namespace Geothermal::Graphics::Passes
 		WireframeDebugPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			std::vector<Texture2D*> const& source,
-			std::vector<Texture2D*> const& sink
+			std::unique_ptr<std::vector<Texture2D*>> source,
+			std::unique_ptr<std::vector<Texture2D*>> sink
 		);
 
 		void operator()() override;

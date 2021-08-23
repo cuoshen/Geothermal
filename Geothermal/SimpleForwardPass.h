@@ -17,8 +17,8 @@ namespace Geothermal::Graphics::Passes
 		SimpleForwardPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			std::vector<Texture2D*> const& source,
-			std::vector<Texture2D*> const& sink
+			std::unique_ptr<std::vector<Texture2D*>> source,
+			std::unique_ptr<std::vector<Texture2D*>> sink
 		);
 
 		void SetDelegates

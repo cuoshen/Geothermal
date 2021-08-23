@@ -11,11 +11,11 @@ using namespace DirectX;
 
 ShadowPass::ShadowPass
 (
-	std::shared_ptr<DeviceResources> const& deviceResources, 
-	std::vector<Texture2D*> const& source, 
-	std::vector<Texture2D*> const& sink
+	shared_ptr<DeviceResources> const& deviceResources, 
+	unique_ptr<vector<Texture2D*>> source,
+	unique_ptr<vector<Texture2D*>> sink
 ) : 
-	RenderPass(deviceResources, source, sink),
+	RenderPass(deviceResources, move(source), move(sink)),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f)
 {
 	shadowViewPort = CD3D11_VIEWPORT(

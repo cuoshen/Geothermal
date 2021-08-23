@@ -9,10 +9,11 @@ using namespace std;
 SceneGeometryPass::SceneGeometryPass
 (
 	shared_ptr<DeviceResources> const& deviceResources, 
-	vector<Texture2D*> const& source, 
-	vector<Texture2D*> const& sink
+	std::unique_ptr<std::vector<Texture2D*>> source,
+	std::unique_ptr<std::vector<Texture2D*>> sink
 ) : 
-	RenderPass(deviceResources, source, sink), renderables(), camera(nullptr)
+	RenderPass(deviceResources, move(source), move(sink)), 
+	renderables(), camera(nullptr)
 {
 }
 
