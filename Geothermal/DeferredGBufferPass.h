@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "RenderPass.h"
 #include "SceneGeometryPass.h"
 
@@ -24,5 +25,9 @@ namespace Geothermal::Graphics::Passes
 		);
 
 		void operator()() override;
+
+	protected:
+		void SetUpPipelineStates() override;
+		ID3D11RenderTargetView* targets[GBufferCount];
 	};
 }

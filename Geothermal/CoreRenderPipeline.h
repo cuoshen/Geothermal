@@ -7,6 +7,8 @@
 
 namespace Geothermal::Graphics
 {
+	constexpr uint HDRTargetCount = 4;
+
 	/// <summary>
 	/// Global render pipeline object
 	/// that is in charge of scheduling and dispatching rendering tasks.
@@ -34,7 +36,8 @@ namespace Geothermal::Graphics
 		std::unique_ptr<Passes::WireframeDebugPass> debugPass;
 		bool debugMode;
 
-		std::unique_ptr<Texture2D> hdrTargets[4];
+		std::unique_ptr<Texture2D> hdrTargets[HDRTargetCount];
+		std::unique_ptr<Texture2D> gBuffers[GBufferCount];
 
 		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class

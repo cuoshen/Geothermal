@@ -27,8 +27,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightsConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	
-	static constexpr uint TargetCount = 4;
-	for (uint i = 0; i < TargetCount; i++)
+	for (uint i = 0; i < HDRTargetCount; i++)
 	{
 		hdrTargets[i] = make_unique<Texture2D>
 		(

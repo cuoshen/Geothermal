@@ -7,3 +7,5 @@
 #include "SimpleForwardPass.h"
 #include "PostProcessingPass.h"
 #include "WireframeDebugPass.h"
+#include "DeferredGBufferPass.h"
+#include "DeferredLightingPass.h"
