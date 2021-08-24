@@ -61,7 +61,7 @@ void CoreRenderPipeline::Render()
 		(*debugPass)();
 	}
 
-	DrawGUI();
+	DrawGUI();	// Draw GUI on top of game graphics
 	deviceResources->Present();
 }
 
@@ -121,12 +121,24 @@ void CoreRenderPipeline::InitializeHDRTargets()
 				deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 				deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-				);
+			);
 	}
 }
 
 void CoreRenderPipeline::InitializeGBuffers()
 {
+	gBuffers[0] = make_unique<Texture2D>
+		(
+			deviceResources, DXGI_FORMAT_R8G8B8A8_UNORM,
+			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+		);
+	gBuffers[1] = make_unique<Texture2D>
+		(
+			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
+			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+		);
 }
 
 void CoreRenderPipeline::BuildRenderGraph()
