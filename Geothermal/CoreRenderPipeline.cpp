@@ -23,37 +23,14 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr)
 {
 	ShaderCache::Initialize(deviceResources);
-
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightsConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
 	
-	for (uint i = 0; i < HDRTargetCount; i++)
-	{
-		hdrTargets[i] = make_unique<Texture2D>
-		(
-		deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
-		deviceResources->OutputSize().x, deviceResources->OutputSize().y,
-		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-		);
-	}
+	InitializeHDRTargets();
+	InitializeGBuffers();
+	BuildRenderGraph();
 
-	// Initialize our linear render graph here
-
-	shadowPass = make_unique<Passes::ShadowPass>(deviceResources);
-
-	auto simpleForwardSink = make_unique<vector<Texture2D*>>();
-	simpleForwardSink->push_back(hdrTargets[0].get());
-	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, nullptr, move(simpleForwardSink));
-
-	auto postProcessingSource = make_unique<vector<Texture2D*>>();
-	postProcessingSource->push_back(hdrTargets[0].get());
-	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, move(postProcessingSource), nullptr);
-
-	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources);
-
-	mainShadowMap = shadowPass->MainShadowMap();
-
-	OutputDebugString(L"Core Renderer ready \n");
+	OutputDebugString(L"Core render pipeline ready \n");
 }
 
 void CoreRenderPipeline::Render()
@@ -133,6 +110,40 @@ void CoreRenderPipeline::ResetCamera()
 	camera->GetTransform().UpdateTransform(XMMatrixIdentity());
 	camera->Pitch(0.0f);
 	camera->Yaw(0.0f);
+}
+
+void CoreRenderPipeline::InitializeHDRTargets()
+{
+	for (uint i = 0; i < HDRTargetCount; i++)
+	{
+		hdrTargets[i] = make_unique<Texture2D>
+			(
+				deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
+				deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+				);
+	}
+}
+
+void CoreRenderPipeline::InitializeGBuffers()
+{
+}
+
+void CoreRenderPipeline::BuildRenderGraph()
+{
+	shadowPass = make_unique<Passes::ShadowPass>(deviceResources);
+
+	auto simpleForwardSink = make_unique<vector<Texture2D*>>();
+	simpleForwardSink->push_back(hdrTargets[0].get());
+	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, nullptr, move(simpleForwardSink));
+
+	auto postProcessingSource = make_unique<vector<Texture2D*>>();
+	postProcessingSource->push_back(hdrTargets[0].get());
+	postProcessingPass = make_unique<Passes::PostProcessingPass>(deviceResources, move(postProcessingSource), nullptr);
+
+	debugPass = make_unique<Passes::WireframeDebugPass>(deviceResources);
+
+	mainShadowMap = shadowPass->MainShadowMap();
 }
 
 void CoreRenderPipeline::UploadShadowResources()

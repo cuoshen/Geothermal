@@ -29,6 +29,9 @@ namespace Geothermal::Graphics
 		void StartGUIFrame();
 		void DrawGUI();
 		void ResetCamera();
+		void InitializeHDRTargets();
+		void InitializeGBuffers();
+		void BuildRenderGraph();
 
 		std::unique_ptr<Passes::ShadowPass> shadowPass;
 		std::unique_ptr<Passes::SimpleForwardPass> simpleForwardPass;
@@ -37,7 +40,7 @@ namespace Geothermal::Graphics
 		bool debugMode;
 
 		std::unique_ptr<Texture2D> hdrTargets[HDRTargetCount];
-		std::unique_ptr<Texture2D> gBuffers[GBufferCount];
+		std::unique_ptr<Texture2D> gBuffers[Passes::GBufferCount];
 
 		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class

@@ -46,9 +46,9 @@ GBufferOutput main(Varyings input)
 	}
 
 	float4 albedo = Property.baseColor + textureColor + Property.ambient;
-	g0.xyz = albedo.xyz;
-	g1.xyz = normal.xyz;
-	g1.w = Property.smoothness;
+	output.g0.xyz = albedo.xyz;
+	output.g1.xyz = normal.xyz;
+	output.g1.w = Property.smoothness;
 
 	return output;
 }
