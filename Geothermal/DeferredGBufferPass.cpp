@@ -13,12 +13,12 @@ DeferredGBufferPass::DeferredGBufferPass
 ) : 
 	SceneGeometryPass(deviceResources, nullptr, move(sink))
 {
-	assert(sink != nullptr);
-	assert(sink->size() == GBufferCount);
+	assert(this->sink != nullptr);
+	assert(this->sink->size() == GBufferCount);
 
 	for (uint i = 0; i < GBufferCount; i++)
 	{
-		targets[i] = (*sink)[i]->UseAsRenderTarget().get();
+		targets[i] = (*this->sink)[i]->UseAsRenderTarget().get();
 	}
 }
 
