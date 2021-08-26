@@ -9,6 +9,8 @@ namespace Geothermal::Graphics::Passes
 
 	/// <summary>
 	/// Deferred rendering geometry pass.
+	/// Render all the objects in the frustum into a collection of GBuffers,
+	/// which is later used in DeferredLightingPass to shade the actual scene.
 	/// </summary>
 	class DeferredGBufferPass : public SceneGeometryPass
 	{

@@ -102,6 +102,9 @@
     <ClCompile Include="DeferredGBufferPass.cpp">
       <Filter>Graphics\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="DeferredLightingPass.cpp">
+      <Filter>Graphics\Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -312,6 +315,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="DeferredGBuffer.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredLit.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
