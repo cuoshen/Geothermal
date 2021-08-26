@@ -17,7 +17,7 @@ bool IsInShadow(float4 lightSpacePosition, SamplerState samplerState)
 		(
 			(saturate(projectedPosition.x) == projectedPosition.x) &&
 			(saturate(projectedPosition.y) == projectedPosition.y)
-			)
+		)
 	{
 		float depthReachedByLight = ShadowMap.Sample(samplerState, projectedPosition).r;
 		depthReachedByLight += SHADOW_BIAS;

@@ -5,6 +5,7 @@ using namespace Geothermal;
 using namespace Graphics;
 using namespace Passes;
 using namespace std;
+using namespace DirectX;
 
 DeferredLightingPass::DeferredLightingPass
 (
@@ -14,6 +15,7 @@ DeferredLightingPass::DeferredLightingPass
 ) : 
 	RenderPass(deviceResources, move(source), move(sink))
 {
+	states = make_unique<CommonStates>(deviceResources->Device());
 }
 
 void DeferredLightingPass::SetDelegates(function<void(void)> uploadShadowResources)
@@ -23,9 +25,16 @@ void DeferredLightingPass::SetDelegates(function<void(void)> uploadShadowResourc
 
 void DeferredLightingPass::SetUpPipelineStates()
 {
-
+	deviceResources->Context()->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
+	deviceResources->Context()->OMSetDepthStencilState(states->DepthNone(), 0);
+	deviceResources->Context()->RSSetState(states->CullNone());
+	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }
 
 void DeferredLightingPass::operator()()
 {
+	SetUpPipelineStates();
+
+	// Execute full screen lighting pass
+
 }

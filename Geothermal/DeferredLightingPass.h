@@ -29,6 +29,7 @@ namespace Geothermal::Graphics::Passes
 	protected:
 		void SetUpPipelineStates() override;
 
+		std::unique_ptr<DirectX::CommonStates> states;
 		std::function<void(void)> uploadShadowResources;
 	};
 }

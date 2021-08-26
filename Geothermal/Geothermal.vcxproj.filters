@@ -320,6 +320,9 @@
     <FxCompile Include="DeferredLit.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="FullscreenQuad.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Common.hlsli">
@@ -334,6 +337,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shadow.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="DeferredCommon.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
