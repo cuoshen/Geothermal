@@ -18,7 +18,7 @@ DeferredGBufferPass::DeferredGBufferPass
 
 	for (uint i = 0; i < GBufferCount; i++)
 	{
-		targets[i] = (*this->sink)[i]->UseAsRenderTarget().get();
+		targets[i] = (*(this->sink))[i]->UseAsRenderTarget().get();
 	}
 }
 

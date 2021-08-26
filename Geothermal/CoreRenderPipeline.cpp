@@ -53,6 +53,9 @@ void CoreRenderPipeline::Render()
 	);
 	(*simpleForwardPass)();
 
+	deferredGBufferPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+	(*deferredGBufferPass)();
+
 	(*postProcessingPass)();
 
 	if (debugMode)
@@ -148,6 +151,13 @@ void CoreRenderPipeline::BuildRenderGraph()
 	auto simpleForwardSink = make_unique<vector<Texture2D*>>();
 	simpleForwardSink->push_back(hdrTargets[0].get());
 	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, nullptr, move(simpleForwardSink));
+
+	auto gBufferSink = make_unique<vector<Texture2D*>>();
+	for (uint i = 0; i < GBufferCount; i++)
+	{
+		gBufferSink->push_back(gBuffers[i].get());
+	}
+	deferredGBufferPass = make_unique<Passes::DeferredGBufferPass>(deviceResources, move(gBufferSink));
 
 	auto postProcessingSource = make_unique<vector<Texture2D*>>();
 	postProcessingSource->push_back(hdrTargets[0].get());

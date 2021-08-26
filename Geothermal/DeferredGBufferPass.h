@@ -10,7 +10,7 @@ namespace Geothermal::Graphics::Passes
 	/// <summary>
 	/// Deferred rendering geometry pass.
 	/// </summary>
-	class DeferredGBufferPass : SceneGeometryPass
+	class DeferredGBufferPass : public SceneGeometryPass
 	{
 	public:
 		/// <param name="sink">
