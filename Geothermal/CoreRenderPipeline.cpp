@@ -142,13 +142,13 @@ void CoreRenderPipeline::InitializeGBuffers()
 		(
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
-			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 1u
 		);
 	gBuffers[2] = make_unique<Texture2D>
 		(
 			deviceResources, DXGI_FORMAT_R32_TYPELESS, 
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
-			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, 0u
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, 2u
 		);
 }
 

@@ -4,7 +4,7 @@
 struct QuadPixel
 {
 	float4 position : SV_Position;
-	float2 texCoord : TEXCOORD;
+	float2 texcoord : TEXCOORD;
 };
 
 #endif
