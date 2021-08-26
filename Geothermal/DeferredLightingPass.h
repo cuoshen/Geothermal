@@ -29,6 +29,11 @@ namespace Geothermal::Graphics::Passes
 	protected:
 		void SetUpPipelineStates() override;
 
+		/// <summary>
+		/// Generate a full screen quad and shade everything with directional main light
+		/// </summary>
+		std::unique_ptr<Materials::Material> deferredDirectionalLit;
+
 		std::unique_ptr<DirectX::CommonStates> states;
 		std::function<void(void)> uploadShadowResources;
 	};

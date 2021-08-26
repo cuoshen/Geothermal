@@ -1,4 +1,5 @@
 #include "Common.hlsli"
+#include "DeferredCommon.hlsli"
 
 Texture2D GBuffer0 : register(GBUFFER_0_SLOT);
 Texture2D GBuffer1 : register(GBUFFER_1_SLOT);

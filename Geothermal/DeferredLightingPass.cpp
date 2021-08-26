@@ -4,6 +4,8 @@
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Passes;
+using namespace Materials;
+using namespace Structures;
 using namespace std;
 using namespace DirectX;
 
@@ -16,6 +18,8 @@ DeferredLightingPass::DeferredLightingPass
 	RenderPass(deviceResources, move(source), move(sink))
 {
 	states = make_unique<CommonStates>(deviceResources->Device());
+	deferredDirectionalLit = 
+		make_unique<Material>(deviceResources, L"FullscreenQuad.cso", L"DeferredLit.cso", nullptr, 0);
 }
 
 void DeferredLightingPass::SetDelegates(function<void(void)> uploadShadowResources)
@@ -25,16 +29,34 @@ void DeferredLightingPass::SetDelegates(function<void(void)> uploadShadowResourc
 
 void DeferredLightingPass::SetUpPipelineStates()
 {
-	deviceResources->Context()->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
-	deviceResources->Context()->OMSetDepthStencilState(states->DepthNone(), 0);
-	deviceResources->Context()->RSSetState(states->CullNone());
-	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
+	auto context = deviceResources->Context();
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
+	context->OMSetDepthStencilState(states->DepthNone(), 0);
+	context->RSSetState(states->CullNone());
+	context->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }
 
 void DeferredLightingPass::operator()()
 {
+	auto context = deviceResources->Context();
 	SetUpPipelineStates();
 
-	// Execute full screen lighting pass
+	deferredDirectionalLit->Bind();
 
+	// Set HDR target
+	ID3D11RenderTargetView* target = (*sink)[0]->UseAsRenderTarget().get();
+	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
+
+	// Bind Gbuffers as shader resources
+	for (auto& texture : *source)
+	{
+		ID3D11ShaderResourceView* srv = texture->UseAsShaderResource().get();
+		context->PSSetShaderResources(texture->Slot(), 1, &srv);
+	}
+
+	// Execute full screen lighting pass
+	context->IASetInputLayout(nullptr);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	context->Draw(3, 0);
 }
