@@ -168,9 +168,9 @@ void GameMain::InitializeDebugResource()
 	// For now we want to put everything into a single test material
 	// TODO: remove this and support per-object material instead
 	materials[0] =
-		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"DeferredGBuffer.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
 	materials[1] =
-		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"DeferredGBuffer.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
 
 	ShadingAttributes shadingParameters0 = ShadingAttributes
 	{

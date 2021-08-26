@@ -47,7 +47,7 @@ void DeferredGBufferPass::operator()()
 	SetUpPipelineStates();
 
 	// Bind multiple render targets
-	deviceResources->SetTargets(1, targets, deviceResources->DepthStencilView());
+	deviceResources->SetTargets(GBufferCount, targets, deviceResources->DepthStencilView());
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 

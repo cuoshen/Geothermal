@@ -45,13 +45,13 @@ void CoreRenderPipeline::Render()
 	world2light = shadowPass->UpdateWorld2Light(mainLightShadowCastingOrigin, mainLightDirection);
 	(*shadowPass)();
 
-	simpleForwardPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
-	simpleForwardPass->SetDelegates
-	(
-		std::bind(&CoreRenderPipeline::UploadShadowResources, this),
-		std::bind(&CoreRenderPipeline::UploadLightingResources, this)
-	);
-	(*simpleForwardPass)();
+	//simpleForwardPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+	//simpleForwardPass->SetDelegates
+	//(
+	//	std::bind(&CoreRenderPipeline::UploadShadowResources, this),
+	//	std::bind(&CoreRenderPipeline::UploadLightingResources, this)
+	//);
+	//(*simpleForwardPass)();
 
 	deferredGBufferPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
 	(*deferredGBufferPass)();
