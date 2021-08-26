@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "RenderPass.h"
 
 namespace Geothermal::Graphics::Passes
@@ -18,9 +19,16 @@ namespace Geothermal::Graphics::Passes
 			std::unique_ptr<std::vector<Texture2D*>> sink
 		);
 
+		void SetDelegates
+		(
+			std::function<void(void)> uploadShadowResources
+		);
+
 		void operator()() override;
 
 	protected:
+		void SetUpPipelineStates() override;
 
+		std::function<void(void)> uploadShadowResources;
 	};
 }

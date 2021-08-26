@@ -5,7 +5,7 @@
 
 namespace Geothermal::Graphics::Passes
 {
-	constexpr uint GBufferCount = 2;
+	constexpr uint GBufferCount = 3;
 
 	/// <summary>
 	/// Deferred rendering geometry pass.
@@ -19,6 +19,7 @@ namespace Geothermal::Graphics::Passes
 		/// GBuffer layout: 
 		/// [0] R8G8B8 Albedo A8 Unused;
 		/// [1] R32G32B32 World Space Normal A32 Roughness;
+		/// [2] R32 Depth;
 		/// </param>
 		DeferredGBufferPass
 		(
@@ -30,6 +31,7 @@ namespace Geothermal::Graphics::Passes
 
 	protected:
 		void SetUpPipelineStates() override;
-		ID3D11RenderTargetView* targets[GBufferCount];
+		ID3D11RenderTargetView* renderTargets[GBufferCount - 1];
+		ID3D11DepthStencilView* depthStencil;
 	};
 }

@@ -16,6 +16,16 @@ DeferredLightingPass::DeferredLightingPass
 {
 }
 
+void DeferredLightingPass::SetDelegates(function<void(void)> uploadShadowResources)
+{
+	this->uploadShadowResources = uploadShadowResources;
+}
+
+void DeferredLightingPass::SetUpPipelineStates()
+{
+
+}
+
 void DeferredLightingPass::operator()()
 {
 }

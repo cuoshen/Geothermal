@@ -34,6 +34,7 @@ namespace Geothermal::Graphics
 		std::unique_ptr<Passes::ShadowPass> shadowPass;
 		std::unique_ptr<Passes::SimpleForwardPass> simpleForwardPass;
 		std::unique_ptr<Passes::DeferredGBufferPass> deferredGBufferPass;
+		std::unique_ptr<Passes::DeferredLightingPass> deferredLightingPass;
 		std::unique_ptr<Passes::PostProcessingPass> postProcessingPass;
 		std::unique_ptr<Passes::WireframeDebugPass> debugPass;
 		bool debugMode;

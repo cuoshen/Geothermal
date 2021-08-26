@@ -16,18 +16,20 @@ DeferredGBufferPass::DeferredGBufferPass
 	assert(this->sink != nullptr);
 	assert(this->sink->size() == GBufferCount);
 
-	for (uint i = 0; i < GBufferCount; i++)
+	for (uint i = 0; i < GBufferCount - 1; i++)
 	{
-		targets[i] = (*(this->sink))[i]->UseAsRenderTarget().get();
+		renderTargets[i] = (*(this->sink))[i]->UseAsRenderTarget().get();
 	}
+	// The last one in the GBuffer is always the depth stencil view
+	depthStencil = (*(this->sink))[GBufferCount - 1]->UseAsDepthStencil().get();
 }
 
 void DeferredGBufferPass::SetUpPipelineStates()
 {
 	deviceResources->ResetDefaultPipelineStates();
 
-	// Clear all GBuffers
-	for (uint i = 0; i < GBufferCount; i++)
+	// Clear all GBuffer RTVs
+	for (uint i = 0; i < GBufferCount - 1; i++)
 	{
 		deviceResources->Context()->ClearRenderTargetView
 		(
@@ -35,10 +37,12 @@ void DeferredGBufferPass::SetUpPipelineStates()
 		);
 	}
 
+	// Clear GBuffer depth map
 	deviceResources->Context()->ClearDepthStencilView
 	(
-		deviceResources->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0
+		depthStencil, D3D11_CLEAR_DEPTH, 1.0f, 0
 	);
+
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }
 
@@ -46,8 +50,8 @@ void DeferredGBufferPass::operator()()
 {
 	SetUpPipelineStates();
 
-	// Bind multiple render targets
-	deviceResources->SetTargets(GBufferCount, targets, deviceResources->DepthStencilView());
+	// Bind GBuffers
+	deviceResources->SetTargets(GBufferCount - 1, renderTargets, depthStencil);
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 

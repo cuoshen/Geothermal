@@ -18,9 +18,8 @@ using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
-	deviceResources(deviceResources), camera(nullptr), lightsConstantBuffer(nullptr),
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false),
-	ShadowCasterParametersBuffer(deviceResources, 5u), mainShadowMap(nullptr)
+	deviceResources(deviceResources), ShadowCasterParametersBuffer(deviceResources, 5u), 
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false)	
 {
 	ShaderCache::Initialize(deviceResources);
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
@@ -141,6 +140,12 @@ void CoreRenderPipeline::InitializeGBuffers()
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
+		);
+	gBuffers[2] = make_unique<Texture2D>
+		(
+			deviceResources, DXGI_FORMAT_R32_TYPELESS, 
+			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, 0u
 		);
 }
 
