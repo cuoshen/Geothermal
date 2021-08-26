@@ -6,6 +6,7 @@
 namespace Geothermal::Graphics::Passes
 {
 	constexpr uint GBufferCount = 3;
+	constexpr uint GBufferRenderTargetCount = GBufferCount - 1;
 
 	/// <summary>
 	/// Deferred rendering geometry pass.

@@ -14,4 +14,8 @@
 #define NORMAL_MAP_SLOT t1
 #define SHADOW_MAP_SLOT t2
 
+#define GBUFFER_0_SLOT t0
+#define GBUFFER_1_SLOT t1
+#define GBUFFER_DEPTH_SLOT t2
+
 #endif

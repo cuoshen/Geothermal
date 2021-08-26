@@ -16,7 +16,7 @@ DeferredGBufferPass::DeferredGBufferPass
 	assert(this->sink != nullptr);
 	assert(this->sink->size() == GBufferCount);
 
-	for (uint i = 0; i < GBufferCount - 1; i++)
+	for (uint i = 0; i < GBufferRenderTargetCount; i++)
 	{
 		renderTargets[i] = (*(this->sink))[i]->UseAsRenderTarget().get();
 	}
@@ -29,7 +29,7 @@ void DeferredGBufferPass::SetUpPipelineStates()
 	deviceResources->ResetDefaultPipelineStates();
 
 	// Clear all GBuffer RTVs
-	for (uint i = 0; i < GBufferCount - 1; i++)
+	for (uint i = 0; i < GBufferRenderTargetCount; i++)
 	{
 		deviceResources->Context()->ClearRenderTargetView
 		(
@@ -51,7 +51,7 @@ void DeferredGBufferPass::operator()()
 	SetUpPipelineStates();
 
 	// Bind GBuffers
-	deviceResources->SetTargets(GBufferCount - 1, renderTargets, depthStencil);
+	deviceResources->SetTargets(GBufferRenderTargetCount, renderTargets, depthStencil);
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera
 

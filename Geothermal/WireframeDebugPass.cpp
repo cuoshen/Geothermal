@@ -37,8 +37,6 @@ void WireframeDebugPass::SetUpPipelineStates()
 {
 	deviceResources->Context()->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
 	deviceResources->Context()->OMSetDepthStencilState(states->DepthNone(), 0);
-
-	// Set rasterizer state to wireframe
 	deviceResources->Context()->RSSetState(states->CullNone());
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }
