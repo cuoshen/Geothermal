@@ -55,6 +55,9 @@ void CoreRenderPipeline::Render()
 	deferredGBufferPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
 	(*deferredGBufferPass)();
 
+	deferredLightingPass->SetDelegates(std::bind(&CoreRenderPipeline::UploadShadowResources, this));
+	(*deferredLightingPass)();
+
 	(*postProcessingPass)();
 
 	if (debugMode)
@@ -163,6 +166,15 @@ void CoreRenderPipeline::BuildRenderGraph()
 		gBufferSink->push_back(gBuffers[i].get());
 	}
 	deferredGBufferPass = make_unique<Passes::DeferredGBufferPass>(deviceResources, move(gBufferSink));
+
+	auto deferredLitSink = make_unique<vector<Texture2D*>>();
+	deferredLitSink->push_back(hdrTargets[0].get());
+	auto gBufferSource = make_unique<vector<Texture2D*>>();
+	for (uint i = 0; i < GBufferCount; i++)
+	{
+		gBufferSource->push_back(gBuffers[i].get());
+	}
+	deferredLightingPass = make_unique<Passes::DeferredLightingPass>(deviceResources, move(gBufferSource), move(deferredLitSink));
 
 	auto postProcessingSource = make_unique<vector<Texture2D*>>();
 	postProcessingSource->push_back(hdrTargets[0].get());
