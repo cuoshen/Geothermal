@@ -49,7 +49,8 @@ namespace Geothermal::Graphics
 		XMMATRIX world2light;
 		void UploadShadowResources();
 		void UploadLightingResources();
-		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > ShadowCasterParametersBuffer;
+		Bindables::VertexConstantBuffer<DirectX::XMMATRIX > shadowParametersVSBuffer;
+		Bindables::PixelConstantBuffer<DirectX::XMMATRIX > shadowParametersPSBuffer;
 
 		Structures::ForwardLightBuffer lights;
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::ForwardLightBuffer>> lightsConstantBuffer;

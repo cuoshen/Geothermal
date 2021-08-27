@@ -18,7 +18,9 @@ using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
-	deviceResources(deviceResources), ShadowCasterParametersBuffer(deviceResources, 5u),
+	deviceResources(deviceResources), 
+	shadowParametersVSBuffer(deviceResources, ShadowMapSlot),
+	shadowParametersPSBuffer(deviceResources, ShadowMapSlot),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false)
 {
 	ShaderCache::Initialize(deviceResources);
@@ -198,8 +200,10 @@ void CoreRenderPipeline::UploadShadowResources()
 	ID3D11ShaderResourceView* shadowMapSRVAddress = shadowMapSRV.get();
 	deviceResources->Context()->PSSetShaderResources(mainShadowMap->Slot(), 1, &shadowMapSRVAddress);
 	// Upload shadow parameters to GPU
-	ShadowCasterParametersBuffer.Update(XMMatrixTranspose(world2light * shadowPass->CasterPerspective()));
-	ShadowCasterParametersBuffer.Bind();
+	shadowParametersVSBuffer.Update(XMMatrixTranspose(world2light * shadowPass->CasterPerspective()));
+	shadowParametersVSBuffer.Bind();
+	shadowParametersPSBuffer.Update(XMMatrixTranspose(world2light * shadowPass->CasterPerspective()));
+	shadowParametersPSBuffer.Bind();
 }
 
 void CoreRenderPipeline::UploadLightingResources()
