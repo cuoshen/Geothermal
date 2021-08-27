@@ -18,13 +18,13 @@ using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
-	deviceResources(deviceResources), ShadowCasterParametersBuffer(deviceResources, 5u), 
-	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false)	
+	deviceResources(deviceResources), ShadowCasterParametersBuffer(deviceResources, 5u),
+	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false)
 {
 	ShaderCache::Initialize(deviceResources);
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
 	lightsConstantBuffer = make_unique<PixelConstantBuffer<ForwardLightBuffer>>(deviceResources, lights, 7);
-	
+
 	InitializeHDRTargets();
 	InitializeGBuffers();
 	BuildRenderGraph();
@@ -44,20 +44,25 @@ void CoreRenderPipeline::Render()
 	world2light = shadowPass->UpdateWorld2Light(mainLightShadowCastingOrigin, mainLightDirection);
 	(*shadowPass)();
 
-	//simpleForwardPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
-	//simpleForwardPass->SetDelegates
-	//(
-	//	std::bind(&CoreRenderPipeline::UploadShadowResources, this),
-	//	std::bind(&CoreRenderPipeline::UploadLightingResources, this)
-	//);
-	//(*simpleForwardPass)();
+	if (DeferredMode)
+	{
+		deferredGBufferPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+		(*deferredGBufferPass)();
 
-	deferredGBufferPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
-	(*deferredGBufferPass)();
-
-	deferredLightingPass->SetDelegates(std::bind(&CoreRenderPipeline::UploadShadowResources, this));
-	deferredLightingPass->SetParameters(deferredAmbience, lights.MainLight, camera.get());
-	(*deferredLightingPass)();
+		deferredLightingPass->SetDelegates(std::bind(&CoreRenderPipeline::UploadShadowResources, this));
+		deferredLightingPass->SetParameters(deferredAmbience, lights.MainLight, camera.get());
+		(*deferredLightingPass)();
+	}
+	else
+	{
+		simpleForwardPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+		simpleForwardPass->SetDelegates
+		(
+			std::bind(&CoreRenderPipeline::UploadShadowResources, this),
+			std::bind(&CoreRenderPipeline::UploadLightingResources, this)
+		);
+		(*simpleForwardPass)();
+	}
 
 	(*postProcessingPass)();
 
@@ -127,7 +132,7 @@ void CoreRenderPipeline::InitializeHDRTargets()
 				deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 				deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-			);
+				);
 	}
 }
 
@@ -138,19 +143,19 @@ void CoreRenderPipeline::InitializeGBuffers()
 			deviceResources, DXGI_FORMAT_R8G8B8A8_UNORM,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 0u
-		);
+			);
 	gBuffers[1] = make_unique<Texture2D>
 		(
 			deviceResources, DXGI_FORMAT_R32G32B32A32_FLOAT,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, 1u
-		);
+			);
 	gBuffers[2] = make_unique<Texture2D>
 		(
-			deviceResources, DXGI_FORMAT_R32_TYPELESS, 
+			deviceResources, DXGI_FORMAT_R32_TYPELESS,
 			deviceResources->OutputSize().x, deviceResources->OutputSize().y,
 			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, 2u
-		);
+			);
 }
 
 void CoreRenderPipeline::BuildRenderGraph()

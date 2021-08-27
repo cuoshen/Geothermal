@@ -8,6 +8,7 @@
 namespace Geothermal::Graphics
 {
 	constexpr uint HDRTargetCount = 4;
+	constexpr bool DeferredMode = true;
 
 	/// <summary>
 	/// Global render pipeline object
