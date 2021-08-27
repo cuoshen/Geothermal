@@ -46,7 +46,7 @@ struct DirectionalLight
 {
 	float4 Color;
 	float3 Direction;
-	float	Padding0;
+	float	Intensity;
 };
 
 struct Light
@@ -60,14 +60,5 @@ struct Light
 };
 
 #define MAX_POINT_LIGHTS_IN_SCENE 32
-
-// Common lighting info
-cbuffer Lights : register(LIGHTS_SLOT)
-{
-	DirectionalLight	MainLight;
-	Light						AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
-	// The x-component specify how many additional lights are active
-	uint4						LightsActivation;
-};
 
 #endif

@@ -37,6 +37,15 @@ struct VertexColoredVaryings
 #include "Lighting.hlsli"
 #include "Shadow.hlsli"
 
+// Common lighting info
+cbuffer Lights : register(LIGHTS_SLOT)
+{
+	DirectionalLight MainLight;
+	Light AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
+	// The x-component specify how many additional lights are active
+	uint4 LightsActivation;
+};
+
 float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample)
 {
 	normalSample = (2.0f * normalSample) - 1.0f;		// Bring sample range from [0,1] to [-1,1]

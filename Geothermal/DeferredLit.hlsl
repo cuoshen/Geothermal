@@ -1,5 +1,3 @@
-#include "Lighting.hlsli"
-#include "Shadow.hlsli"
 #include "DeferredCommon.hlsli"
 
 Texture2D GBuffer0 : register(GBUFFER_0_SLOT);

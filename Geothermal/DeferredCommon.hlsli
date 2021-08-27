@@ -2,6 +2,8 @@
 #define GEOTHERMAL_DEFERRED_COMMON
 
 #include "SlotConfig.hlsli"
+#include "Lighting.hlsli"
+#include "Shadow.hlsli"
 
 struct QuadPixel
 {
@@ -18,6 +20,8 @@ cbuffer DeferredViewParameters : register(VIEW_PARAMETERS_SLOT)
 cbuffer DeferredParameters : register(DEFERRED_PARAMETERS_SLOT)
 {
 	float3 Ambience;
+	float Padding0;
+	DirectionalLight MainLight;
 };
 
 float3 ReconstructWorldPosition(float2 screenSpacePosition, float depth)
