@@ -26,11 +26,11 @@ float4 main(QuadPixel input) : SV_TARGET
 				BlinnPhong
 				(
 					worldSpaceNormal, worldPosition, -MainLight.Direction,
-					0.5f, 0.5f, smoothness, CameraWorldPosition
+					0.5f, 0.5f, smoothness, ViewParameters.cameraWorldPosition
 				);
 	}
 	
 	float3 color = albedo * intensity + Ambience;
 
-	return float4(worldSpaceNormal, 1.0f);
+	return float4(color, 1.0f);
 }

@@ -55,6 +55,8 @@ namespace Geothermal::Graphics
 		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::ForwardLightBuffer>> lightsConstantBuffer;
 		std::unique_ptr<Camera> camera;
 
+		const DirectX::XMFLOAT3 deferredAmbience = { 0.0f, 0.0f, 0.06f };
+
 		std::shared_ptr<DeviceResources> deviceResources;
 	};
 }

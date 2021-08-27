@@ -6,6 +6,7 @@ using namespace Graphics;
 using namespace Passes;
 using namespace Materials;
 using namespace Structures;
+using namespace Bindables;
 using namespace std;
 using namespace DirectX;
 
@@ -20,11 +21,20 @@ DeferredLightingPass::DeferredLightingPass
 	states = make_unique<CommonStates>(deviceResources->Device());
 	deferredDirectionalLit = 
 		make_unique<Material>(deviceResources, L"FullscreenQuad.cso", L"DeferredLit.cso", nullptr, 0);
+	parameterBuffer = 
+		make_unique<PixelConstantBuffer<DeferredParameters>>(deviceResources, 3u);
 }
 
 void DeferredLightingPass::SetDelegates(function<void(void)> uploadShadowResources)
 {
 	this->uploadShadowResources = uploadShadowResources;
+}
+
+void DeferredLightingPass::SetParameters(XMFLOAT3 ambience, DirectionalLight mainLight, Camera* camera)
+{
+	parameters.Ambience = ambience;
+	parameters.MainLight = mainLight;
+	XMStoreFloat3(&(parameters.ViewParameters.CameraWorldPosition), camera->GetTransform().WorldPosition());
 }
 
 void DeferredLightingPass::SetUpPipelineStates()
@@ -34,6 +44,12 @@ void DeferredLightingPass::SetUpPipelineStates()
 	context->OMSetDepthStencilState(states->DepthNone(), 0);
 	context->RSSetState(states->CullNone());
 	context->RSSetViewports(1, &(deviceResources->ScreenViewport()));
+}
+
+void DeferredLightingPass::UploadConstantBuffers()
+{
+	parameterBuffer->Update(parameters);
+	parameterBuffer->Bind();
 }
 
 void DeferredLightingPass::operator()()
@@ -54,9 +70,7 @@ void DeferredLightingPass::operator()()
 		context->PSSetShaderResources(texture->Slot(), 1, &srv);
 	}
 
-	// Execute full screen lighting pass
-	context->IASetInputLayout(nullptr);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	UploadConstantBuffers();
 
 	context->Draw(3, 0);
 }

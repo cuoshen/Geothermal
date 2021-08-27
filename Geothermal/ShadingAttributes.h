@@ -17,15 +17,14 @@ namespace Geothermal::Graphics::Structures
 		float Diffuse;
 		float Specular;
 		float Smoothness;
-		// In order to keep the struct 16-bytes-aligned, we combine texture flags into the same field
-		int TextureFlags;
+		int TextureFlags; // In order to keep the struct 16-bytes-aligned, we combine texture flags into the same field
 	};
 
 	struct DirectionalLight
 	{
 		DirectX::XMFLOAT4		Color;
 		DirectX::XMFLOAT3		Direction;
-		float									Padding0;
+		float									Intensity;
 	};
 
 	struct Light
@@ -59,6 +58,13 @@ namespace Geothermal::Graphics::Structures
 		DirectX::XMUINT4		LightActivation;
 	};
 
+	struct DeferredViewParameters
+	{
+		DirectX::XMMATRIX Clip2WorldTransform;
+		DirectX::XMFLOAT3 CameraWorldPosition;
+		float padding;
+	};
+
 	/// <summary>
 	/// Deferred Shading Parameters
 	/// </summary>
@@ -67,5 +73,6 @@ namespace Geothermal::Graphics::Structures
 		DirectX::XMFLOAT3 Ambience;
 		float Padding0;
 		DirectionalLight MainLight;
+		DeferredViewParameters ViewParameters;
 	};
 }

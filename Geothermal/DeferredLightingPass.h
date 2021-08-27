@@ -1,6 +1,9 @@
 #pragma once
 #include <functional>
 #include "RenderPass.h"
+#include "ShadingAttributes.h"
+#include "ConstantBuffer.h"
+#include "Camera.h"
 
 namespace Geothermal::Graphics::Passes
 {
@@ -24,16 +27,25 @@ namespace Geothermal::Graphics::Passes
 			std::function<void(void)> uploadShadowResources
 		);
 
+		void SetParameters
+		(
+			DirectX::XMFLOAT3 ambience, 
+			Structures::DirectionalLight mainLight,
+			Camera* camera
+		);
+
 		void operator()() override;
 
 	protected:
 		void SetUpPipelineStates() override;
+		void UploadConstantBuffers();
 
 		/// <summary>
 		/// Generate a full screen quad and shade everything with directional main light
 		/// </summary>
 		std::unique_ptr<Materials::Material> deferredDirectionalLit;
-		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::DeferredParameters>> deferredParameterBuffer;
+		Structures::DeferredParameters parameters;
+		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::DeferredParameters>> parameterBuffer;
 
 		std::unique_ptr<DirectX::CommonStates> states;
 		std::function<void(void)> uploadShadowResources;

@@ -11,10 +11,11 @@ struct QuadPixel
 	float2 texcoord : TEXCOORD;
 };
 
-cbuffer DeferredViewParameters : register(VIEW_PARAMETERS_SLOT)
+struct DeferredViewParameters
 {
-	matrix Clip2WorldTransform;
-	float3 CameraWorldPosition;
+	matrix clip2WorldTransform;
+	float3 cameraWorldPosition;
+	float padding;
 };
 
 cbuffer DeferredParameters : register(DEFERRED_PARAMETERS_SLOT)
@@ -22,6 +23,7 @@ cbuffer DeferredParameters : register(DEFERRED_PARAMETERS_SLOT)
 	float3 Ambience;
 	float Padding0;
 	DirectionalLight MainLight;
+	DeferredViewParameters ViewParameters;
 };
 
 float3 ReconstructWorldPosition(float2 screenSpacePosition, float depth)

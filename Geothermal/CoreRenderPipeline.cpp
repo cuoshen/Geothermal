@@ -56,6 +56,7 @@ void CoreRenderPipeline::Render()
 	(*deferredGBufferPass)();
 
 	deferredLightingPass->SetDelegates(std::bind(&CoreRenderPipeline::UploadShadowResources, this));
+	deferredLightingPass->SetParameters(deferredAmbience, mainLight, camera.get());
 	(*deferredLightingPass)();
 
 	(*postProcessingPass)();
