@@ -1,6 +1,8 @@
 #ifndef GEOTHERMAL_SHADOW
 #define GEOTHERMAL_SHADOW
 
+#include "SlotConfig.hlsli"
+
 Texture2D ShadowMap : register(SHADOW_MAP_SLOT);
 
 #define SHADOW_BIAS 0.0001f

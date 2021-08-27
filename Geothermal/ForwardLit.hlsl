@@ -49,7 +49,7 @@ float4 main(Varyings input) : SV_TARGET
 				BlinnPhong
 				(
 					normal, input.worldPosition, -MainLight.Direction, 
-					Property.diffuse, Property.specular, Property.smoothness
+					Property.diffuse, Property.specular, Property.smoothness, CameraWorldPosition
 				);
 		}
 	}
@@ -59,7 +59,7 @@ float4 main(Varyings input) : SV_TARGET
 			BlinnPhong
 			(
 				normal, input.worldPosition, -MainLight.Direction, 
-				Property.diffuse, Property.specular, Property.smoothness
+				Property.diffuse, Property.specular, Property.smoothness, CameraWorldPosition
 			);
 	}
 
@@ -73,7 +73,7 @@ float4 main(Varyings input) : SV_TARGET
 				BlinnPhong
 				(
 					normal, input.worldPosition, lightDirection, 
-					Property.diffuse, Property.specular, Property.smoothness
+					Property.diffuse, Property.specular, Property.smoothness, CameraWorldPosition
 				);
 		}
 	}
