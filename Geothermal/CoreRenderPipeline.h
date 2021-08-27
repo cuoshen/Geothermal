@@ -21,7 +21,7 @@ namespace Geothermal::Graphics
 
 		void Render();
 
-		const Structures::DirectionalLight& MainLight() { return mainLight; }
+		const Structures::DirectionalLight& MainLight() { return lights.MainLight; }
 
 	private:
 		void StartGUIFrame();
@@ -43,7 +43,6 @@ namespace Geothermal::Graphics
 		std::unique_ptr<Texture2D> hdrTargets[HDRTargetCount];
 		std::unique_ptr<Texture2D> gBuffers[Passes::GBufferCount];
 
-		Structures::DirectionalLight mainLight;
 		// TODO: Refactor into dedicated shadow caster class
 		const XMVECTORF32 mainLightShadowCastingOrigin = { 0.0f, 10.0f, 0.0f };
 		std::shared_ptr<ShadowMap> mainShadowMap;
