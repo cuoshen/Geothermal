@@ -7,29 +7,14 @@
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;
+using namespace Structures;
 using namespace std;
-
-Camera* Camera::main;
 
 Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources) :
 	GameObject(),
 	ViewPoint(deviceResources, aspectRatio, nearZ, farZ),
 	pitch(0.0f), yaw(0.0f)
 {
-	// The first camera created automatically becomes the main camera
-	if (main == nullptr)
-	{
-		main = this;
-	}
-}
-
-Camera::~Camera()
-{
-	// Unregister to main camera automatically if the camera is deleted
-	if (main == this)
-	{
-		main = nullptr;
-	}
 }
 
 void Camera::Update()
@@ -89,20 +74,6 @@ void Camera::HandleRotation()
 	}
 }
 
-Camera* Camera::Main()
-{
-	assert(main != nullptr);
-	return main;
-}
-
-void Camera::SetMainToThis()
-{
-	if (main != this)
-	{
-		main = this;
-	}
-}
-
 XMMATRIX Camera::World2View()
 {
 	XMVECTOR eye = transform->WorldPosition();
@@ -121,4 +92,15 @@ XMMATRIX Camera::World2Clip()
 void Camera::BindCamera2Pipeline()
 {
 	Bind(World2View());
+}
+
+DeferredViewParameters Camera::GenerateDeferredViewParameters()
+{
+	DeferredViewParameters parameters;
+	XMStoreFloat3(&(parameters.CameraWorldPosition), transform->WorldPosition());
+	XMMATRIX world2Clip = World2Clip();
+	XMMATRIX clip2World = XMMatrixTranspose(XMMatrixInverse(nullptr, world2Clip));
+	parameters.Clip2WorldTransform = clip2World;
+
+	return parameters;
 }

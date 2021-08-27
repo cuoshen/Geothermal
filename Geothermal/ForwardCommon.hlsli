@@ -16,11 +16,6 @@ cbuffer ViewParameters : register(VIEW_PARAMETERS_SLOT)
 	float3 CameraWorldPosition;
 };
 
-cbuffer ShadowCasterParameters : register(SHADOW_TRANSFORM_SLOT)
-{
-	matrix World2Light;
-};
-
 struct Varyings
 {
 	float4 clipPosition					:	SV_POSITION;
@@ -40,5 +35,28 @@ struct VertexColoredVaryings
 };
 
 #include "Lighting.hlsli"
+#include "Shadow.hlsli"
+
+// Common lighting info
+cbuffer Lights : register(LIGHTS_SLOT)
+{
+	DirectionalLight MainLight;
+	Light AdditionalLights[MAX_POINT_LIGHTS_IN_SCENE];
+	// The x-component specify how many additional lights are active
+	uint4 LightsActivation;
+};
+
+float3 ComputeWorldSpaceNormal(float3 pixelNormal, float3 pixelTangent, float3 normalSample)
+{
+	normalSample = (2.0f * normalSample) - 1.0f;		// Bring sample range from [0,1] to [-1,1]
+
+	pixelNormal = normalize(pixelNormal);
+	// Apply Gram-Schmidt to make sure tangent is orthogonal to the normal
+	pixelTangent = normalize(pixelTangent - dot(pixelTangent, pixelNormal) * pixelNormal);
+	float3 biTangent = cross(pixelNormal, pixelTangent);
+	float3x3 tangent2World = float3x3(pixelTangent, biTangent, pixelNormal);
+
+	return normalize(mul(normalSample, tangent2World));
+}
 
 #endif

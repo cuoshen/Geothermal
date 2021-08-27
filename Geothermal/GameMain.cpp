@@ -165,19 +165,19 @@ void GameMain::InitializeDebugResource()
 		loader.LoadObj2Mesh(L"Assets\\plane.obj", L"Assets\\plane.mtl", debugPlane, deviceResources);
 	assert(loaded);
 
-	// For now we want to put everything into a single test material
-	// TODO: remove this and support per-object material instead
+	wstring pixelShaderName = L"DeferredGBuffer.cso";
+
 	materials[0] =
-		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", pixelShaderName, VertexPNTTLayout, (uint)size(VertexPNTTLayout));
 	materials[1] =
-		make_shared<Material>(deviceResources, L"LitVertexShader.cso", L"ForwardLit.cso", VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", pixelShaderName, VertexPNTTLayout, (uint)size(VertexPNTTLayout));
 
 	ShadingAttributes shadingParameters0 = ShadingAttributes
 	{
 		{0.0f, 0.0f, 0.06f, 0.0f},											// Ambient
-		{0.8f, 0.8f, 0.8f, 1.0f},												// Base color
-		0.2f,																				// Diffuse
-		2.0f,																				// Specular
+		{0.5f, 0.5f, 0.5f, 1.0f},												// Base color
+		0.5f,																				// Diffuse
+		0.5f,																				// Specular
 		10.0f,																				// Smoothness
 		USE_SHADOW_MAP		// Texture flags
 	};

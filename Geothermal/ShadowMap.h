@@ -4,7 +4,7 @@
 
 namespace Geothermal::Graphics
 {
-	constexpr uint shadowMapSlot = 2u;
+	constexpr uint ShadowMapSlot = 5u;
 
 	/// <summary>
 	/// A shadow map is a depth stencil | shader resource texture.
@@ -20,7 +20,7 @@ namespace Geothermal::Graphics
 			Texture2D
 			(
 				deviceResources, DXGI_FORMAT_R32_TYPELESS, width, height,
-				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, shadowMapSlot
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, ShadowMapSlot
 			)
 		{
 		}

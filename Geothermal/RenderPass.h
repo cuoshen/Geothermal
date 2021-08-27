@@ -14,8 +14,8 @@ namespace Geothermal::Graphics::Passes
 		RenderPass
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
-			std::vector<Texture2D*> const& source,
-			std::vector<Texture2D*> const& sink
+			std::unique_ptr<std::vector<Texture2D*>> source,
+			std::unique_ptr<std::vector<Texture2D*>> sink
 		);
 
 		/// <summary>
@@ -30,7 +30,7 @@ namespace Geothermal::Graphics::Passes
 
 		// Render pass really does not OWN the textures involved as source or sink
 		// it just need to keep some reference to them in the form of raw pointers
-		std::vector<Texture2D*> const& source;
-		std::vector<Texture2D*> const& sink;
+		std::unique_ptr<std::vector<Texture2D*>> source;
+		std::unique_ptr<std::vector<Texture2D*>> sink;
 	};
 }

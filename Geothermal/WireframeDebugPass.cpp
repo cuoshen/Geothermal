@@ -11,11 +11,9 @@ using namespace DirectX;
 
 WireframeDebugPass::WireframeDebugPass
 (
-	shared_ptr<DeviceResources> const& deviceResources, 
-	vector<Texture2D*> const& source, 
-	vector<Texture2D*> const& sink
+	shared_ptr<DeviceResources> const& deviceResources
 ) : 
-	SceneGeometryPass(deviceResources, source, sink),
+	SceneGeometryPass(deviceResources, nullptr, nullptr),
 	states(nullptr)
 {
 	states = make_unique<CommonStates>(deviceResources->Device());
@@ -39,8 +37,6 @@ void WireframeDebugPass::SetUpPipelineStates()
 {
 	deviceResources->Context()->OMSetBlendState(states->Opaque(), nullptr, 0xffffffff);
 	deviceResources->Context()->OMSetDepthStencilState(states->DepthNone(), 0);
-
-	// Set rasterizer state to wireframe
 	deviceResources->Context()->RSSetState(states->CullNone());
 	deviceResources->Context()->RSSetViewports(1, &(deviceResources->ScreenViewport()));
 }

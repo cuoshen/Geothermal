@@ -27,23 +27,31 @@ namespace Geothermal::Graphics::Bindables
 				deviceResources->Device()->
 				CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, vertexShader.put())
 			);
-			winrt::check_hresult(
-				deviceResources->Device()->
-				CreateInputLayout
-				(
-					vertexLayout,
-					layoutElementCount,
-					blob->GetBufferPointer(),
-					blob->GetBufferSize(),
-					layout.put()
-				)
-			);
+
+			if (vertexLayout != nullptr)
+			{
+				winrt::check_hresult(
+					deviceResources->Device()->
+					CreateInputLayout
+					(
+						vertexLayout,
+						layoutElementCount,
+						blob->GetBufferPointer(),
+						blob->GetBufferSize(),
+						layout.put()
+					)
+				);
+			}
 		}
 
 		void Bind() override
 		{
 			deviceResources->Context()->VSSetShader(vertexShader.get(), 0, 0);
-			deviceResources->Context()->IASetInputLayout(layout.get());
+
+			if (layout != nullptr)
+			{
+				deviceResources->Context()->IASetInputLayout(layout.get());
+			}
 		}
 
 	private:

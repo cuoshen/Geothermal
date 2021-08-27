@@ -11,11 +11,9 @@ using namespace DirectX;
 
 ShadowPass::ShadowPass
 (
-	std::shared_ptr<DeviceResources> const& deviceResources, 
-	std::vector<Texture2D*> const& source, 
-	std::vector<Texture2D*> const& sink
+	shared_ptr<DeviceResources> const& deviceResources
 ) : 
-	RenderPass(deviceResources, source, sink),
+	RenderPass(deviceResources, nullptr, nullptr),
 	shadowCaster(deviceResources, 30.0f, 30.0f, 0.0f, 1000.0f)
 {
 	shadowViewPort = CD3D11_VIEWPORT(
@@ -47,7 +45,7 @@ void ShadowPass::operator()()
 	SetUpPipelineStates();
 
 	// Render from the perspective of the main light
-	// Assuming a call to UpdateWorld2Light earlier
+	// Assuming a call to UpdateWorld2Light earlier in the same frame
 	shadowCaster.Bind(world2light);
 
 	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
@@ -59,6 +57,7 @@ void ShadowPass::operator()()
 void ShadowPass::SetUpPipelineStates()
 {
 	deviceResources->ResetDefaultPipelineStates();
+	// Render the depth to mainShadowMap
 	deviceResources->Context()->ClearDepthStencilView
 	(
 		mainShadowMap->UseAsDepthStencil().get(), D3D11_CLEAR_DEPTH, 1.0f, 0

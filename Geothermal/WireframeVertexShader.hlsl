@@ -1,4 +1,4 @@
-#include "Common.hlsli"
+#include "ForwardCommon.hlsli"
 
 struct VertexInput
 {

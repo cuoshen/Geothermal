@@ -10,10 +10,10 @@ using namespace Passes;
 SimpleForwardPass::SimpleForwardPass
 (
 	shared_ptr<DeviceResources> const& deviceResources,
-	vector<Texture2D*> const& source,
-	vector<Texture2D*> const& sink
+	unique_ptr<vector<Texture2D*>> source,
+	unique_ptr<vector<Texture2D*>> sink
 ) :
-	SceneGeometryPass(deviceResources, source, sink),
+	SceneGeometryPass(deviceResources, move(source), move(sink)),
 	uploadLightingResources(nullptr), uploadShadowResources(nullptr)
 {
 }
@@ -33,7 +33,7 @@ void SimpleForwardPass::SetUpPipelineStates()
 	deviceResources->ResetDefaultPipelineStates();
 	deviceResources->Context()->ClearRenderTargetView
 	(
-		sink[0]->UseAsRenderTarget().get(), deviceResources->ClearColor
+		(*sink)[0]->UseAsRenderTarget().get(), deviceResources->ClearColor
 	);
 	deviceResources->Context()->ClearDepthStencilView
 	(
@@ -46,7 +46,7 @@ void SimpleForwardPass::operator()()
 {
 	SetUpPipelineStates();
 
-	ID3D11RenderTargetView* target = sink[0]->UseAsRenderTarget().get();
+	ID3D11RenderTargetView* target = (*sink)[0]->UseAsRenderTarget().get();
 	deviceResources->SetTargets(1, &target, deviceResources->DepthStencilView());
 
 	camera->BindCamera2Pipeline();		// Render from the perspective of the main camera

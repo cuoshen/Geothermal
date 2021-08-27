@@ -17,41 +17,37 @@ namespace Geothermal::Graphics::Structures
 		float Diffuse;
 		float Specular;
 		float Smoothness;
-		// In order to keep us aligned 
-		// we combine UseAlbedoMap and UserNormalMap into the same field
-		//	&0x01 bit for albedo, &0x02 bit for normal
-		int TextureFlags;
+		int TextureFlags; // In order to keep the struct 16-bytes-aligned, we combine texture flags into the same field
 	};
 
 	struct DirectionalLight
 	{
 		DirectX::XMFLOAT4		Color;
 		DirectX::XMFLOAT3		Direction;
-		float								Padding0;
+		float									Intensity;
 	};
 
 	struct Light
 	{
 		DirectX::XMFLOAT4		Color;
 		DirectX::XMFLOAT4		Position;
-		float								Radius;
-		float								Attenuation;
-		int									Type;
-		float								Padding0;
+		float									Radius;
+		float									Attenuation;
+		int										Type;
+		float									Padding0;
 	};
 
 	constexpr uint maximumPointLightNumber = 32;
 
 	/// <summary>
-	/// Pack all lighting information into this buffer
-	/// then upload to GPU
+	/// Pack all lighting information into this buffer in the forward shading path
 	/// </summary>
-	struct LightBuffer
+	struct ForwardLightBuffer
 	{
 		/// <summary>
 		/// Initialize with no additional lights
 		/// </summary>
-		LightBuffer(DirectionalLight main)
+		ForwardLightBuffer(DirectionalLight main)
 		{
 			MainLight = main;
 			LightActivation.x = 0;
@@ -60,5 +56,23 @@ namespace Geothermal::Graphics::Structures
 		DirectionalLight			MainLight;
 		Light								AdditionalLights[maximumPointLightNumber];
 		DirectX::XMUINT4		LightActivation;
+	};
+
+	struct DeferredViewParameters
+	{
+		DirectX::XMMATRIX Clip2WorldTransform;
+		DirectX::XMFLOAT3 CameraWorldPosition;
+		float padding;
+	};
+
+	/// <summary>
+	/// Deferred Shading Parameters
+	/// </summary>
+	struct DeferredParameters
+	{
+		DirectX::XMFLOAT3 Ambience;
+		float Padding0;
+		DirectionalLight MainLight;
+		DeferredViewParameters ViewParameters;
 	};
 }
