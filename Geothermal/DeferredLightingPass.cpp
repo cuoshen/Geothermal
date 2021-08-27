@@ -72,6 +72,7 @@ void DeferredLightingPass::operator()()
 	}
 
 	UploadConstantBuffers();
+	uploadShadowResources();
 
 	context->Draw(3, 0);
 }
