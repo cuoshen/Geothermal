@@ -1,4 +1,4 @@
-#include "Common.hlsli"
+#include "ForwardCommon.hlsli"
 
 float4 main(Varyings input) : SV_TARGET
 {

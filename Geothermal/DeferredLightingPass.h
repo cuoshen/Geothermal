@@ -33,6 +33,7 @@ namespace Geothermal::Graphics::Passes
 		/// Generate a full screen quad and shade everything with directional main light
 		/// </summary>
 		std::unique_ptr<Materials::Material> deferredDirectionalLit;
+		std::unique_ptr<Bindables::PixelConstantBuffer<Structures::DeferredParameters>> deferredParameterBuffer;
 
 		std::unique_ptr<DirectX::CommonStates> states;
 		std::function<void(void)> uploadShadowResources;

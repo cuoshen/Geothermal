@@ -23,7 +23,7 @@ CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& d
 {
 	ShaderCache::Initialize(deviceResources);
 	camera = make_unique<Camera>(deviceResources->AspectRatio(), 0.1f, 1000.0f, deviceResources);
-	lightsConstantBuffer = make_unique<PixelConstantBuffer<LightBuffer>>(deviceResources, lights, 7);
+	lightsConstantBuffer = make_unique<PixelConstantBuffer<ForwardLightBuffer>>(deviceResources, lights, 7);
 	
 	InitializeHDRTargets();
 	InitializeGBuffers();

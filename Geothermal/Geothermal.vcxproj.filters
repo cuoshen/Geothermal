@@ -297,6 +297,9 @@
     <Filter Include="Graphics\Passes">
       <UniqueIdentifier>{c6028261-460b-4209-8ae2-047b64dd27ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Common">
+      <UniqueIdentifier>{3df0e8db-fb72-4dd6-92d4-16408e9bd19d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Unlit.hlsl">
@@ -325,22 +328,22 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Common.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="packages.config" />
     <None Include="imgui.ini" />
-    <None Include="Lighting.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="SlotConfig.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shadow.hlsli">
-      <Filter>Shaders</Filter>
+    <None Include="ForwardCommon.hlsli">
+      <Filter>Shaders\Common</Filter>
     </None>
     <None Include="DeferredCommon.hlsli">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Lighting.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Shadow.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="SlotConfig.hlsli">
+      <Filter>Shaders\Common</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

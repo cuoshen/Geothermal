@@ -41,15 +41,14 @@ namespace Geothermal::Graphics::Structures
 	constexpr uint maximumPointLightNumber = 32;
 
 	/// <summary>
-	/// Pack all lighting information into this buffer
-	/// then upload to GPU
+	/// Pack all lighting information into this buffer in the forward shading path
 	/// </summary>
-	struct LightBuffer
+	struct ForwardLightBuffer
 	{
 		/// <summary>
 		/// Initialize with no additional lights
 		/// </summary>
-		LightBuffer(DirectionalLight main)
+		ForwardLightBuffer(DirectionalLight main)
 		{
 			MainLight = main;
 			LightActivation.x = 0;
@@ -58,5 +57,15 @@ namespace Geothermal::Graphics::Structures
 		DirectionalLight			MainLight;
 		Light								AdditionalLights[maximumPointLightNumber];
 		DirectX::XMUINT4		LightActivation;
+	};
+
+	/// <summary>
+	/// Deferred Shading Parameters
+	/// </summary>
+	struct DeferredParameters
+	{
+		DirectX::XMFLOAT3 Ambience;
+		float Padding0;
+		DirectionalLight MainLight;
 	};
 }

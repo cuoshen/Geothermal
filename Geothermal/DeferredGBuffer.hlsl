@@ -1,4 +1,4 @@
-#include "Common.hlsli"
+#include "ForwardCommon.hlsli"
 
 Texture2D AlbedoMap : register(ALBEDO_MAP_SLOT);
 Texture2D NormalMap : register(NORMAL_MAP_SLOT);
