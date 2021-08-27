@@ -34,7 +34,8 @@ void DeferredLightingPass::SetParameters(XMFLOAT3 ambience, DirectionalLight mai
 {
 	parameters.Ambience = ambience;
 	parameters.MainLight = mainLight;
-	XMStoreFloat3(&(parameters.ViewParameters.CameraWorldPosition), camera->GetTransform().WorldPosition());
+	assert(camera != nullptr);
+	parameters.ViewParameters = camera->GenerateDeferredViewParameters();
 }
 
 void DeferredLightingPass::SetUpPipelineStates()

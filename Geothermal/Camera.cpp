@@ -7,6 +7,7 @@
 using namespace Geothermal;
 using namespace Graphics;
 using namespace Bindables;
+using namespace Structures;
 using namespace std;
 
 Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources) :
@@ -91,4 +92,14 @@ XMMATRIX Camera::World2Clip()
 void Camera::BindCamera2Pipeline()
 {
 	Bind(World2View());
+}
+
+DeferredViewParameters Camera::GenerateDeferredViewParameters()
+{
+	DeferredViewParameters parameters;
+	XMStoreFloat3(&(parameters.CameraWorldPosition), transform->WorldPosition());
+	XMMATRIX world2View = World2View();
+	XMMATRIX view2World = XMMatrixTranspose(XMMatrixInverse(nullptr, world2View));
+
+	return parameters;
 }
