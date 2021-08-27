@@ -28,7 +28,12 @@ cbuffer DeferredParameters : register(DEFERRED_PARAMETERS_SLOT)
 
 float3 ReconstructWorldPosition(float2 screenSpacePosition, float depth)
 {
-	return float3(0.0f, 0.0f, 0.0f);
+	float x = screenSpacePosition.x * 2 - 1;
+	float y = (1 - screenSpacePosition.y) * 2 - 1;
+	float4 clipPosition = float4(x, y, depth, 1.0f);
+	float4 worldPosition = mul(clipPosition, ViewParameters.clip2WorldTransform);
+
+	return (worldPosition.xyz / worldPosition.w);
 }
 
 #endif

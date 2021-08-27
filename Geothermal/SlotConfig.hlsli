@@ -18,7 +18,7 @@
 
 #define ALBEDO_MAP_SLOT t0
 #define NORMAL_MAP_SLOT t1
-#define SHADOW_MAP_SLOT t2
+#define SHADOW_MAP_SLOT t5
 
 // GBuffers
 
