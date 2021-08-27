@@ -9,27 +9,11 @@ using namespace Graphics;
 using namespace Bindables;
 using namespace std;
 
-Camera* Camera::main;
-
 Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceResources> const& deviceResources) :
 	GameObject(),
 	ViewPoint(deviceResources, aspectRatio, nearZ, farZ),
 	pitch(0.0f), yaw(0.0f)
 {
-	// The first camera created automatically becomes the main camera
-	if (main == nullptr)
-	{
-		main = this;
-	}
-}
-
-Camera::~Camera()
-{
-	// Unregister to main camera automatically if the camera is deleted
-	if (main == this)
-	{
-		main = nullptr;
-	}
 }
 
 void Camera::Update()
@@ -86,20 +70,6 @@ void Camera::HandleRotation()
 		pitch += rotation.y * mouseSensitivity;
 		pitch = clamp(pitch, -pitchLimit, pitchLimit);
 		yaw += rotation.x * mouseSensitivity;
-	}
-}
-
-Camera* Camera::Main()
-{
-	assert(main != nullptr);
-	return main;
-}
-
-void Camera::SetMainToThis()
-{
-	if (main != this)
-	{
-		main = this;
 	}
 }
 

@@ -15,17 +15,7 @@ namespace Geothermal
 	{
 	public:
 		Camera(float aspectRatio, float nearZ, float farZ, std::shared_ptr<Graphics::DeviceResources> const& deviceResources);
-		~Camera();
 		void Update() override;
-
-		/// <summary>
-		/// We always have precisely one main camera in the scene
-		/// </summary>
-		static Camera* Main();
-		/// <summary>
-		/// Set the main camera reference to this camera
-		/// </summary>
-		void SetMainToThis();
 
 		DirectX::XMMATRIX World2View();
 		DirectX::XMMATRIX World2Clip();
@@ -45,7 +35,5 @@ namespace Geothermal
 
 		float pitch;
 		float yaw;
-
-		static Camera* main;
 	};
 }
