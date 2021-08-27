@@ -98,8 +98,9 @@ DeferredViewParameters Camera::GenerateDeferredViewParameters()
 {
 	DeferredViewParameters parameters;
 	XMStoreFloat3(&(parameters.CameraWorldPosition), transform->WorldPosition());
-	XMMATRIX world2View = World2View();
-	XMMATRIX view2World = XMMatrixTranspose(XMMatrixInverse(nullptr, world2View));
+	XMMATRIX world2Clip = World2Clip();
+	XMMATRIX clip2World = XMMatrixTranspose(XMMatrixInverse(nullptr, world2Clip));
+	parameters.Clip2WorldTransform = clip2World;
 
 	return parameters;
 }

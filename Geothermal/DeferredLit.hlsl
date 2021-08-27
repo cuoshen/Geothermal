@@ -20,17 +20,14 @@ float4 main(QuadPixel input) : SV_TARGET
 	
 	float intensity = 0.0f;
 	// Shade directional light
-	if (!IsInShadow(lightSpacePosition, Sampler))
-	{
 		intensity +=
 				BlinnPhong
 				(
 					worldSpaceNormal, worldPosition, -MainLight.Direction,
 					0.5f, 0.5f, smoothness, ViewParameters.cameraWorldPosition
 				);
-	}
 	
 	float3 color = albedo * intensity + Ambience;
 
-	return float4(color, 1.0f);
+	return float4(worldPosition, 1.0f);
 }
