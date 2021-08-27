@@ -16,11 +16,6 @@ cbuffer ViewParameters : register(VIEW_PARAMETERS_SLOT)
 	float3 CameraWorldPosition;
 };
 
-cbuffer ShadowCasterParameters : register(SHADOW_TRANSFORM_SLOT)
-{
-	matrix World2Light;
-};
-
 struct Varyings
 {
 	float4 clipPosition					:	SV_POSITION;

@@ -15,8 +15,24 @@ float4 main(QuadPixel input) : SV_TARGET
 
 	float3 albedo = g0.xyz;
 	float3 worldSpaceNormal = g1.xyz;
+	float smoothness = g1.w;
 	// Reconstruct world position
 	float3 worldPosition = ReconstructWorldPosition(input.texcoord, depth);
+	float4 lightSpacePosition = mul(float4(worldPosition, 1.0f), World2Light);
+	
+	float intensity = 0.0f;
+	// Shade directional light
+	if (!IsInShadow(lightSpacePosition, Sampler))
+	{
+		intensity +=
+				BlinnPhong
+				(
+					worldSpaceNormal, worldPosition, -MainLight.Direction,
+					0.5f, 0.5f, smoothness, CameraWorldPosition
+				);
+	}
+	
+	float3 color = albedo * intensity + Ambience;
 
 	return float4(worldSpaceNormal, 1.0f);
 }

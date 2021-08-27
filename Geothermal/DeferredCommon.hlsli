@@ -9,6 +9,17 @@ struct QuadPixel
 	float2 texcoord : TEXCOORD;
 };
 
+cbuffer DeferredViewParameters : register(VIEW_PARAMETERS_SLOT)
+{
+	matrix Clip2WorldTransform;
+	float3 CameraWorldPosition;
+};
+
+cbuffer DeferredParameters : register(DEFERRED_PARAMETERS_SLOT)
+{
+	float3 Ambience;
+};
+
 float3 ReconstructWorldPosition(float2 screenSpacePosition, float depth)
 {
 	return float3(0.0f, 0.0f, 0.0f);

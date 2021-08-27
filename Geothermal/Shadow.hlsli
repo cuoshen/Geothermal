@@ -5,6 +5,11 @@
 
 Texture2D ShadowMap : register(SHADOW_MAP_SLOT);
 
+cbuffer ShadowCasterParameters : register(SHADOW_TRANSFORM_SLOT)
+{
+	matrix World2Light;
+};
+
 #define SHADOW_BIAS 0.0001f
 
 bool IsInShadow(float4 lightSpacePosition, SamplerState samplerState)
