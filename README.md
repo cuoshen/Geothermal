@@ -14,7 +14,7 @@ Install Visual Studio 2019 and cppwinrt plugin ([C++/WinRT - Visual Studio Marke
 
 After all is done, hit the big green button to fire it up :)
 
-![image](docs/big green button.png)
+![image](docs/big%20green%20button.png)
 
 ## Features
 
@@ -24,23 +24,23 @@ Geothermal engine supports a simple forward shading path and a simple deferred s
 
 The deferred shading path uses a GBuffer set with 2 render targets and a depth target.
 
-![image](docs/GBuffer 0.png)
+![image](docs/GBuffer%200.png)
 
-![image](docs/GBuffer 1.png)
+![image](docs/GBuffer%201.png)
 
 
 
 ### Albedo and normal mapping
 
-![image](docs/normal mapped earth.png)
+![image](docs/normal%20mapped%20earth.png)
 
 
 
 ### Real-time shadow mapping
 
-![image](docs/dragon with shadow.png)
+![image](docs/dragon%20with%20shadow.png)
 
-![image](docs/city with shadow 1.png)
+![image](docs/city%20with%20shadow%201.png)
 
 
 
