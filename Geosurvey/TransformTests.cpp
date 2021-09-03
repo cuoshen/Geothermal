@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../Geothermal/Transform.h"
-#include "../Geothermal/Transform.cpp"
+#include "Transform.h"
 #include "Comparisons.h"
+
+#include "Transform.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace DirectX;
@@ -10,10 +11,10 @@ using namespace Geothermal;
 
 namespace Geosurvey
 {
-	TEST_CLASS(UnitTest1)
+	TEST_CLASS(TransformTests)
 	{
 	public:
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(TransformTest)
 		{
 			Transform transform;
 			XMFLOAT3 worldPos;
