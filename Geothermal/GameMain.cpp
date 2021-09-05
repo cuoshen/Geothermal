@@ -1,22 +1,27 @@
 #include "pch.h"
 #include "GameMain.h"
 #include "imgui_impl_win32.h"
+#include "SceneManager.h"
 
 #ifdef DEBUG_SCENE
 #include "ModelLoader.h"
 #include "Mesh.h"
 #include "Material.h"
+#endif
+
 using namespace Geothermal;
+using namespace SceneManagement;
+using namespace std;
+using namespace winrt;
+using namespace DirectX;
+
+#ifdef DEBUG_SCENE
 using namespace Graphics;
 using namespace Bindables;
 using namespace Structures;
 using namespace Meshes;
 using namespace Materials;
 #endif
-
-using namespace std;
-using namespace winrt;
-using namespace DirectX;
 
 GameMain* GameMain::instance;
 
@@ -109,7 +114,7 @@ void GameMain::Update()
 	deltaTime = timer->DeltaTime();
 	time = timer->PlayingTime();
 
-	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
+	for (GameObject*& gameObject : SceneManager::Instance().ObjectsInScene)
 	{
 		gameObject->Update();
 

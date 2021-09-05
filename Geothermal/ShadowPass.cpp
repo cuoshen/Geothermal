@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "ShadowPass.h"
 #include "GameObject.h"
-#include "Scene.h"
+#include "SceneManager.h"
 
 using namespace Geothermal;
+using namespace SceneManagement;
 using namespace Graphics;
 using namespace Passes;
 using namespace std;
@@ -48,7 +49,7 @@ void ShadowPass::operator()()
 	// Assuming a call to UpdateWorld2Light earlier in the same frame
 	shadowCaster.Bind(world2light);
 
-	for (GameObject*& gameObject : Scene::Instance()->ObjectsInScene)
+	for (GameObject*& gameObject : SceneManager::Instance().ObjectsInScene)
 	{
 		gameObject->Render();
 	}

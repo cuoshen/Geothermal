@@ -5,12 +5,14 @@
 #include "ShaderCache.h"
 #include "Material.h"
 #include "GameMain.h"
-#include "Scene.h"
+#include "SceneManager.h"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 
-using namespace Geothermal::Graphics;
+using namespace Geothermal;
+using namespace Graphics;
+using namespace SceneManagement;
 using namespace Bindables;
 using namespace Structures;
 using namespace Passes;
@@ -48,7 +50,7 @@ void CoreRenderPipeline::Render()
 
 	if (DeferredMode)
 	{
-		deferredGBufferPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+		deferredGBufferPass->SetSceneResources(SceneManager::Instance().ObjectsInScene, camera.get());
 		(*deferredGBufferPass)();
 
 		deferredLightingPass->SetDelegates(std::bind(&CoreRenderPipeline::UploadShadowResources, this));
@@ -57,7 +59,7 @@ void CoreRenderPipeline::Render()
 	}
 	else
 	{
-		simpleForwardPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+		simpleForwardPass->SetSceneResources(SceneManager::Instance().ObjectsInScene, camera.get());
 		simpleForwardPass->SetDelegates
 		(
 			std::bind(&CoreRenderPipeline::UploadShadowResources, this),
@@ -70,7 +72,7 @@ void CoreRenderPipeline::Render()
 
 	if (debugMode)
 	{
-		debugPass->SetSceneResources(Scene::Instance()->ObjectsInScene, camera.get());
+		debugPass->SetSceneResources(SceneManager::Instance().ObjectsInScene, camera.get());
 		(*debugPass)();
 	}
 
