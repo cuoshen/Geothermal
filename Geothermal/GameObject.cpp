@@ -14,13 +14,13 @@ using namespace DirectX;
 GameObject::GameObject() :
 	id(0), isActive(true), transform(nullptr), renderer(nullptr)
 {
-	registerToSceneManager();
+	RegisterToSceneManager();
 	transform = make_unique<Transform>();
 }
 
 GameObject::~GameObject()
 {
-	deregisterFromSceneManager();
+	DeregisterFromSceneManager();
 }
 
 void GameObject::Render() const
@@ -36,12 +36,12 @@ void GameObject::Render() const
 	}
 }
 
-inline void GameObject::registerToSceneManager()
+inline void GameObject::RegisterToSceneManager()
 {
 	SceneManager::Instance().ObjectsInScene.push_back(this);
 }
 
-inline void GameObject::deregisterFromSceneManager()
+inline void GameObject::DeregisterFromSceneManager()
 {
 	SceneManager::Instance().ObjectsInScene.remove(this);
 }

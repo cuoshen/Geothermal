@@ -17,7 +17,7 @@ Camera::Camera(float aspectRatio, float nearZ, float farZ, shared_ptr<DeviceReso
 {
 	// Camera is never a renderable, this is a bandaid fix preventing its empty renderer being accessed
 	// TODO: remove this bandaid fix
-	GameObject::deregisterFromSceneManager();
+	GameObject::DeregisterFromSceneManager();
 }
 
 void Camera::Update()

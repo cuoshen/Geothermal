@@ -20,9 +20,7 @@ namespace Geothermal
 		/// <summary>
 		/// Update is called once per frame
 		/// </summary>
-		virtual void Update()
-		{
-		}
+		virtual void Update() {}
 		/// <summary>
 		/// Have the object renderer draw the object
 		/// </summary>
@@ -33,8 +31,8 @@ namespace Geothermal
 		Graphics::ObjectRenderer& Renderer() const { return *renderer.get(); }
 
 	protected:
-		inline void registerToSceneManager();
-		inline void deregisterFromSceneManager();
+		inline void RegisterToSceneManager();
+		inline void DeregisterFromSceneManager();
 
 		UINT64 id;	// 64-bit unsigned integer ID which uniquely identify the game object
 		bool isActive;
