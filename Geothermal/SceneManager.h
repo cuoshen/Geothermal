@@ -1,4 +1,6 @@
 #pragma once
+#include "GameObject.h"
+#include "Scene.h"
 
 /// <summary>
 /// Basic principles:
@@ -22,7 +24,13 @@ namespace Geothermal::SceneManagement
 		SceneManager(SceneManager const&) = delete;
 		void operator=(SceneManager const&) = delete;
 
+		Scene* ActiveScene() { return &(scenes[activeSceneIndex]); }
+		std::list<GameObject*> ObjectsInScene;
+
 	private:
-		SceneManager() {}		// Hide constructor
+		SceneManager() : activeSceneIndex(0) {}		// Hide constructor
+
+		std::vector<Scene> scenes;
+		uint activeSceneIndex;
 	};
 }

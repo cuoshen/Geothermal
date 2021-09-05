@@ -13,6 +13,7 @@ namespace Geothermal
 	{
 	public:
 		GameObject();
+		~GameObject();
 
 		friend class GameObjectFactory;
 
@@ -30,7 +31,11 @@ namespace Geothermal
 		bool IsActive() const { return isActive; }
 		Transform& GetTransform() const { return *transform.get(); }
 		Graphics::ObjectRenderer& Renderer() const { return *renderer.get(); }
+
 	protected:
+		inline void registerToSceneManager();
+		inline void deregisterFromSceneManager();
+
 		UINT64 id;	// 64-bit unsigned integer ID which uniquely identify the game object
 		bool isActive;
 		std::unique_ptr<Graphics::ObjectRenderer> renderer;	// Each game object carry its own renderer for its graphics
@@ -57,8 +62,6 @@ namespace Geothermal
 		std::shared_ptr<GameObject> GetProduct();
 
 	protected:
-		void registerToScene();
-		bool registered;
 		std::shared_ptr<GameObject> product;
 	};
 }
