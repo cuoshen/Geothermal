@@ -105,6 +105,9 @@
     <ClCompile Include="DeferredLightingPass.cpp">
       <Filter>Graphics\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>SceneManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -256,6 +259,9 @@
     <ClInclude Include="DeferredLightingPass.h">
       <Filter>Graphics\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>SceneManagement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -299,6 +305,9 @@
     </Filter>
     <Filter Include="Shaders\Common">
       <UniqueIdentifier>{3df0e8db-fb72-4dd6-92d4-16408e9bd19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManagement">
+      <UniqueIdentifier>{cc017d5a-661c-42f8-bcf7-4365e177a59a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

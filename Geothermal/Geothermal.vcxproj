@@ -153,6 +153,7 @@
     <ClCompile Include="DeferredGBufferPass.cpp" />
     <ClCompile Include="DeferredLightingPass.cpp" />
     <ClCompile Include="SceneGeometryPass.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="WireframeDebugPass.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="FileIO.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="DeferredGBufferPass.h" />
     <ClInclude Include="DeferredLightingPass.h" />
     <ClInclude Include="SceneGeometryPass.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="WireframeDebugPass.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="FileIO.h" />
