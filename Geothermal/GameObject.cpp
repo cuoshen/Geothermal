@@ -38,12 +38,12 @@ void GameObject::Render() const
 
 inline void GameObject::RegisterToSceneManager()
 {
-	SceneManager::Instance().ObjectsInScene.push_back(this);
+	SceneManager::Instance().GameObjectRegistry.push_back(this);
 }
 
 inline void GameObject::DeregisterFromSceneManager()
 {
-	SceneManager::Instance().ObjectsInScene.remove(this);
+	SceneManager::Instance().GameObjectRegistry.remove(this);
 }
 
 GameObjectFactory::GameObjectFactory() :

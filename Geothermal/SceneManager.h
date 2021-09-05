@@ -25,7 +25,7 @@ namespace Geothermal::SceneManagement
 		void operator=(SceneManager const&) = delete;
 
 		Scene* ActiveScene() { return &(scenes[activeSceneIndex]); }
-		std::list<GameObject*> ObjectsInScene;
+		std::list<GameObject*> GameObjectRegistry;
 
 	private:
 		SceneManager() : activeSceneIndex(0) {}		// Hide constructor

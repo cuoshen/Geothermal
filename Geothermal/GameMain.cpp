@@ -114,7 +114,7 @@ void GameMain::Update()
 	deltaTime = timer->DeltaTime();
 	time = timer->PlayingTime();
 
-	for (GameObject*& gameObject : SceneManager::Instance().ObjectsInScene)
+	for (GameObject*& gameObject : SceneManager::Instance().GameObjectRegistry)
 	{
 		gameObject->Update();
 

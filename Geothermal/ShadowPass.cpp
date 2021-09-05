@@ -49,7 +49,7 @@ void ShadowPass::operator()()
 	// Assuming a call to UpdateWorld2Light earlier in the same frame
 	shadowCaster.Bind(world2light);
 
-	for (GameObject*& gameObject : SceneManager::Instance().ObjectsInScene)
+	for (GameObject*& gameObject : SceneManager::Instance().GameObjectRegistry)
 	{
 		gameObject->Render();
 	}

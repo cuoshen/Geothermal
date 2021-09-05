@@ -50,7 +50,7 @@ void CoreRenderPipeline::Render()
 
 	if (DeferredMode)
 	{
-		deferredGBufferPass->SetSceneResources(SceneManager::Instance().ObjectsInScene, camera.get());
+		deferredGBufferPass->SetSceneResources(SceneManager::Instance().GameObjectRegistry, camera.get());
 		(*deferredGBufferPass)();
 
 		deferredLightingPass->SetDelegates(std::bind(&CoreRenderPipeline::UploadShadowResources, this));
@@ -59,7 +59,7 @@ void CoreRenderPipeline::Render()
 	}
 	else
 	{
-		simpleForwardPass->SetSceneResources(SceneManager::Instance().ObjectsInScene, camera.get());
+		simpleForwardPass->SetSceneResources(SceneManager::Instance().GameObjectRegistry, camera.get());
 		simpleForwardPass->SetDelegates
 		(
 			std::bind(&CoreRenderPipeline::UploadShadowResources, this),
@@ -72,7 +72,7 @@ void CoreRenderPipeline::Render()
 
 	if (debugMode)
 	{
-		debugPass->SetSceneResources(SceneManager::Instance().ObjectsInScene, camera.get());
+		debugPass->SetSceneResources(SceneManager::Instance().GameObjectRegistry, camera.get());
 		(*debugPass)();
 	}
 
