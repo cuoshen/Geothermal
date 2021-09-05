@@ -20,3 +20,6 @@
 #undef max
 
 #include "GeothermalTypes.h"
+
+// Disable warning messages 4244 and 4267 (possible lost of data on type cast)
+#pragma warning( disable : 4244 4267)
