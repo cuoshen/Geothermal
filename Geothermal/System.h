@@ -7,6 +7,8 @@
 //#include "Geothermal::ECSMsgHub.h"
 #include "Archetype.h"
 
+// TODO: yo, make the system function STATIC HERE!
+
 namespace Geothermal::ECS
 {
 	class SystemBase
@@ -30,6 +32,22 @@ namespace Geothermal::ECS
 
 			return Count++;
 		}
+
+		/// <summary>
+		/// Run a specific system (consider it not registered in the reflection).
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		template <class T>
+		void RunSingle()
+		{
+
+		}
+
+		void Initialize();
+
+		void Update();
+
+		void LateUpdate();
 
 		void OnSignitureChange(Entity e, Archetype newSigniture);
 
