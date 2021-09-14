@@ -20,7 +20,7 @@ using namespace std;
 using namespace DirectX;
 
 CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
-	deviceResources(deviceResources), 
+	RenderPipeline(deviceResources), 
 	shadowParametersVSBuffer(deviceResources, ShadowMapSlot),
 	shadowParametersPSBuffer(deviceResources, ShadowMapSlot),
 	lights(DirectionalLight{ {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, -1.0f, 1.0f}, 0.0f }), debugMode(false)

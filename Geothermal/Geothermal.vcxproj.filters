@@ -262,6 +262,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>SceneManagement</Filter>
     </ClInclude>
+    <ClInclude Include="RenderPipeline.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

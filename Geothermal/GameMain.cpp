@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameMain.h"
+#include "CoreRenderPipeline.h"
 #include "imgui_impl_win32.h"
 #include "SceneManager.h"
 
@@ -103,8 +104,6 @@ WPARAM GameMain::Run()
 	return msg.wParam;
 }
 
-//#define SELF_ROTATE
-
 /// <summary>
 /// Update function is called once per frame, before the frame is rendered
 /// </summary>
@@ -118,6 +117,7 @@ void GameMain::Update()
 	{
 		gameObject->Update();
 
+//#define SELF_ROTATE
 #ifdef SELF_ROTATE
 		if (gameObject != ground)
 		{

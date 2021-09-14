@@ -193,6 +193,7 @@
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeferredGBufferPass.h" />
     <ClInclude Include="DeferredLightingPass.h" />
+    <ClInclude Include="RenderPipeline.h" />
     <ClInclude Include="SceneGeometryPass.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="WireframeDebugPass.h" />

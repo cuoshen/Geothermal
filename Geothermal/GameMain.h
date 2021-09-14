@@ -1,6 +1,6 @@
 #pragma once
 #include "GraphicResources.h"
-#include "CoreRenderPipeline.h"
+#include "RenderPipeline.h"
 #include "GameTimer.h"
 #include "Input.h"
 #include "Scene.h"
@@ -44,7 +44,7 @@ namespace Geothermal
 		float deltaTime;
 		std::unique_ptr<Input> input;
 		std::shared_ptr<Graphics::DeviceResources> deviceResources;
-		std::unique_ptr<Graphics::CoreRenderPipeline> coreRenderer;
+		std::unique_ptr<Graphics::RenderPipeline> coreRenderer;
 
 #ifdef DEBUG_SCENE
 		std::vector<std::shared_ptr<GameObject>> debugGameObjects;

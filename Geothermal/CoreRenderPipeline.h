@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include "GraphicResources.h"
+#include "RenderPipeline.h"
 #include "Camera.h"
 #include "ViewPoint.h"
 #include "RenderPasses.h"
@@ -11,15 +12,13 @@ namespace Geothermal::Graphics
 	constexpr bool DeferredMode = true;
 
 	/// <summary>
-	/// Global render pipeline object
-	/// that is in charge of scheduling and dispatching rendering tasks.
+	/// Default render pipeline implementation in Geothermal engine.
 	/// </summary>
-	class CoreRenderPipeline
+	class CoreRenderPipeline : public RenderPipeline
 	{
 	public:
 		CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources);
-
-		void Render();
+		void Render() override;
 
 		const Structures::DirectionalLight& MainLight() { return lights.MainLight; }
 
@@ -57,7 +56,5 @@ namespace Geothermal::Graphics
 		std::unique_ptr<Camera> camera;
 
 		const DirectX::XMFLOAT3 deferredAmbience = { 0.0f, 0.0f, 0.06f };
-
-		std::shared_ptr<DeviceResources> deviceResources;
 	};
 }
