@@ -15,9 +15,9 @@ using namespace SceneManagement;
 using namespace std;
 using namespace winrt;
 using namespace DirectX;
+using namespace Graphics;
 
 #ifdef DEBUG_SCENE
-using namespace Graphics;
 using namespace Bindables;
 using namespace Structures;
 using namespace Meshes;

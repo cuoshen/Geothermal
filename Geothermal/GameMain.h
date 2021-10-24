@@ -14,9 +14,9 @@
 namespace Geothermal
 {
 	/// <summary>
-/// Main gameplay loop
-/// Singleton class that must be explicitly initialized once
-/// </summary>
+	/// Main gameplay loop
+	/// Singleton class that must be explicitly initialized once
+	/// </summary>
 	class GameMain
 	{
 	public:
