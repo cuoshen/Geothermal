@@ -44,7 +44,7 @@ namespace Geothermal
 		float deltaTime;
 		std::unique_ptr<Input> input;
 		std::shared_ptr<Graphics::DeviceResources> deviceResources;
-		std::unique_ptr<Graphics::RenderPipeline> coreRenderer;
+		std::unique_ptr<Graphics::RenderPipeline> renderPipeline;
 
 #ifdef DEBUG_SCENE
 		std::vector<std::shared_ptr<GameObject>> debugGameObjects;

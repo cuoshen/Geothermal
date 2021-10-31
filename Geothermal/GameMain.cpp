@@ -36,7 +36,7 @@ GameMain::GameMain(shared_ptr<DeviceResources> deviceResources) :
 	if (deviceResources)
 	{
 		this->deviceResources = deviceResources;
-		coreRenderer = make_unique<CoreRenderPipeline>(deviceResources);
+		renderPipeline = make_unique<CoreRenderPipeline>(deviceResources);
 		OutputDebugString(L"GameMain created \n");
 	}
 	timer = make_unique<GameTimer>();
@@ -132,7 +132,7 @@ void GameMain::Update()
 #endif
 	}
 
-	coreRenderer->Render();
+	renderPipeline->Render();
 }
 
 /// <summary>
