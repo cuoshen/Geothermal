@@ -108,6 +108,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>SceneManagement</Filter>
     </ClCompile>
+    <ClCompile Include="PoolAllocator.cpp">
+      <Filter>Ultilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -264,6 +267,9 @@
     </ClInclude>
     <ClInclude Include="RenderPipeline.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolAllocator.h">
+      <Filter>Ultilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

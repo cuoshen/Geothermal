@@ -20,6 +20,9 @@
     <ClCompile Include="SceneObjectTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="PoolAllocatorTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Comparisons.h">
