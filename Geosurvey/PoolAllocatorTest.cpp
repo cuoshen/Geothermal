@@ -13,7 +13,6 @@ namespace Geosurvey
 	public:
 		TEST_METHOD(PoolAllocatorTest)
 		{
-
 		}
 	};
 }
