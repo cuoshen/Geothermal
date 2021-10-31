@@ -32,5 +32,6 @@ PoolAllocator::Chunk* PoolAllocator::AllocateBlock()
 		chunk->next = reinterpret_cast<Chunk*>(reinterpret_cast<char*>(chunk) + chunkSize);
 		chunk = chunk->next;
 	}
+	chunk->next = nullptr;
 	return begin;
 }

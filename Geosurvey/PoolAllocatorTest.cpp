@@ -68,7 +68,7 @@ namespace Geosurvey
 		/// </summary>
 		TEST_METHOD(MemoryAdjacencyTest)
 		{
-			constexpr uint64 allocationCount = chunksInBlock;
+			constexpr uint64 allocationCount = chunksInBlock + 1;
 			PlainObject* plainCollection[allocationCount];
 			PoolAllocatedObject* poolCollection[allocationCount];
 
