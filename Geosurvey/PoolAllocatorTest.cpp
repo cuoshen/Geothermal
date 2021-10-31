@@ -64,10 +64,12 @@ namespace Geosurvey
 
 		/// <summary>
 		/// We allocate #chunksInBlock chunks with the custom new operator, 
-		/// and verify that they are indeed adjacent to each other in underlying memory
+		/// and verify that they are indeed adjacent to each other in underlying memory.
+		/// Compare results with plain objects with default new operator.
 		/// </summary>
 		TEST_METHOD(MemoryAdjacencyTest)
 		{
+			// The last element should be in a new block, thus may not be adjacent in pool allocated case
 			constexpr uint64 allocationCount = chunksInBlock + 1;
 			PlainObject* plainCollection[allocationCount];
 			PoolAllocatedObject* poolCollection[allocationCount];
