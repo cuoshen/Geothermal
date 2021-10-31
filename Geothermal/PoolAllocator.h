@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Geothermal
 {
 	class PoolAllocator
