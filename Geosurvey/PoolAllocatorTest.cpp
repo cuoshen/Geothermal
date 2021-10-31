@@ -8,7 +8,7 @@ using namespace Geothermal;
 
 namespace Geosurvey
 {
-	constexpr uint64 chunksInBlock = 4;
+	constexpr uint64 chunksInBlock = 10;
 
 	struct PoolAllocatedObject
 	{
@@ -68,24 +68,34 @@ namespace Geosurvey
 		/// </summary>
 		TEST_METHOD(MemoryAdjacencyTest)
 		{
-			PoolAllocatedObject* collection[chunksInBlock];
+			constexpr uint64 allocationCount = chunksInBlock;
+			PlainObject* plainCollection[allocationCount];
+			PoolAllocatedObject* poolCollection[allocationCount];
+
 			std::wstringstream allocationSizeStr;
-			allocationSizeStr << L"About to allocate " << chunksInBlock << L" objects \n";
+			allocationSizeStr << L"About to allocate " << allocationCount << L" objects \n";
 			OutputDebugString(allocationSizeStr.str().c_str());
 
-			std::wstringstream memoryLocationStr;
+			std::wstringstream plainMemoryLocationStr;
+			plainMemoryLocationStr << L"Plain object memory locations : \n";
+			std::wstringstream poolMemoryLocationStr;
+			poolMemoryLocationStr << L"Pool allocated object memory locations : \n";
 
-			for (uint64 i = 0; i < chunksInBlock; i++)
+			for (uint64 i = 0; i < allocationCount; i++)
 			{
-				collection[i] = new PoolAllocatedObject();
-				memoryLocationStr << L"Memory location: [" << collection[i] << L"] \n";
+				plainCollection[i] = new PlainObject();
+				poolCollection[i] = new PoolAllocatedObject();
+				plainMemoryLocationStr << L"[" << plainCollection[i] << L"] \n";
+				poolMemoryLocationStr << L"[" << poolCollection[i] << L"] \n";
 			}
 
-			OutputDebugString(memoryLocationStr.str().c_str());
+			OutputDebugString(plainMemoryLocationStr.str().c_str());
+			OutputDebugString(poolMemoryLocationStr.str().c_str());
 
-			for (uint64 i = 0; i < chunksInBlock; i++)
+			for (uint64 i = 0; i < allocationCount; i++)
 			{
-				delete collection[i];
+				delete plainCollection[i];
+				delete poolCollection[i];
 			}
 		}
 	};
