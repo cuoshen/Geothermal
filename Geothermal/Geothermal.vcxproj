@@ -152,6 +152,7 @@
     <ClCompile Include="CoreRenderPipeline.cpp" />
     <ClCompile Include="DeferredGBufferPass.cpp" />
     <ClCompile Include="DeferredLightingPass.cpp" />
+    <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="SceneGeometryPass.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="WireframeDebugPass.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="CoreRenderPipeline.h" />
     <ClInclude Include="DeferredGBufferPass.h" />
     <ClInclude Include="DeferredLightingPass.h" />
+    <ClInclude Include="PoolAllocator.h" />
     <ClInclude Include="RenderPipeline.h" />
     <ClInclude Include="SceneGeometryPass.h" />
     <ClInclude Include="SceneManager.h" />
