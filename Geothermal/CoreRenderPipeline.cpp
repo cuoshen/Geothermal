@@ -19,7 +19,7 @@ using namespace Passes;
 using namespace std;
 using namespace DirectX;
 
-CoreRenderPipeline::CoreRenderPipeline(std::shared_ptr<DeviceResources> const& deviceResources) :
+CoreRenderPipeline::CoreRenderPipeline(shared_ptr<DeviceResources> const& deviceResources) :
 	RenderPipeline(deviceResources), 
 	shadowParametersVSBuffer(deviceResources, ShadowMapSlot),
 	shadowParametersPSBuffer(deviceResources, ShadowMapSlot),

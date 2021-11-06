@@ -3,6 +3,7 @@
 #include "GameMain.h"
 #include "Input.h"
 #include <algorithm>
+#include <sstream>
 
 using namespace Geothermal;
 using namespace Graphics;
@@ -106,4 +107,15 @@ DeferredViewParameters Camera::GenerateDeferredViewParameters()
 	parameters.Clip2WorldTransform = clip2World;
 
 	return parameters;
+}
+
+void* Camera::operator new(size_t size)
+{
+	OutputDebugString(L"Camera does not use memory pool for allocation. \n");
+	return malloc(size);
+}
+
+void Camera::operator delete(void* pointerToObject, size_t size)
+{
+	free(pointerToObject);
 }

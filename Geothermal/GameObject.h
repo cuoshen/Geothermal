@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "DeviceResources.h"
 #include "Mesh.h"
+#include "PoolAllocator.h"
 
 namespace Geothermal
 {
@@ -30,7 +31,12 @@ namespace Geothermal
 		Transform& GetTransform() const { return *transform.get(); }
 		Graphics::ObjectRenderer& Renderer() const { return *renderer.get(); }
 
+		static void* operator new(size_t size);
+		static void operator delete(void* pointerToObject, size_t size);
+
 	protected:
+		static PoolAllocator allocator;
+
 		inline void RegisterToSceneManager();
 		inline void DeregisterFromSceneManager();
 

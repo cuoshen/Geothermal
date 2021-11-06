@@ -32,7 +32,11 @@ namespace Geothermal
 		void Pitch(float pitch) { this->pitch = pitch; }
 		void Yaw(float yaw) { this->yaw = yaw; }
 
+		static void* operator new(size_t size);
+		static void operator delete(void* pointerToObject, size_t size);
+
 	private:
+
 		const float mouseSensitivity = 0.001f;
 		const float speed = 2.0f;
 		const float pitchLimit = DirectX::XM_PIDIV2 - 0.01f;
