@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <vector>
 
 namespace Geothermal
 {
@@ -9,4 +10,7 @@ namespace Geothermal
 	using i64 = int64_t;
 	// float can have its name
 	// double can have its name
+
+	template <typename T>
+	using Vector = std::vector<T>;
 }
