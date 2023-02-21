@@ -67,8 +67,8 @@ void DeviceResources::CreateWindowSizeDependentResources(HWND windowHandle)
 {
 	ClearPreviousSizeDependentResources();
 
-	outputSize.x = std::max((uint32)1, outputSize.x);
-	outputSize.y = std::max((uint32)1, outputSize.y);
+	outputSize.x = std::max((u32)1, outputSize.x);
+	outputSize.y = std::max((u32)1, outputSize.y);
 
 	if (swapChain != nullptr)
 	{

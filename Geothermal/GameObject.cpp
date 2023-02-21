@@ -12,7 +12,7 @@ using namespace Materials;
 using namespace std;
 using namespace DirectX;
 
-constexpr uint64 chunksInBlock = 1 << 10;
+constexpr u64 chunksInBlock = 1 << 10;
 
 PoolAllocator GameObject::allocator{ chunksInBlock , sizeof(GameObject)};
 
