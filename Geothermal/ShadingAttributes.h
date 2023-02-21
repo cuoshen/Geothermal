@@ -37,7 +37,7 @@ namespace Geothermal::Graphics::Structures
 		float									Padding0;
 	};
 
-	constexpr uint maximumPointLightNumber = 32;
+	constexpr u32 maximumPointLightNumber = 32;
 
 	/// <summary>
 	/// Pack all lighting information into this buffer in the forward shading path

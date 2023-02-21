@@ -3,11 +3,10 @@
 
 namespace Geothermal
 {
-	typedef uint32_t uint32;
-	typedef uint32 uint;
+	using u32 = uint32_t;
 	// int can have its name
-	typedef uint64_t uint64;
-	typedef int64_t int64;
+	using u64 = uint64_t;
+	using i64 = int64_t;
 	// float can have its name
 	// double can have its name
 }
