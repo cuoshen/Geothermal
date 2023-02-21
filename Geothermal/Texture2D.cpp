@@ -10,7 +10,7 @@ using namespace Graphics;
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources,
-	hstring const& filename, TEXTURE_FILE_TYPE fileType, uint slot
+	hstring const& filename, TEXTURE_FILE_TYPE fileType, u32 slot
 ) :
 	deviceResources(deviceResources),
 	texture(nullptr),
@@ -85,7 +85,7 @@ Texture2D::Texture2D
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, vector<char> data,
-	DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot
+	DXGI_FORMAT format, u32 width, u32 height, u32 bitsPerPixel, u32 bindFlags, u32 slot
 ) :
 	deviceResources(deviceResources),
 	texture(nullptr),
@@ -99,7 +99,7 @@ Texture2D::Texture2D
 	CreateTextureFromMemory(data, width, height, bitsPerPixel, bindFlags);
 }
 
-void Texture2D::CreateTextureFromMemory(vector<char> data, uint width, uint height, uint bitsPerPixel, uint bindFlags)
+void Texture2D::CreateTextureFromMemory(vector<char> data, u32 width, u32 height, u32 bitsPerPixel, u32 bindFlags)
 {
 	D3D11_TEXTURE2D_DESC description = DefaultDescriptionFromParameters(width, height, bindFlags);
 
@@ -109,8 +109,8 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, uint width, uint heig
 
 	D3D11_SUBRESOURCE_DATA initialData;
 	initialData.pSysMem = data.data();
-	initialData.SysMemPitch = static_cast<uint>(rowPitch);
-	initialData.SysMemSlicePitch = static_cast<uint>(imageSize);
+	initialData.SysMemPitch = static_cast<u32>(rowPitch);
+	initialData.SysMemSlicePitch = static_cast<u32>(imageSize);
 
 	check_hresult(
 		deviceResources->Device()->CreateTexture2D(&description, &initialData, texture.put())
@@ -120,7 +120,7 @@ void Texture2D::CreateTextureFromMemory(vector<char> data, uint width, uint heig
 Texture2D::Texture2D
 (
 	shared_ptr<DeviceResources> const& deviceResources, DXGI_FORMAT format,
-	uint width, uint height, uint bindFlags, uint slot
+	u32 width, u32 height, u32 bindFlags, u32 slot
 ) :
 	deviceResources(deviceResources),
 	texture(nullptr),
@@ -219,7 +219,7 @@ void Texture2D::CreateDepthStencilView()
 	);
 }
 
-D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(uint width, uint height, uint bindFlags)
+D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(u32 width, u32 height, u32 bindFlags)
 {
 	D3D11_TEXTURE2D_DESC description = { 0 };
 	description.Width = width;
@@ -237,7 +237,7 @@ D3D11_TEXTURE2D_DESC Texture2D::DefaultDescriptionFromParameters(uint width, uin
 	return description;
 }
 
-bool Texture2D::IsValidBindFlags(uint bindFlags)
+bool Texture2D::IsValidBindFlags(u32 bindFlags)
 {
 	bool isShaderResource = bindFlags & D3D11_BIND_SHADER_RESOURCE;
 	bool isRenderTarget = bindFlags & D3D11_BIND_RENDER_TARGET;

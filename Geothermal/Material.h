@@ -25,7 +25,7 @@ namespace Geothermal::Graphics::Materials
 		(
 			std::shared_ptr<DeviceResources> const& deviceResources,
 			std::wstring vertexShaderName, std::wstring pixelShaderName,
-			D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
+			D3D11_INPUT_ELEMENT_DESC* inputSignatures, u32 inputElementCount
 		);
 
 		void AddParameterSet(std::shared_ptr<Bindables::ConstantBuffer<Structures::ShadingAttributes>> parameterSet);

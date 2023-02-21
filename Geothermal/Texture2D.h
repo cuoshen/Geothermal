@@ -25,25 +25,25 @@ namespace Geothermal::Graphics
 		/// Create texture from a file of a supported type
 		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
-			winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType, uint slot);
+			winrt::hstring const& filename, TEXTURE_FILE_TYPE fileType, u32 slot);
 
 		/// <summary>
 		/// For non-DDS image file loaded into the memory, we need to pass in metadata
 		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources, std::vector<char> data,
-			DXGI_FORMAT format, uint width, uint height, uint bitsPerPixel, uint bindFlags, uint slot);
+			DXGI_FORMAT format, u32 width, u32 height, u32 bitsPerPixel, u32 bindFlags, u32 slot);
 
 		/// <summary>
 		/// Build one from scratch in given dimensions
 		/// </summary>
 		Texture2D(std::shared_ptr<DeviceResources> const& deviceResources,
-			DXGI_FORMAT format, uint width, uint height, uint bindFlags, uint slot);
+			DXGI_FORMAT format, u32 width, u32 height, u32 bindFlags, u32 slot);
 
 		winrt::com_ptr<ID3D11ShaderResourceView> UseAsShaderResource();
 		winrt::com_ptr<ID3D11RenderTargetView> UseAsRenderTarget();
 		winrt::com_ptr<ID3D11DepthStencilView> UseAsDepthStencil();
 
-		uint Slot() const
+		u32 Slot() const
 		{
 			return slot;
 		}
@@ -51,7 +51,7 @@ namespace Geothermal::Graphics
 	protected:
 		void CreateTextureFromMemory
 		(
-			std::vector<char> data, uint width, uint height, uint bitsPerPixel, uint bingFlags
+			std::vector<char> data, u32 width, u32 height, u32 bitsPerPixel, u32 bingFlags
 		);
 		void CreateShaderResourceView();
 		void CreateRenderTargetView();
@@ -59,17 +59,17 @@ namespace Geothermal::Graphics
 
 		D3D11_TEXTURE2D_DESC DefaultDescriptionFromParameters
 		(
-			uint width, uint height, uint bindFlags
+			u32 width, u32 height, u32 bindFlags
 		);
 
-		bool IsValidBindFlags(uint bindFlags);
+		bool IsValidBindFlags(u32 bindFlags);
 
 		std::shared_ptr<DeviceResources> deviceResources;
 
 		winrt::com_ptr<ID3D11Texture2D> texture;
 		DXGI_FORMAT format;
-		uint bindFlags;
-		uint slot;
+		u32 bindFlags;
+		u32 slot;
 		winrt::com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 		winrt::com_ptr<ID3D11RenderTargetView> renderTargetView;
 		winrt::com_ptr<ID3D11DepthStencilView> depthStencilView;

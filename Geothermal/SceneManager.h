@@ -31,6 +31,6 @@ namespace Geothermal::SceneManagement
 		SceneManager() : activeSceneIndex(0) {}		// Hide constructor
 
 		std::vector<Scene> scenes;
-		uint activeSceneIndex;
+		u32 activeSceneIndex;
 	};
 }

@@ -173,9 +173,9 @@ void GameMain::InitializeDebugResource()
 	wstring pixelShaderName = L"DeferredGBuffer.cso";
 
 	materials[0] =
-		make_shared<Material>(deviceResources, L"LitVertexShader.cso", pixelShaderName, VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", pixelShaderName, VertexPNTTLayout, (u32)size(VertexPNTTLayout));
 	materials[1] =
-		make_shared<Material>(deviceResources, L"LitVertexShader.cso", pixelShaderName, VertexPNTTLayout, (uint)size(VertexPNTTLayout));
+		make_shared<Material>(deviceResources, L"LitVertexShader.cso", pixelShaderName, VertexPNTTLayout, (u32)size(VertexPNTTLayout));
 
 	ShadingAttributes shadingParameters0 = ShadingAttributes
 	{

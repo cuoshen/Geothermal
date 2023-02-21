@@ -12,7 +12,7 @@ using namespace Geothermal;
 array<XMFLOAT3, BoxVerticesCount> AABB::GenerateBoxVertices()
 {
 	array<XMFLOAT3, BoxVerticesCount> corners;
-	for (uint i = 0; i < BoxVerticesCount; i++)
+	for (u32 i = 0; i < BoxVerticesCount; i++)
 	{
 		XMFLOAT3 point;
 		point.x = (i & 1) ? MinXYZ.x : MaxXYZ.x;
@@ -62,9 +62,9 @@ void AABB::DrawWireFrame(shared_ptr<Graphics::DeviceResources> deviceResources, 
 	}
 	vector<UINT> indices;
 
-	for (uint i = 0; i < BoxVerticesCount; i++)
+	for (u32 i = 0; i < BoxVerticesCount; i++)
 	{
-		for (uint j = 0; j < BoxVerticesCount; j++)
+		for (u32 j = 0; j < BoxVerticesCount; j++)
 		{
 			if 
 			(
