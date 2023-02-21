@@ -5,7 +5,7 @@ namespace Geothermal
 	class PoolAllocator
 	{
 	public:
-		PoolAllocator(uint64 chunksPerBlock, size_t chunkSize) : chunksPerBlock(chunksPerBlock), chunkSize(chunkSize)
+		PoolAllocator(u64 chunksPerBlock, size_t chunkSize) : chunksPerBlock(chunksPerBlock), chunkSize(chunkSize)
 		{
 		}
 
@@ -17,7 +17,7 @@ namespace Geothermal
 		{
 			Chunk* next;
 		};
-		uint64 chunksPerBlock;
+		u64 chunksPerBlock;
 		size_t chunkSize;
 
 		Chunk* nextAllocationPosition = nullptr;

@@ -14,7 +14,7 @@ Material::Material
 (
 	std::shared_ptr<DeviceResources> const& deviceResources,
 	wstring vertexShaderName, wstring pixelShaderName,
-	D3D11_INPUT_ELEMENT_DESC* inputSignatures, uint inputElementCount
+	D3D11_INPUT_ELEMENT_DESC* inputSignatures, u32 inputElementCount
 ) :
 	deviceResources(deviceResources),
 	vertexShaderName(vertexShaderName), pixelShaderName(pixelShaderName)

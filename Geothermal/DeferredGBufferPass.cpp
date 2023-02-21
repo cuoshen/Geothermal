@@ -16,7 +16,7 @@ DeferredGBufferPass::DeferredGBufferPass
 	assert(this->sink != nullptr);
 	assert(this->sink->size() == GBufferCount);
 
-	for (uint i = 0; i < GBufferRenderTargetCount; i++)
+	for (u32 i = 0; i < GBufferRenderTargetCount; i++)
 	{
 		renderTargets[i] = (*(this->sink))[i]->UseAsRenderTarget().get();
 	}
@@ -29,7 +29,7 @@ void DeferredGBufferPass::SetUpPipelineStates()
 	deviceResources->ResetDefaultPipelineStates();
 
 	// Clear all GBuffer RTVs
-	for (uint i = 0; i < GBufferRenderTargetCount; i++)
+	for (u32 i = 0; i < GBufferRenderTargetCount; i++)
 	{
 		deviceResources->Context()->ClearRenderTargetView
 		(

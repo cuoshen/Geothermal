@@ -7,7 +7,7 @@
 
 namespace Geothermal
 {
-	constexpr uint BoxVerticesCount = 8;
+	constexpr u32 BoxVerticesCount = 8;
 
 	/// <summary>
 	/// Axis-Aligned Bounding Box

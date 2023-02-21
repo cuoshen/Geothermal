@@ -129,7 +129,7 @@ void CoreRenderPipeline::ResetCamera()
 
 void CoreRenderPipeline::InitializeHDRTargets()
 {
-	for (uint i = 0; i < HDRTargetCount; i++)
+	for (u32 i = 0; i < HDRTargetCount; i++)
 	{
 		hdrTargets[i] = make_unique<Texture2D>
 			(
@@ -171,7 +171,7 @@ void CoreRenderPipeline::BuildRenderGraph()
 	simpleForwardPass = make_unique<Passes::SimpleForwardPass>(deviceResources, nullptr, move(simpleForwardSink));
 
 	auto gBufferSink = make_unique<vector<Texture2D*>>();
-	for (uint i = 0; i < GBufferCount; i++)
+	for (u32 i = 0; i < GBufferCount; i++)
 	{
 		gBufferSink->push_back(gBuffers[i].get());
 	}
@@ -180,7 +180,7 @@ void CoreRenderPipeline::BuildRenderGraph()
 	auto deferredLitSink = make_unique<vector<Texture2D*>>();
 	deferredLitSink->push_back(hdrTargets[0].get());
 	auto gBufferSource = make_unique<vector<Texture2D*>>();
-	for (uint i = 0; i < GBufferCount; i++)
+	for (u32 i = 0; i < GBufferCount; i++)
 	{
 		gBufferSource->push_back(gBuffers[i].get());
 	}

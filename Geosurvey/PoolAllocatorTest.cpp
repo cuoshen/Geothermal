@@ -8,7 +8,7 @@ using namespace Geothermal;
 
 namespace Geosurvey
 {
-	constexpr uint64 chunksInBlock = 10;
+	constexpr u64 chunksInBlock = 10;
 
 	struct PoolAllocatedObject
 	{
@@ -70,7 +70,7 @@ namespace Geosurvey
 		TEST_METHOD(MemoryAdjacencyTest)
 		{
 			// The last element should be in a new block, thus may not be adjacent in pool allocated case
-			constexpr uint64 allocationCount = chunksInBlock + 1;
+			constexpr u64 allocationCount = chunksInBlock + 1;
 			PlainObject* plainCollection[allocationCount];
 			PoolAllocatedObject* poolCollection[allocationCount];
 
@@ -83,7 +83,7 @@ namespace Geosurvey
 			std::wstringstream poolMemoryLocationStr;
 			poolMemoryLocationStr << L"Pool allocated object memory locations : \n";
 
-			for (uint64 i = 0; i < allocationCount; i++)
+			for (u64 i = 0; i < allocationCount; i++)
 			{
 				plainCollection[i] = new PlainObject();
 				poolCollection[i] = new PoolAllocatedObject();
@@ -94,7 +94,7 @@ namespace Geosurvey
 			OutputDebugString(plainMemoryLocationStr.str().c_str());
 			OutputDebugString(poolMemoryLocationStr.str().c_str());
 
-			for (uint64 i = 0; i < allocationCount; i++)
+			for (u64 i = 0; i < allocationCount; i++)
 			{
 				delete plainCollection[i];
 				delete poolCollection[i];

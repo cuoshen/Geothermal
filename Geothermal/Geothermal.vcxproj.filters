@@ -111,6 +111,7 @@
     <ClCompile Include="PoolAllocator.cpp">
       <Filter>Ultilities</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h" />
@@ -271,6 +272,9 @@
     <ClInclude Include="PoolAllocator.h">
       <Filter>Ultilities</Filter>
     </ClInclude>
+    <ClInclude Include="Gameplay.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -317,6 +321,9 @@
     </Filter>
     <Filter Include="SceneManagement">
       <UniqueIdentifier>{cc017d5a-661c-42f8-bcf7-4365e177a59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gameplay">
+      <UniqueIdentifier>{0be3ace2-cb01-420b-b9ba-5a4a8faf638f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
